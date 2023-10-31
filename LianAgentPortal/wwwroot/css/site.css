@@ -1,22 +1,396 @@
-html {
-  font-size: 14px;
+.ui-button:link,
+.ui-button:visited,
+.ui-button:hover,
+.ui-button:active {
+    text-decoration: none;
+    color: #2e6e9e;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.ui-button-icon-only .ui-icon {
+    top: 45%;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.ui-dialog .ui-dialog-titlebar-close {
+    top: 40%;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.ui-button {
+    padding: 1px 6px;
+    margin-right: 0em;
+}
+
+.ui-pg-table, .ui-common-table, .ui-pager-table {
+    border-collapse: separate;
+}
+
+.ui-jqgrid .ui-jqgrid-titlebar {
+    height: 30px;
+}
+
+.ui-jqgrid .ui-jqgrid-toppager .ui-pager-control,
+.ui-jqgrid .ui-jqgrid-pager .ui-pager-control {
+    height: 35px;
+}
+
+
+.ui-jqgrid .ui-pg-input, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-input {
+    height: 19px;
+}
+
+.ui-jqgrid .ui-pg-selbox, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-selbox {
+    height: 20px;
+    padding: 0px;
+}
+
+.ui-jqgrid,
+.ui-jqgrid .ui-jqgrid-view,
+.ui-jqgrid .ui-jqgrid-titlebar,
+.ui-jqgrid .ui-jqgrid-pager,
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget,
+.ui-widget button {
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ui-dialog .ui-dialog-content, .ui-dialog .ui-dialog-content {
+    padding: 0.5em 0em;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: .25em 1em;
+}
+
+.ui-dialog .ui-dialog-buttonpane, .ui-dialog .ui-dialog-buttonpane {
+    margin-top: 0em;
+    padding: 0em;
+}
+
+.ui-jqgrid .ui-jqgrid-pager,
+.ui-jqgrid .ui-jqgrid-view {
+    z-index: 1;
+}
+
+.navbar {
+    z-index: 99;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.btn {
+    font-size: 14px;
+    height: 25px;
+    min-width: 50px;
+    padding: 2px;
+}
+
+.form-control {
+    height: 25px;
+    padding: 6px 6px;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+body {
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+#page-wrapper {
+    padding: 0px;
+    padding-left: 2px;
+}
+
+.page-header {
+    padding-bottom: 0px;
+    margin: 0px;
+    border-bottom: none;
+}
+
+.ui-jqdialog .ui-jqdialog-titlebar,
+.fm-button {
+    height: 30px;
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+    left: 15px;
+}
+
+.navbar-brand {
+    padding-left: 45px;
+}
+
+
+/*----------------------------------------------------*/
+
+footer {
+    margin-top: 5px;
+}
+
+    footer > p {
+        margin: 0px;
+    }
+
+.nav.navbar-nav.navbar-right {
+    margin-right: 10px;
+}
+
+.breadcrumb {
+    margin-bottom: 15px;
+    padding-left: 30px;
+    padding: 4px 30px
+}
+
+.ui-menu-icons .ui-menu-item-wrapper {
+    padding: 3px 1em 3px .4em;
+}
+
+.ui-menu:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.custom-menu.ui-menu.ui-widget.ui-widget-content {
+    border: 0px;
+    padding-top: 13px;
+}
+
+ul.ui-widget-content {
+    background-color: #f8f8f8;
+    background: #f8f8f8;
+}
+
+.ui-menu .ui-menu-item {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+.ui-menu-item-wrapper {
+    /*min-width: 100px;
+    width: auto;*/
+}
+
+.ui-menu-item .ui-menu .ui-menu-item {
+    display: list-item;
+    float: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+.ui-state-disabled .ui-menu-item-wrapper {
+    opacity: .3;
+}
+
+.ui-menu .ui-state-disabled {
+    opacity: 1;
+}
+
+
+.ui-button:link,
+.ui-button:visited,
+.ui-button:hover,
+.ui-button:active {
+    text-decoration: none;
+    color: #2e6e9e;
+}
+
+.ui-button {
+    padding: 3px 6px;
+    margin-right: 0em;
+}
+
+.ui-pg-table, .ui-common-table, .ui-pager-table {
+    border-collapse: separate;
+}
+
+.ui-jqgrid .ui-jqgrid-titlebar {
+    height: 30px;
+}
+
+.ui-jqgrid .ui-jqgrid-toppager .ui-pager-control,
+.ui-jqgrid .ui-jqgrid-pager .ui-pager-control {
+    height: 35px;
+}
+
+
+.ui-jqgrid .ui-pg-input, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-input {
+    height: 19px;
+}
+
+.ui-jqgrid .ui-pg-selbox, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-selbox {
+    height: 20px;
+    padding: 0px;
+}
+
+.ui-dialog .ui-dialog-content, .ui-dialog .ui-dialog-content {
+    padding: 0.5em 0em;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: .25em 1em;
+}
+
+.ui-dialog .ui-dialog-buttonpane, .ui-dialog .ui-dialog-buttonpane {
+    margin-top: 0em;
+    padding: 0em;
+}
+
+.ui-jqgrid .ui-jqgrid-pager,
+.ui-jqgrid .ui-jqgrid-view,
+.input-group {
+    z-index: 1;
+}
+
+.navbar-fixed-top {
+    z-index: 2;
+}
+
+.btn {
+    font-size: 14px;
+    height: 25px;
+    min-width: 50px;
+    padding: 2px;
+}
+
+.form-control {
+    height: 25px;
+    padding: 6px 6px;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.nav > li > a {
+    position: relative;
+    display: block;
+    padding: 15px;
+}
+
+.navbar-right {
+    float: right !important;
+    margin-right: 0px;
+}
+
+.navbar-default .btn-link {
+    padding: 3px 20px;
+}
+
+.ui-jqgrid .ui-jqgrid-htable {
+    font-size: 14px;
+}
+
+    .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+        margin-top: 0px;
+        height: 20px;
+    }
+
+.ui-jqgrid .ui-icon-asc {
+    margin-top: 0px;
+}
+.ui-jqgrid .ui-icon-desc {
+    margin-top: 6px;
+}
+
+.container-fluid {
+    padding-left: 0px
+}
+
+.logo img {
+    height: 50px;
+    text-decoration: none;
+}
+
+.logo span {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ff701c;
+    text-align: center;
+    position: relative;
+    top: 5px;
 }

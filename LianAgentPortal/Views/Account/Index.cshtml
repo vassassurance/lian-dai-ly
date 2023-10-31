@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Quản Lý User";
+}
+<div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix" style="height: 30px;padding: 0.3em 0.2em 0.2em 0.3em;position: relative;border-left: 0 none;border-right: 0 none;border-top: 0 none;">
+    <span class="ui-jqgrid-title">
+       @ViewData["Title"]
+    </span>
+</div>
+<table id="gridUser" width="100%"></table>
+<div id="pagerUser"></div>
+
+<div id="dialog-gg-authenticator" title="Google Authenticator">
+    <div class="text-center">
+        <label id="account-gg-authenticator"></label>
+    </div>
+    <br/>
+    <div class="text-center">
+        <img id="img-gg-authenticator" src="" style="height:100%;" />
+    </div>
+    <br/>
+    <div class="text-center">
+        Mã Dự Phòng: <label id="lbl-gg-authenticator"></label>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        dialogGgAuthenticator = $("#dialog-gg-authenticator");
+        dialogGgAuthenticator.dialog({
+            autoOpen: false,
+            height: 350,
+            width: 270,
+            resizable: false,
+            modal: true,
+        });
+
+        googleAuthenticatorCellFormatter = function(cellvalue, options, rowobject) {
+            return '<button type="button" class="ui-button ui-widget ui-corner-all" onclick="getGgAuthenticator(\'' + rowobject.Id + '\')"> <span class="ui-icon ui-icon-locked"></span> GG Authenticator</button>'; 
+        }
+
+        getGgAuthenticator = function(id) {
+            $.ajax({
+                url: "/Account/GetGgAuthenticator",
+                data: { id: id },
+                success: function (data) {
+                    if (data) {
+                        //account-gg-authenticator
+                        $("#account-gg-authenticator").html(data.Account);
+                        $("#img-gg-authenticator").attr("src", data.QrCodeSetupImageUrl);
+                        $("#lbl-gg-authenticator").html(data.ManualEntryKey);
+                        dialogGgAuthenticator.dialog("open");
+                    }
+                }
+            });
+
+        }
+
+        gridUser = $("#gridUser");
+        gridUser.jqGrid({
+            url: '/Account/GetListUserJqgrid',
+            mtype: 'GET',
+            datatype: "json",
+            colNames: ['Id', 'UserName', 'Email xác nhận đổi pass', 'Ngày tạo', 'Ngày cập nhật', 'Admin', 'Còn hoạt động', 'Authenticator'],
+            colModel: [
+                { name: 'Id', index: 'Id', hidden: true, key: true },
+                { name: 'UserName', index: 'UserName' },
+                { name: 'EmailRecoverPassword', index: 'EmailRecoverPassword' },
+                { name: 'CreateDate', index: 'CreateDate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
+                { name: 'UpdateDate', index: 'UpdateDate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
+                { name: 'IsAdmin', index: 'IsAdmin', align: 'center', editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 30 },
+                { name: 'IsActivated', index: 'IsActivated', align: 'center', editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 30 },
+                { name: 'Authenticator', index: 'Authenticator', sortable: false, formatter: googleAuthenticatorCellFormatter, width: 50},
+            ],
+            rowNum: 100000,
+            autowidth: true,
+            rownumbers: true,
+            rowList: [100000],
+            pager: '#pagerUser',
+            sortname: 'UserName',
+            hidegrid: false,
+            viewrecords: true,
+            height: window.innerHeight - 170,
+            ondblClickRow: function (rowid) {
+                window.location.pathname = ('/Account/Edit/' + rowid);
+            }
+        }).navGrid('#pagerUser', {
+            edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
+        }).navButtonAdd('#pagerUser', {
+            buttonicon: "ui-icon-plusthick",
+            title: "Tạo mới",
+            caption: "Tạo mới",
+            position: "last",
+            onClickButton: function () {
+                window.location.pathname = ('/Account/Create');
+            }
+        });
+        
+    </script>
+    <script>
+        resetGridsWidth = function () {
+            common.functions.resetGridWidth(gridUser);
+        }
+
+        $(window).on("resize", resetGridsWidth);
+        resetGridsWidth();
+    </script>
+}

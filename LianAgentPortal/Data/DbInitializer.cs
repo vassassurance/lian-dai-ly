@@ -1,4 +1,5 @@
-﻿using LianAgentPortal.Commons.Constants;
+﻿using LianAgentPortal.Commons;
+using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Models.DbModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ namespace LianAgentPortal.Data
                 GoogleAuthenticatorSecretCode = "ABB80D77",
                 IsActivated = true
             };
-            userAdminIt.PasswordHash = PassGenerate(userAdminIt, "FE3EB4DF");
+            userAdminIt.PasswordHash = Functions.HashPassword(userAdminIt, "FE3EB4DF");
             result.Add(userAdminIt);
             return result;
         }
@@ -55,10 +56,6 @@ namespace LianAgentPortal.Data
             return result;
         }
 
-        public string PassGenerate(LianUser user, string password)
-        {
-            var passHash = new PasswordHasher<LianUser>();
-            return passHash.HashPassword(user, password);
-        }
+
     }
 }

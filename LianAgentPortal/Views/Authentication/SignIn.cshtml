@@ -1,0 +1,45 @@
+﻿@model LianAgentPortal.Models.ViewModels.Authentication.SignInViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    var returnUrl = @Context.Request.Query["returnurl"];
+}
+
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <form asp-action="SignIn" asp-route-returnurl="@returnUrl">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Enter username"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" placeholder="Enter password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pin" class="control-label"></label>
+                <input asp-for="Pin" class="form-control" placeholder="Authenticator"/>
+                <span asp-validation-for="Pin" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label asp-for="RememberMe">
+                        <input asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                </div>
+            </div>                       
+            <div class="form-group">
+                <button class="btn btn-success btn-block" type="submit">Sign In</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

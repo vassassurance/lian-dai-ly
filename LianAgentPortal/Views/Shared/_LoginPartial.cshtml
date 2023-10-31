@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using LianAgentPortal.Models.DbModels
+@inject SignInManager<LianUser> SignInManager
+@inject UserManager<LianUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">  @User.Identity?.Name </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li>
+                    <a class="dropdown-item" aria-current="page" href="#">Thông báo</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" aria-current="page" href="/Authentication/ChangePassword">Đổi Password</a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" aria-current="page" href="/Authentication/Logout">Logout</a>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a class="nav-link text-dark" asp-controller="Authentication" asp-action="Signin">Login</a>
+        </li>
+    }
+</ul>
