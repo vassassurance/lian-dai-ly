@@ -21,6 +21,14 @@ namespace LianAgentPortal.Data
             modelBuilder.Entity<LianUser>().HasData(SeedAdminUsers());
         }
 
+
+        private List<LianAgent> SeedLianAgents()
+        {
+            List<LianAgent> agents = new List<LianAgent>();
+
+            return agents;
+        }
+
         private List<LianUser> SeedAdminUsers()
         {
             List<LianUser> result = new List<LianUser>();

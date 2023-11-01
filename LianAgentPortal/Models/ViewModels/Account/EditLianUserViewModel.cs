@@ -7,6 +7,11 @@ namespace LianAgentPortal.Models.ViewModels.Account
         [Required]
         public string Id { get; set; }
 
+        [Required]
+        [Range(0, long.MaxValue, ErrorMessage = "Giá trị không đúng")]
+        [Display(Name = "Đại lý")]
+        public long AgentId { get; set; }
+
         [StringLength(100, ErrorMessage = "{0} tối thiểu {2} và tối đa {1} ký tự.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]

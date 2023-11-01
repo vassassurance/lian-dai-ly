@@ -13,7 +13,7 @@ namespace LianAgentPortal.Models.ViewModels.Authentication
         public string Password { get; set; }
 
         [Required]
-        [Display(Name = "Google Authenticator Pin")]
+        [Display(Name = "Pin")]
         public string Pin { get; set; }
 
 

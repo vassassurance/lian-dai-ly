@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LianAgentPortal.Models.DbModels
 {
@@ -8,6 +10,9 @@ namespace LianAgentPortal.Models.DbModels
         {
             GoogleAuthenticatorSecretCode = Guid.NewGuid().ToString().Split("-")[0];
         }
+        [ForeignKey("LianAgent")]
+        public long? LianAgentId { get; set; }
+        public LianAgent LianAgent { get; set; }
 
         public string GoogleAuthenticatorSecretCode { get; set; }
         public bool IsActivated { get; set; }

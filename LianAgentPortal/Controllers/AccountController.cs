@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace LianAgentPortal.Controllers
 {
@@ -72,6 +74,7 @@ namespace LianAgentPortal.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.Agents = new SelectList(_db.LianAgents.ToList(), "Id", "Name");
             return View();
         }
 
@@ -89,7 +92,8 @@ namespace LianAgentPortal.Controllers
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                     LockoutEnabled = false,
-                    CreateDate = DateTime.Now
+                    CreateDate = DateTime.Now,
+                    LianAgentId = model.AgentId,
                 };
                 var createTask = await _userManager.CreateAsync(dbUser, model.Password);
                 if (createTask.Succeeded)
@@ -127,9 +131,11 @@ namespace LianAgentPortal.Controllers
                 if (dbUser != null && roles != null)
                 {
                     ViewBag.Username = dbUser.UserName;
+                    ViewBag.Agents = new SelectList(_db.LianAgents.ToList(), "Id", "Name");
                     return View(new EditLianUserViewModel()
                     {
                         Id = dbUser.Id,
+                        AgentId = dbUser.LianAgentId ?? 0,
                         IsActivated = dbUser.IsActivated,
                         IsAdmin = await _userManager.IsInRoleAsync(dbUser, AuthenticatorConstants.ADMIN_ROLE)
                     });
@@ -156,6 +162,7 @@ namespace LianAgentPortal.Controllers
 
                     dbUser.IsActivated = model.IsActivated;
                     dbUser.UpdateDate = DateTime.Now;
+                    dbUser.LianAgentId = model.AgentId;
 
                     if (model.Password != null && model.Password.Length > 0)
                     {
@@ -196,7 +203,6 @@ namespace LianAgentPortal.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
 
             return View(model);
         }
