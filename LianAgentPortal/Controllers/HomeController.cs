@@ -15,6 +15,10 @@ namespace LianAgentPortal.Controllers
 
         public IActionResult Index()
         {
+            if(!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("SignIn", "Authentication", null);
+            }
             return View();
         }
 

@@ -381,16 +381,21 @@ input[type="checkbox"].input-validation-error {
     padding-left: 0px
 }
 
+.logo {
+    text-decoration: none;
+}
+
 .logo img {
     height: 50px;
     text-decoration: none;
 }
 
-.logo span {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #ff701c;
-    text-align: center;
-    position: relative;
-    top: 5px;
-}
+    .logo span {
+        text-decoration: none;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #ff701c;
+        text-align: center;
+        position: relative;
+        top: 5px;
+    }

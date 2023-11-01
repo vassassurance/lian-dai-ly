@@ -4,63 +4,79 @@
     ViewData["Title"] = "Cập nhật User";
 }
 
-
-<div class="container">
-    <div class="col-md-4">
-        <h2>@ViewData["Title"]</h2>
-        <hr />
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                <label class="control-label">Username</label>
-                <input readonly="readonly" class="form-control" value="@ViewBag.Username" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <i class="text-info" style="font-size:10px">*để trống nếu bạn không muốn đổi password</i>
-                <br />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <i class="text-info" style="font-size:10px">*để trống nếu bạn không muốn đổi password</i>
-                <br />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label asp-for="IsAdmin">
-                        <input asp-for="IsAdmin" />
-                        @Html.DisplayNameFor(m => m.IsAdmin)
-                    </label>
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Edit">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">@ViewData["Title"]</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label asp-for="IsActivated">
-                        <input asp-for="IsActivated" />
-                        @Html.DisplayNameFor(m => m.IsActivated)
-                    </label>
+                <div class="modal-body">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-group">
+                            <label class="control-label">Username</label>
+                            <input readonly="readonly" class="form-control" value="@ViewBag.Username" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <i class="text-info" style="font-size:10px">*để trống nếu bạn không muốn đổi password</i>
+                            <br />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="control-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <i class="text-info" style="font-size:10px">*để trống nếu bạn không muốn đổi password</i>
+                            <br />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="IsAdmin">
+                                    <input asp-for="IsAdmin" />
+                                    @Html.DisplayNameFor(m => m.IsAdmin)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="IsActivated">
+                                    <input asp-for="IsActivated" />
+                                    @Html.DisplayNameFor(m => m.IsActivated)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Cập nhật User" class="btn btn-default" />
-            </div>
-        </form>
-        <div>
-            <a asp-action="Index">Quay lại danh sách</a>
+                <div class="modal-footer">
+                    <div class="btn btn-secondary" data-bs-dismiss="modal">Hủy</div>
+                    <button class="btn btn-primary" type="submit" value="Cập nhật User">Cập nhật User</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        const myModal = new bootstrap.Modal('#edit-modal', {
+          keyboard: true,
+          backdrop: true
+        })
 
+        myModal._element.addEventListener('hidden.bs.modal', event => {
+            window.location.href = "/Account";
+        });
+        myModal._element.addEventListener('hide.bs.modal', event => {
+            window.location.href = "/Account";
+        });
+
+        myModal.show();
+        
     </script>
 }

@@ -3,90 +3,67 @@
 @{
     ViewData["Title"] = "Tạo Mới User";
 }
-    <!-- Button trigger modal -->
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
-    >
-      Launch modal iframe
-    </button>
 
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <iframe
-              width="100%"
-              height="400"
-              src="/Account/Create"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-
-<div class="container">
-    <div class="col-md-12">
-        <h2>@ViewData["Title"]</h2>
-        <hr />
+<div class="modal fade" id="create-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">@ViewData["Title"]</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label asp-for="IsAdmin">
-                        <input asp-for="IsAdmin" />
-                        @Html.DisplayNameFor(m => m.IsAdmin)
-                    </label>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="control-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="IsAdmin">
+                                    <input asp-for="IsAdmin" />
+                                    @Html.DisplayNameFor(m => m.IsAdmin)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Tạo Mới" class="btn btn-default" />
+            <div class="modal-footer">
+                <div class="btn btn-secondary" data-bs-dismiss="modal">Hủy</div>
+                <button  class="btn btn-primary" type="submit" value="Tạo Mới">Lưu</button>
             </div>
         </form>
-        <div>
-            <a asp-action="Index">Quay lại danh sách</a>
-        </div>
+    </div>
     </div>
 </div>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        $("#role-ids").select2({
-            closeOnSelect: false
-        });
+        const myModal = new bootstrap.Modal('#create-modal', {
+          keyboard: true,
+          backdrop: true
+        })
 
-        <a onclick="parent.abc();" href = "#" > Call Me < /a>
+        myModal._element.addEventListener('hidden.bs.modal', event => {
+            window.location.href = "/Account";
+        })
 
+        myModal.show();
+        
     </script>
 }
