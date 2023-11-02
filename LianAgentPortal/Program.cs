@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using LianAgentPortal.Services;
 
 namespace LianAgentPortal
 {
@@ -34,7 +35,7 @@ namespace LianAgentPortal
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            //builder.Services.AddScoped<IMailSenderService, MailSenderService>();
+            builder.Services.AddScoped<ILianApiService, LianApiService>();
             //builder.Services.AddScoped<IPrintCommissionService, PrintCommissionService>();
             //builder.Services.AddScoped<IPrintCommissionShbetService, PrintCommissionShbetService>();
             //builder.Services.AddScoped<IPrintCommissionNew88Service, PrintCommissionNew88Service>();
