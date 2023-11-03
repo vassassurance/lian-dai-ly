@@ -1,10 +1,21 @@
 ﻿using LianAgentPortal.Commons.Enums;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LianAgentPortal.Models.DbModels
 {
+    [Index("Type", IsUnique = false)]
+    [Index("Status", IsUnique = false)]
     public class BaseInsuranceDetail
     {
         public ulong Id { get; set; }
+
+        [ForeignKey("InsuranceMaster")]
+        public long? InsuranceMasterId { get; set; }
+        public InsuranceMaster InsuranceMaster { get; set; }
+
+        public InsuranceDetailStatus Status { get; set; }
+
         public string AgentPhone { get; set; }
         public string PartnerTransaction { get; set; }
         public DateTime EffectiveDate { get; set; }

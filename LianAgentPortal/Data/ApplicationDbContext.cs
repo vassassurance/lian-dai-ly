@@ -29,5 +29,10 @@ namespace LianAgentPortal.Data
         public override DbSet<LianUser> Users { get; set; }
         public DbSet<LianAgent> LianAgents { get; set; }
 
+        public DbSet<InsuranceMaster> InsuranceMasters { get; set; }
+        public DbSet<InsuranceFamilyBreadwinnerDetail> InsuranceFamilyBreadwinnerDetails { get; set; }
+        public DbSet<InsuranceMotorDetail> InsuranceMotorDetails { get; set; }
+        public DbSet<InsurancePersonalAccidentDetail> InsurancePersonalAccidentDetails { get; set; }
+
     }
 }

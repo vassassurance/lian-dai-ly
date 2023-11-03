@@ -1,5 +1,17 @@
 ﻿namespace LianAgentPortal.Commons.Enums
 {
+    public enum InsuranceDetailStatus
+    {
+        NEW = 100,
+
+        EVALUATE_PREMIUM_INPROGRESS = 200,
+        EVALUATE_PREMIUM_SUCCESS = 210,
+        EVALUATE_PREMIUM_ERROR = -220,
+        
+        SYNC_INPROGRESS = 300,
+        SYNC_SUCCESS = 310,
+        SYNC_ERROR = -310,
+    }
     public enum InsuranceTypeEnum
     {
         MOTORBIKE = 100,

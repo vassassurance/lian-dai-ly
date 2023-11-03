@@ -2,7 +2,7 @@
 
 namespace LianAgentPortal.Models.DbModels
 {
-    public class InsuranceDetailMotor : BaseInsuranceDetail
+    public class InsuranceMotorDetail : BaseInsuranceDetail
     {
         public string LicensePlates { get; set; }
         public MotorTypeEnum MotorType { get; set; }

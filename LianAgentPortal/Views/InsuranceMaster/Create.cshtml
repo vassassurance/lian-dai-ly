@@ -1,0 +1,91 @@
+﻿@model LianAgentPortal.Models.ViewModels.InsuranceMaster.CreateInsuranceMasterViewModel
+
+@{
+    ViewData["Title"] = "Tạo Mới User";
+}
+
+
+<i class="fa fa-home" aria-hidden="true"></i>
+<i class="fa fa-universal-access" aria-hidden="true"></i>
+<i class="fa fa-home" aria-hidden="true"></i>
+<div class="modal fade" id="create-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" enctype="multipart/form-data" id="upload-form" onsubmit="lockForm()">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">@ViewData["Title"]</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label asp-for="Type" class="control-label"></label>
+                        <select asp-for="Type" class="form-control">
+                            <option value="@LianAgentPortal.Commons.Enums.InsuranceTypeEnum.MOTORBIKE">XE MÁY</option>
+                            <option value="@LianAgentPortal.Commons.Enums.InsuranceTypeEnum.PERSONAL_ACCIDENT">TAI NẠN CÁ NHÂN</option>
+                            <option value="@LianAgentPortal.Commons.Enums.InsuranceTypeEnum.FAMILY_BREADWINNER">TRỤ CỘT GIA ĐÌNH</option>
+                        </select>
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="ReportFile" class="control-label"></label>
+                        <input asp-for="ReportFile" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                        <span asp-validation-for="ReportFile" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2">
+                        <div class="dropdown p-0">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-download" aria-hidden="true"></i> File mẫu
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-download" aria-hidden="true"></i> XE MÁY</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-download" aria-hidden="true"></i> TAI NẠN CÁ NHÂN</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-download" aria-hidden="true"></i> TRỤ CỘT GIA ĐÌNH</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn btn-secondary" data-bs-dismiss="modal">Hủy</div>
+                    <button class="btn btn-primary" type="submit" value="Tạo Mới">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        lockForm = function() {
+            $('#btn-submit').attr("disabled", true);
+            $("#upload-form :input").prop("readonly", "readonly");
+            $('#btn-submit').prop('value', 'Xin chờ trong giây lát...');
+            NProgress.start();
+        }
+
+
+        const myModal = new bootstrap.Modal('#create-modal', {
+            keyboard: true,
+            backdrop: "static"
+        })
+        myModal.show();
+        myModal._element.addEventListener('hidden.bs.modal', event => {
+            window.location.href = "/InsuranceMaster";
+        })
+
+        $("#Type").select2({
+            closeOnSelect: true,
+            dropdownParent: $('#create-modal'),
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+        });
+
+    </script>
+}
