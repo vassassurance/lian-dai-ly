@@ -20,7 +20,7 @@ namespace LianAgentPortal.Models.DbModels
         public string PartnerTransaction { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string TimeCoverage { get; set; }
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
         public string Language { get; set; }
         public InsuranceTypeEnum Type { get; set; }
     }
