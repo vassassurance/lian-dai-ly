@@ -17,15 +17,24 @@ namespace LianAgentPortal.Data
 
         public void Seed()
         {
+            modelBuilder.Entity<LianAgent>().HasData(SeedLianAgents());
             modelBuilder.Entity<IdentityRole>().HasData(SeedRoles());
             modelBuilder.Entity<LianUser>().HasData(SeedAdminUsers());
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(SeedUserRole());
         }
 
 
         private List<LianAgent> SeedLianAgents()
         {
             List<LianAgent> agents = new List<LianAgent>();
-
+            agents.Add(new LianAgent() { 
+                Id = 1,
+                AppId = "27472747",
+                Description = "VASS - SANDBOX",
+                RegistedPhone = "0962473427",
+                Name = "VASS - SANDBOX",
+                SecretKey = "3af4df1274fcf5b2ecfe2098e00facf7"
+            });
             return agents;
         }
 
@@ -34,7 +43,7 @@ namespace LianAgentPortal.Data
             List<LianUser> result = new List<LianUser>();
             LianUser userAdminIt = new LianUser
             {
-                Id = "3F41798D-C760-4DBB-9F5E-13F78138D565",
+                Id = AuthenticatorConstants.ADMIN_USER_ID,
                 UserName = "0962473427",
                 NormalizedUserName = "0962473427",
                 Email = "0962473427",
@@ -44,7 +53,8 @@ namespace LianAgentPortal.Data
                 PhoneNumberConfirmed = true,
                 SecurityStamp = new Guid().ToString("D"),
                 GoogleAuthenticatorSecretCode = "ABB80D77",
-                IsActivated = true
+                IsActivated = true,
+                LianAgentId = 1
             };
             userAdminIt.PasswordHash = Functions.HashPassword(userAdminIt, "FE3EB4DF");
             result.Add(userAdminIt);
@@ -64,6 +74,15 @@ namespace LianAgentPortal.Data
             return result;
         }
 
+        private List<IdentityUserRole<string>> SeedUserRole()
+        {
+            List<IdentityUserRole<string>> result = new List<IdentityUserRole<string>>();
+            result.Add(new IdentityUserRole<string>() { 
+                RoleId = AuthenticatorConstants.ADMIN_ROLE_ID,
+                UserId = AuthenticatorConstants.ADMIN_USER_ID
+            });
+            return result;
+        }
 
     }
 }

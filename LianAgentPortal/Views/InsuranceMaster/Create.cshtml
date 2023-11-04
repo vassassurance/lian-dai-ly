@@ -1,18 +1,14 @@
 ﻿@model LianAgentPortal.Models.ViewModels.InsuranceMaster.CreateInsuranceMasterViewModel
 
 @{
-    ViewData["Title"] = "Tạo Mới User";
+    ViewData["Title"] = "Upload bảng kê";
 }
 
-
-<i class="fa fa-home" aria-hidden="true"></i>
-<i class="fa fa-universal-access" aria-hidden="true"></i>
-<i class="fa fa-home" aria-hidden="true"></i>
 <div class="modal fade" id="create-modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form asp-action="Create" enctype="multipart/form-data" id="upload-form" onsubmit="lockForm()">
-                <div class="modal-header">
+                <div class="modal-header ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
                     <h1 class="modal-title fs-5">@ViewData["Title"]</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -41,16 +37,18 @@
                                 <i class="fa fa-download" aria-hidden="true"></i> File mẫu
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-download" aria-hidden="true"></i> XE MÁY</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-download" aria-hidden="true"></i> TAI NẠN CÁ NHÂN</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-download" aria-hidden="true"></i> TRỤ CỘT GIA ĐÌNH</a></li>
+                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tndsbb-moto.xlsx"><i class="fa fa-download" aria-hidden="true"></i> XE MÁY</a></li>
+                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tncn.xlsx"><i class="fa fa-download" aria-hidden="true"></i> TAI NẠN CÁ NHÂN</a></li>
+                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tcgd.xlsx"><i class="fa fa-download" aria-hidden="true"></i> TRỤ CỘT GIA ĐÌNH</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="btn btn-secondary" data-bs-dismiss="modal">Hủy</div>
-                    <button class="btn btn-primary" type="submit" value="Tạo Mới">Lưu</button>
+
+                    <div class="ui-button ui-widget ui-corner-all pe-4 ps-4" data-bs-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Hủy </div>
+                    <button type="submit" class="ui-button ui-widget ui-corner-all pe-4 ps-4"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </button>
+
                 </div>
             </form>
         </div>

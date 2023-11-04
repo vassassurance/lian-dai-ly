@@ -7,6 +7,7 @@ NProgress.configure({
 /// toastr setting
 toastr.options = {
     "progressBar": true,
+    "positionClass": "toast-bottom-left",
 }
 
 /// ajax setting

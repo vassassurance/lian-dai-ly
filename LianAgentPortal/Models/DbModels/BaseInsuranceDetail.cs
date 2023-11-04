@@ -8,13 +8,13 @@ namespace LianAgentPortal.Models.DbModels
     [Index("Status", IsUnique = false)]
     public class BaseInsuranceDetail
     {
-        public ulong Id { get; set; }
+        public long Id { get; set; }
 
         [ForeignKey("InsuranceMaster")]
-        public long? InsuranceMasterId { get; set; }
+        public long InsuranceMasterId { get; set; }
         public InsuranceMaster InsuranceMaster { get; set; }
 
-        public InsuranceDetailStatus Status { get; set; }
+        public InsuranceDetailStatusEnum Status { get; set; }
 
         public string AgentPhone { get; set; }
         public string PartnerTransaction { get; set; }

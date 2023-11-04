@@ -1,6 +1,6 @@
 ﻿namespace LianAgentPortal.Commons.Enums
 {
-    public enum InsuranceDetailStatus
+    public enum InsuranceDetailStatusEnum
     {
         NEW = 100,
 

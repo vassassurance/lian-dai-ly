@@ -22,6 +22,10 @@ namespace LianAgentPortal.Data
             foreach (var fk in cascadeFKs)
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
 
+            modelBuilder.Entity<InsuranceMaster>()
+                .Property(e => e.Id)
+                .UseIdentityColumn(seed: 1001, increment: 1);
+
             base.OnModelCreating(modelBuilder);
             new DbInitializer(modelBuilder).Seed();
         }

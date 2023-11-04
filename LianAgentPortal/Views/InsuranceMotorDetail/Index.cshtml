@@ -1,0 +1,132 @@
+﻿@model LianAgentPortal.Models.ViewModels.InsuranceMaster.InsuranceMasterViewModel
+@{
+    ViewData["Title"] = "Chi tiết bảng kê bảo hiểm TNDS XE MÁY";
+}
+<div class="row">
+    <div class="col-sm-2 pe-sm-3 p-0">
+        <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+                <span class="ui-jqgrid-title">
+                    Thông tin chung
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="position-relative pb-3">
+                    <div class="position-absolute">Tổng số dòng:</div>
+                    <div class="text-end"><b>@Model.TotalRows.ToString("N0")</b></div>
+
+                    <div class="position-absolute">Số dòng đã phát hành:</div>
+                    <div class="text-end"><b>@Model.TotalIssuedRows.ToString("N0")</b></div>
+                </div>
+
+                <div class="mb-2">
+                    <label class="control-label">Tổng phí bảo hiểm:</label>
+                    <input value="@Model.TotalPremium.ToString("N0") VND" readonly class="form-control" />
+                </div>
+
+                <div class="mb-2">
+                    <label class="control-label">Tổng số tiền bảo hiểm:</label>
+                    <input value="@Model.TotalInsuranceAmount.ToString("N0") VND" readonly class="form-control" />
+                </div>
+
+
+
+
+
+                <button type="button" class="w-100 ui-button ui-widget ui-corner-all mb-2"><i class="fa fa-calculator" aria-hidden="true"></i> Tính phí</button>
+
+                <button type="button" class="w-100 ui-button ui-widget ui-corner-all"><i class="bi bi-send-check-fill"></i> Tính Phí & phát hành</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-10 p-sm-0 p-0">
+        <div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title">
+                @ViewData["Title"]
+            </span>
+        </div>
+        <table id="gridInsuranceMotorDetail" width="100%"></table>
+        <div id="pagerInsuranceMotorDetail"></div>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    <script>
+        doCopy = function (value) {
+            navigator.clipboard.writeText(value);
+            toastr.success(value, 'Đã copy');
+        }
+
+        copiableCellFormatter = function (cellvalue, options, rowobject) {
+            return '<button type="button" class="float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> copy mã GD</button>';
+        }
+
+        gridInsuranceMotorDetail = $("#gridInsuranceMotorDetail");
+        gridInsuranceMotorDetail.jqGrid({
+            url: '/InsuranceMotorDetail/GetListInsuranceMotorDetailJqgrid',
+            beforeRequest: function () {
+                gridInsuranceMotorDetail.jqGrid('setGridParam', {
+                    postData: {
+                        InsuranceMasterId: @Html.Raw(Model.Id)
+                    }
+                });
+            },
+            mtype: 'GET',
+            datatype: "json",
+            colNames: ['Id', 'Mã giao dịch', 'Biển số', 'Số khung', 'Số máy', 'Họ tên chủ xe', 
+                'Số điện thoại', 'CCCD/CMND', 'Ngày sinh', 'Tham gia NNTX',
+                'Loại xe', 'Hiệu lực từ', 'Hiệu lực đến', 'Phí bảo hiểm', 'Trạng thái'],
+            colModel: [
+                { name: 'Id', index: 'Id', hidden: true, key: true },
+                { name: 'PartnerTransaction', index: 'PartnerTransaction', align: "center", formatter: copiableCellFormatter, width: 130 },
+                { name: 'LicensePlates', index: 'LicensePlates', align: "center" },
+                { name: 'ChassisNumber', index: 'ChassisNumber', align: "center" },
+                { name: 'MachineNumber', index: 'MachineNumber', align: "center" },
+                { name: 'Fullname', index: 'Fullname' },
+                { name: 'Phone', index: 'Phone', align: "center" },
+                { name: 'IdentityNumber', index: 'IdentityNumber' },
+                { name: 'Birhtday', index: 'Birhtday', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center" },
+                { name: 'PassengerInsurance', index: 'PassengerInsurance', align: "center", editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 150 },
+                { name: 'MotorType', index: 'MotorType', align: "center" },
+                { name: 'EffectiveDate', index: 'EffectiveDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center" },
+                { name: 'EndDate', index: 'EndDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center" },
+                { name: 'Amount', index: 'Amount', formatter: 'integer', align: "right" },
+                { name: 'Status', index: 'Status', align: "center" },
+            ],
+            rowNum: common.configs.mainGrid.getRowNum(),
+            autowidth: true,
+            rownumbers: true,
+            rowList: common.configs.mainGrid.getRowList(),
+            pager: '#pagerInsuranceMotorDetail',
+            sortname: 'Id',
+            hidegrid: false,
+            viewrecords: true,
+            height: common.configs.mainGrid.getHeight(),
+            ondblClickRow: function (rowid) {
+                //window.location.pathname = ('/InsuranceMotorDetail/Edit/' + rowid);
+            }
+        }).navGrid('#pagerInsuranceMotorDetail', {
+            edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
+        }).navButtonAdd('#pagerInsuranceMotorDetail', {
+            buttonicon: "ui-icon-plusthick",
+            title: "Tạo mới",
+            caption: "Tạo mới",
+            position: "last",
+            onClickButton: function () {
+                window.location.pathname = ('/InsuranceMotorDetail/Create');
+            }
+        });
+    </script>
+
+    <script>
+        resetGridsWidth = function () {
+            common.functions.resetGridWidth(gridInsuranceMotorDetail);
+        }
+
+        $(window).on("resize", resetGridsWidth);
+        resetGridsWidth();
+    </script>
+}

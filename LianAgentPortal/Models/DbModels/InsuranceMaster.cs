@@ -1,5 +1,6 @@
 ﻿using LianAgentPortal.Commons.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LianAgentPortal.Models.DbModels
 {

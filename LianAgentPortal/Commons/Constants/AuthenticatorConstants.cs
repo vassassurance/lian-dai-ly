@@ -2,7 +2,8 @@
 {
     public class AuthenticatorConstants
     {
-        public static string ADMIN_ROLE_ID { get { return "AAFF62C8-88D5-489E-BCD9-A9CEB3069EBB"; } }
+        public static string ADMIN_ROLE_ID { get { return "00000000-0000-0000-0000-000000000001"; } }
+        public static string ADMIN_USER_ID { get { return "00000000-0000-0000-0000-000000000001"; } }
 
         public const string ADMIN_ROLE = "ADMIN_ROLE";
     }

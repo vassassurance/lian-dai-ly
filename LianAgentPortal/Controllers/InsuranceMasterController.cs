@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Globalization;
@@ -65,8 +66,35 @@ namespace LianAgentPortal.Controllers
         [HttpPost]
         public IActionResult Create(CreateInsuranceMasterViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                long insertedId = InsertUploadToDatabase(model);
+                return RedirectToAction("ViewDetail", new { id = insertedId });
+            }
             return View();
         }
+
+        public ActionResult ViewDetail(int id) 
+        {
+            var master = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id && item.UserCreate == User.Identity.Name);
+            if (master == null) return RedirectToAction("index");
+
+            if (master.Type == Commons.Enums.InsuranceTypeEnum.MOTORBIKE)
+            {
+                return RedirectToAction("Index", "InsuranceMotorDetail", new { id = id });
+            }
+            else if (master.Type == Commons.Enums.InsuranceTypeEnum.FAMILY_BREADWINNER)
+            {
+                return RedirectToAction("Index", "InsuranceFamilyBreadwinnerDetail", new { id = id });
+            }
+            else if (master.Type == Commons.Enums.InsuranceTypeEnum.PERSONAL_ACCIDENT)
+            {
+                return RedirectToAction("Index", "InsurancePersonalAccidentDetail", new { id = id });
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
         private long InsertUploadToDatabase(CreateInsuranceMasterViewModel model)
         {
@@ -158,36 +186,44 @@ namespace LianAgentPortal.Controllers
 
             int lastRowNumber = mainSheet.LastRowUsed().RowNumber();
             List<InsuranceMotorDetail> details = new List<InsuranceMotorDetail>();
+            TimeCoverageObject defaultTimeCoverage = new TimeCoverageObject()
+            {
+                Unit = Commons.Enums.TimeCoverageUnitEnum.YEAR,
+                Value = 1
+            };
             for (int i = 2; i <= lastRowNumber; i++)
             {
-                TimeCoverageObject timeCoverage = new TimeCoverageObject() { 
-                    Unit = Commons.Enums.TimeCoverageUnitEnum.YEAR,
-                    Value = 1
-                };
-
-                InsuranceMotorDetail item = new InsuranceMotorDetail()
+                try
                 {
-                    Type = model.Type,
-                    Amount = null,
-                    LicensePlates = GetNumberCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
-                    MotorType = GetMotorTypeFromString(GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString())),
-                    ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
-                    MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
-                    Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
-                    Birhtday = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                    Phone = GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
-                    IdentityNumber = GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
-                    PassengerInsurance = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()) == "1",
-                    EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                    Status = Commons.Enums.InsuranceDetailStatus.NEW,
-                    AgentPhone = userRequest.LianAgent.RegistedPhone,
-                    InsuranceMasterId = masterId,
-                    Language = "vi",
-                    TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(timeCoverage),
-                    PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
-                };
+                    details.Add(new InsuranceMotorDetail()
+                    {
+                        InsuranceMasterId = masterId,
+                        Type = model.Type,
+                        Amount = null,
+                        LicensePlates = GetNumberCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
+                        MotorType = GetMotorTypeFromString(GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString())),
+                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
+                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
+                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
+                        Birhtday = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
+                        IdentityNumber = GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
+                        PassengerInsurance = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()) == "1",
+                        EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        Status = Commons.Enums.InsuranceDetailStatusEnum.NEW,
+                        AgentPhone = userRequest.LianAgent.RegistedPhone,
+                        Language = "vi",
+                        TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(defaultTimeCoverage),
+                        PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
+                    });
+                }
+                catch (Exception ex)
+                {
+
+                }
+
             }
-            return new List<InsuranceMotorDetail>();
+            return details;
         }
 
         private List<InsuranceFamilyBreadwinnerDetail> GetInsuranceFamilyBreadwinnerDetailFromExcel(IXLWorksheet mainSheet, CreateInsuranceMasterViewModel model, long reportId)

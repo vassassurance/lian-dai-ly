@@ -47,16 +47,17 @@
     configs: {
         mainGrid: {
             getHeight: function () {
-                return window.innerHeight - 170;
+                return window.innerHeight - 180;
             },
             getRowNum: function () {
                 return parseInt(this.getHeight() / 23);
             },
             getRowList: function () {
-                return [this.getRowNum(), 30, 40, 50];
+                return [this.getRowNum(), 30, 40, 50, 100];
             }
         },
         grid: {
+            dateFormatOption: { srcformat: "ISO8601Long", newformat: "d/m/Y" },
             datetimeFormatOption: { srcformat: "ISO8601Long", newformat: "d/m/Y h:i:s A" },
             dayMonthFormatOption: { srcformat: "ISO8601Long", newformat: "d/m h:i:s A" },
             monthYearFormatOption: { srcformat: "ISO8601Long", newformat: "m/Y" }

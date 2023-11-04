@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LianAgentPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231101072535_TableLianAgent")]
-    partial class TableLianAgent
+    [Migration("20231104164306_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,256 @@ namespace LianAgentPortal.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceFamilyBreadwinnerDetail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AgentPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("Birhtday")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Fullname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IdentityNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("InsuranceMasterId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartnerTransaction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Ranking")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeCoverage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsuranceMasterId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("Type");
+
+                    b.ToTable("InsuranceFamilyBreadwinnerDetails");
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceMaster", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1001L);
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastDateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUserUpdate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalInsuranceAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalIssuedRows")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPremium")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalRows")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DateCreate");
+
+                    b.HasIndex("Type");
+
+                    b.HasIndex("UserCreate");
+
+                    b.ToTable("InsuranceMasters");
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceMotorDetail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AgentPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("Birhtday")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ChassisNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Fullname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("InsuranceMasterId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LicensePlates")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MachineNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MotorType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PartnerTransaction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PassengerInsurance")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeCoverage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsuranceMasterId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("Type");
+
+                    b.ToTable("InsuranceMotorDetails");
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsurancePersonalAccidentDetail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AgentPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("Birhtday")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Fullname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("InsuranceMasterId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartnerTransaction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Ranking")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeCoverage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsuranceMasterId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("Type");
+
+                    b.ToTable("InsurancePersonalAccidentDetails");
+                });
 
             modelBuilder.Entity("LianAgentPortal.Models.DbModels.LianAgent", b =>
                 {
@@ -42,12 +292,26 @@ namespace LianAgentPortal.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RegistedPhone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecretKey")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("LianAgents");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            AppId = "27472747",
+                            Description = "VASS - SANDBOX",
+                            Name = "VASS - SANDBOX",
+                            RegistedPhone = "0962473427",
+                            SecretKey = "3af4df1274fcf5b2ecfe2098e00facf7"
+                        });
                 });
 
             modelBuilder.Entity("LianAgentPortal.Models.DbModels.LianUser", b =>
@@ -134,18 +398,19 @@ namespace LianAgentPortal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3F41798D-C760-4DBB-9F5E-13F78138D565",
+                            Id = "00000000-0000-0000-0000-000000000001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00dcfd15-7443-4cb6-8bfb-a87beab57349",
+                            ConcurrencyStamp = "4cf84b04-0131-4bd8-9dd2-6ecb59b81d49",
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0962473427",
                             EmailConfirmed = true,
                             GoogleAuthenticatorSecretCode = "ABB80D77",
                             IsActivated = true,
+                            LianAgentId = 1L,
                             LockoutEnabled = false,
                             NormalizedEmail = "0962473427",
                             NormalizedUserName = "0962473427",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJLoWE3XlDo9FEwXiJx8WzDbILVMObFSZ5+YkKvodgqEggXnqBZg1umZIOrwLQRcrQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKdp1jlfbEfZEiR0FO9x/dScyuXSS0RJ8+MOjBseuCO8O7jShmtxWL1zrZI88oiQBQ==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
@@ -183,7 +448,7 @@ namespace LianAgentPortal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "AAFF62C8-88D5-489E-BCD9-A9CEB3069EBB",
+                            Id = "00000000-0000-0000-0000-000000000001",
                             Name = "ADMIN_ROLE",
                             NormalizedName = "ADMIN_ROLE"
                         });
@@ -274,6 +539,13 @@ namespace LianAgentPortal.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "00000000-0000-0000-0000-000000000001",
+                            RoleId = "00000000-0000-0000-0000-000000000001"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -293,6 +565,39 @@ namespace LianAgentPortal.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceFamilyBreadwinnerDetail", b =>
+                {
+                    b.HasOne("LianAgentPortal.Models.DbModels.InsuranceMaster", "InsuranceMaster")
+                        .WithMany()
+                        .HasForeignKey("InsuranceMasterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InsuranceMaster");
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceMotorDetail", b =>
+                {
+                    b.HasOne("LianAgentPortal.Models.DbModels.InsuranceMaster", "InsuranceMaster")
+                        .WithMany()
+                        .HasForeignKey("InsuranceMasterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InsuranceMaster");
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsurancePersonalAccidentDetail", b =>
+                {
+                    b.HasOne("LianAgentPortal.Models.DbModels.InsuranceMaster", "InsuranceMaster")
+                        .WithMany()
+                        .HasForeignKey("InsuranceMasterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InsuranceMaster");
                 });
 
             modelBuilder.Entity("LianAgentPortal.Models.DbModels.LianUser", b =>

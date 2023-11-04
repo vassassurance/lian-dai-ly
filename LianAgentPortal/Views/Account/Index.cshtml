@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Quản Lý User";
 }
-<div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix" style="height: 30px;padding: 0.3em 0.2em 0.2em 0.3em;position: relative;border-left: 0 none;border-right: 0 none;border-top: 0 none;">
+<div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix" >
     <span class="ui-jqgrid-title">
         @ViewData["Title"]
     </span>
@@ -73,15 +73,15 @@
                 { name: 'IsActivated', index: 'IsActivated', align: 'center', editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 30 },
                 { name: 'Authenticator', index: 'Authenticator', sortable: false, formatter: googleAuthenticatorCellFormatter, width: 50},
             ],
-            rowNum: 100000,
+            rowNum: common.configs.mainGrid.getRowNum(),
             autowidth: true,
             rownumbers: true,
-            rowList: [100000],
+            rowList: common.configs.mainGrid.getRowList(),
             pager: '#pagerUser',
             sortname: 'UserName',
             hidegrid: false,
             viewrecords: true,
-            height: window.innerHeight - 170,
+            height: common.configs.mainGrid.getHeight(),
             ondblClickRow: function (rowid) {
                 window.location.pathname = ('/Account/Edit/' + rowid);
             }

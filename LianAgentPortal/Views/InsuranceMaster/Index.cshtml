@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Quản lý bảng kê bảo hiểm";
 }
-<div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix" style="height: 30px;padding: 0.3em 0.2em 0.2em 0.3em;position: relative;border-left: 0 none;border-right: 0 none;border-top: 0 none;">
+<div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix" >
     <span class="ui-jqgrid-title">
         @ViewData["Title"]
     </span>
@@ -19,31 +19,31 @@
             datatype: "json",
             colNames: ['Mã', 'Người Tạo', 'Ngày Tạo', 'Người Sửa', 'Ngày Sửa', 'Tổng Số Dòng', 'Số Dòng Đã Phát Hành', 'Tổng Phí', 'Tổng Tiền Bảo Hiểm', 'Loại Bảng Kê'],
             colModel: [
-                { name: 'Id', index: 'Id', hidden: false, key: true },
+                { name: 'Id', index: 'Id', hidden: false, key: true, align: "center", width: 50 },
 
-                { name: 'UserCreate', index: 'UserCreate', align: "center" },
-                { name: 'DateCreate', index: 'DateCreate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center" },
-                { name: 'LastUserUpdate', index: 'LastUserUpdate' },
-                { name: 'LastDateUpdate', index: 'LastDateUpdate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center" },
+                { name: 'UserCreate', index: 'UserCreate', align: "center", width: 100 },
+                { name: 'DateCreate', index: 'DateCreate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center", width: 150 },
+                { name: 'LastUserUpdate', index: 'LastUserUpdate', width: 100 },
+                { name: 'LastDateUpdate', index: 'LastDateUpdate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center", width: 150 },
 
                 { name: 'TotalRows', index: 'TotalRows', formatter: 'integer', align: "right" },
                 { name: 'TotalIssuedRows', index: 'TotalIssuedRows', formatter: 'integer', align: "right" },
                 { name: 'TotalPremium', index: 'TotalPremium', formatter: 'integer', align: "right" },
-                { name: 'TotalInsuranceAmount', index: 'TotalInsuranceAmount', formatter: 'integer', align: "right" },
+                { name: 'TotalInsuranceAmount', index: 'TotalInsuranceAmount', formatter: 'integer', align: "right", width: 200 },
 
-                { name: 'TypeName', index: 'TypeName', align: "center" },
+                { name: 'Type', index: 'Type', align: "center" },
             ],
-            rowNum: 100000,
+            rowNum: common.configs.mainGrid.getRowNum(),
             autowidth: true,
             rownumbers: true,
-            rowList: [100000],
+            rowList: common.configs.mainGrid.getRowList(),
             pager: '#pagerInsuranceMaster',
             sortname: 'DateCreate',
             hidegrid: false,
             viewrecords: true,
-            height: window.innerHeight - 170,
+            height: common.configs.mainGrid.getHeight(),
             ondblClickRow: function (rowid) {
-                window.location.pathname = ('/InsuranceMaster/Edit/' + rowid);
+                window.location.pathname = ('/InsuranceMaster/ViewDetail/' + rowid);
             }
         }).navGrid('#pagerInsuranceMaster', {
             edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
