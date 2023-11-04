@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using LianAgentPortal.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace LianAgentPortal
 {
@@ -47,7 +49,6 @@ namespace LianAgentPortal
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 })
                 .AddRazorRuntimeCompilation();
-
 
             builder.Services.ConfigureApplicationCookie(options =>
             {

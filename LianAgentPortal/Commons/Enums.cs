@@ -1,12 +1,14 @@
-﻿namespace LianAgentPortal.Commons.Enums
+﻿using System.Runtime.Serialization;
+
+namespace LianAgentPortal.Commons.Enums
 {
     public enum InsuranceDetailStatusEnum
     {
         NEW = 100,
 
-        EVALUATE_PREMIUM_INPROGRESS = 200,
-        EVALUATE_PREMIUM_SUCCESS = 210,
-        EVALUATE_PREMIUM_ERROR = -220,
+        CALCULATE_PREMIUM_INPROGRESS = 200,
+        CALCULATE_PREMIUM_SUCCESS = 210,
+        CALCULATE_PREMIUM_ERROR = -220,
         
         SYNC_INPROGRESS = 300,
         SYNC_SUCCESS = 310,

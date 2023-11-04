@@ -29,11 +29,10 @@
                     <input value="@Model.TotalInsuranceAmount.ToString("N0") VND" readonly class="form-control" />
                 </div>
 
-
-
-
-
-                <button type="button" class="w-100 ui-button ui-widget ui-corner-all mb-2"><i class="fa fa-calculator" aria-hidden="true"></i> Tính phí</button>
+                <form asp-action="CalculatePremium" asp-route-id="@Model.Id">
+                    <button type="submit" class="w-100 ui-button ui-widget ui-corner-all mb-2"><i class="fa fa-calculator" aria-hidden="true"></i> Tính phí</button>
+                </form>
+                
 
                 <button type="button" class="w-100 ui-button ui-widget ui-corner-all"><i class="bi bi-send-check-fill"></i> Tính Phí & phát hành</button>
             </div>

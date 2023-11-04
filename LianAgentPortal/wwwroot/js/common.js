@@ -50,7 +50,7 @@
                 return window.innerHeight - 180;
             },
             getRowNum: function () {
-                return parseInt(this.getHeight() / 23);
+                return parseInt(this.getHeight() / 27);
             },
             getRowList: function () {
                 return [this.getRowNum(), 30, 40, 50, 100];

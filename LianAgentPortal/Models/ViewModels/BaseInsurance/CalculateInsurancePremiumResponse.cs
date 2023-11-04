@@ -1,13 +1,13 @@
 ﻿namespace LianAgentPortal.Models.ViewModels.BaseInsurance
 {
-    public class CalculateInsuranceFeeResponse
+    public class CalculateInsurancePremiumResponse
     {
         public long Code { get; set; }
         public string Message { get; set; }
-        public CalculateInsuranceFeeResponseData Data { get; set; }
+        public CalculateInsurancePremiumResponseData Data { get; set; }
     }
 
-    public class CalculateInsuranceFeeResponseData
+    public class CalculateInsurancePremiumResponseData
     {
         public decimal TotalAmount { get; set; }
     }

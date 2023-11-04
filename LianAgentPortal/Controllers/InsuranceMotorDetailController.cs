@@ -4,6 +4,7 @@ using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.InsuranceMaster;
 using LianAgentPortal.Models.ViewModels.InsuranceMotorDetail;
 using LianAgentPortal.Models.ViewModels.JqGrid;
+using LianAgentPortal.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +15,13 @@ namespace LianAgentPortal.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _db;
-        public InsuranceMotorDetailController(IMapper mapper, ApplicationDbContext db) 
+        private readonly ILianApiService _lianApiService;
+        public InsuranceMotorDetailController(IMapper mapper, ApplicationDbContext db, ILianApiService lianApiService) 
         {
             _mapper = mapper;
             _db = db;
+            _lianApiService = lianApiService;
+
         }
 
         public IActionResult Index(long id)
@@ -49,5 +53,29 @@ namespace LianAgentPortal.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        public IActionResult CalculatePremium(long id)
+        {
+            var insuranceMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id);
+            if (insuranceMaster == null) return RedirectToAction("Index", "InsuranceMaster");
+
+            List<InsuranceMotorDetail> itemsToCalculatePremium = _db.InsuranceMotorDetails.Where(item =>
+                item.Status == Commons.Enums.InsuranceDetailStatusEnum.NEW
+                && item.InsuranceMasterId == id
+            ).ToList();
+            for (int i = 0; i < itemsToCalculatePremium.Count; i++)
+            {
+                itemsToCalculatePremium[i].Status = Commons.Enums.InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS;
+                _lianApiService.CalculateInsurancePremium(itemsToCalculatePremium[i]);
+                break;
+            }
+            _db.SaveChanges();
+
+            return RedirectToAction("index", new { id = id });
+        }
+
+
+
     }
 }
