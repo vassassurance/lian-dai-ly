@@ -54,4 +54,54 @@ namespace LianAgentPortal.Commons.Enums
         MONTH = 30,
         YEAR = 365
     }
+
+    public enum CalculateInsurancePremiumResultEnum
+    {
+        SUCCESS = 303800,
+        ERROR = 303801
+    }
+
+    public enum BuyInsuranceResultEnum
+    {
+        /// <summary>
+        /// 303300: Tạo đơn thanh toán thành công
+        /// </summary>
+        SUCCESS = 303300,
+
+        /// <summary>
+        /// //303301: Tạo đơn thanh toán thất bại
+        /// </summary>
+        CREATE_PAYMENT_FAILED = 303301,
+
+        /// <summary>
+        /// 303303: Thông tin bảo hiểm đã tồn tại trong hệ thống và còn hiệu lực
+        /// </summary>
+        OVERLAPPED = 303303,
+
+        /// <summary>
+        /// 303305: Ngày hiệu lực không hợp lệ
+        /// </summary>
+        INVALID_INSURED_RANGE = 303305,
+
+        /// <summary>
+        /// 303307: Tài khoản không phải là đại lý
+        /// </summary>
+        NOT_AGENT_ACCOUNT = 303307,
+
+        /// <summary>
+        /// 303309: Không tìm thấy thông tin tài khoản
+        /// </summary>
+        ACCOUNT_NOT_FOUNT = 303309,
+
+        /// <summary>
+        /// 3033011: Parameter không đúng định dạng
+        /// </summary>
+        INVALID_PARAMETERS = 3033011,
+
+        /// <summary>
+        /// -1: Lỗi khác
+        /// </summary>
+        UNKNOWN_ERROR = -1
+    }
+
 }

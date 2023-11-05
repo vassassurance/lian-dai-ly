@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using LianAgentPortal.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Hangfire;
+using Hangfire.SqlServer;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using LianAgentPortal.Commons.Attributes;
 
 namespace LianAgentPortal
 {
@@ -24,6 +26,12 @@ namespace LianAgentPortal
 
             //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             builder.Services
                 .AddIdentity<LianUser, IdentityRole>(options => {
@@ -38,11 +46,14 @@ namespace LianAgentPortal
                 .AddDefaultTokenProviders();
 
             builder.Services.AddScoped<ILianApiService, LianApiService>();
-            //builder.Services.AddScoped<IPrintCommissionService, PrintCommissionService>();
-            //builder.Services.AddScoped<IPrintCommissionShbetService, PrintCommissionShbetService>();
-            //builder.Services.AddScoped<IPrintCommissionNew88Service, PrintCommissionNew88Service>();
-            //builder.Services.AddScoped<IPrintCommissionMocBaiService, PrintCommissionMocBaiService>();
+
+            builder.Services.AddScoped<IHangeFireJobService, HangeFireJobService>();
+
             builder.Services.AddAutoMapper(typeof(Program));
+
+
+            builder.Services.AddHangfireServer();
+
             builder.Services.AddControllersWithViews()
                 .AddJsonOptions(options =>
                 {
@@ -80,14 +91,21 @@ namespace LianAgentPortal
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAuthorizationFilter() }
+            });
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=home}/{action=Index}/{id?}");
+
+            app.MapHangfireDashboard();
+
             app.MapRazorPages();
 
             app.Run();

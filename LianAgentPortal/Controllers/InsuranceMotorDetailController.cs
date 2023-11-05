@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
+using Hangfire;
+using LianAgentPortal.Commons.Enums;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
+using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using LianAgentPortal.Models.ViewModels.InsuranceMaster;
 using LianAgentPortal.Models.ViewModels.InsuranceMotorDetail;
 using LianAgentPortal.Models.ViewModels.JqGrid;
 using LianAgentPortal.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LianAgentPortal.Controllers
 {
@@ -15,13 +19,12 @@ namespace LianAgentPortal.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _db;
-        private readonly ILianApiService _lianApiService;
-        public InsuranceMotorDetailController(IMapper mapper, ApplicationDbContext db, ILianApiService lianApiService) 
+        private readonly IHangeFireJobService _hangeFireJobService;
+        public InsuranceMotorDetailController(IMapper mapper, ApplicationDbContext db, IHangeFireJobService hangeFireJobService) 
         {
             _mapper = mapper;
             _db = db;
-            _lianApiService = lianApiService;
-
+            _hangeFireJobService = hangeFireJobService;
         }
 
         public IActionResult Index(long id)
@@ -60,22 +63,46 @@ namespace LianAgentPortal.Controllers
             var insuranceMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id);
             if (insuranceMaster == null) return RedirectToAction("Index", "InsuranceMaster");
 
-            List<InsuranceMotorDetail> itemsToCalculatePremium = _db.InsuranceMotorDetails.Where(item =>
-                item.Status == Commons.Enums.InsuranceDetailStatusEnum.NEW
+            List<InsuranceMotorDetail> details = _db.InsuranceMotorDetails.Where(item =>
+                (item.Status == Commons.Enums.InsuranceDetailStatusEnum.NEW || item.Status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_ERROR)
                 && item.InsuranceMasterId == id
             ).ToList();
-            for (int i = 0; i < itemsToCalculatePremium.Count; i++)
+
+            
+            for (int i = 0; i < details.Count; i++)
             {
-                itemsToCalculatePremium[i].Status = Commons.Enums.InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS;
-                _lianApiService.CalculateInsurancePremium(itemsToCalculatePremium[i]);
-                break;
+                details[i].Status = Commons.Enums.InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS;
             }
             _db.SaveChanges();
 
+            _hangeFireJobService.MakeJobCalculatePremiumMotorInsurances(id, details.Select(item => item.Id).ToList(), User.Identity.Name);
+           
             return RedirectToAction("index", new { id = id });
         }
 
 
+        [HttpPost]
+        public IActionResult BuyInsurance(long id)
+        {
+            var insuranceMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id);
+            if (insuranceMaster == null) return RedirectToAction("Index", "InsuranceMaster");
+
+            List<InsuranceMotorDetail> details = _db.InsuranceMotorDetails.Where(item =>
+                (item.Status == Commons.Enums.InsuranceDetailStatusEnum.CALCULATE_PREMIUM_SUCCESS)
+                && item.InsuranceMasterId == id
+            ).ToList();
+
+
+            for (int i = 0; i < details.Count; i++)
+            {
+                details[i].Status = Commons.Enums.InsuranceDetailStatusEnum.SYNC_INPROGRESS;
+            }
+            _db.SaveChanges();
+
+            _hangeFireJobService.MakeJobBuyMotorInsurances(id, details.Select(item => item.Id).ToList(), User.Identity.Name);
+
+            return RedirectToAction("index", new { id = id });
+        }
 
     }
 }

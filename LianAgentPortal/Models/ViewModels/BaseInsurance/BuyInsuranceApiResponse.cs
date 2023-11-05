@@ -2,7 +2,7 @@
 {
     public class BuyInsuranceApiResponse
     {
-        public string Code { get; set; }
+        public long Code { get; set; }
         public string Message { get; set; }
         public BuyInsuranceApiResponseData Data { get; set; }
     }
