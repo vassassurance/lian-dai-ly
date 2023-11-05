@@ -10,7 +10,7 @@ namespace LianAgentPortal.Models.ViewModels.InsuranceMotorDetail
         public string PartnerTransaction { get; set; }
         public DateTime EffectiveDate { get; set; }
         public TimeCoverageObjectString TimeCoverage { get; set; }
-        public decimal? Amount { get; set; }
+        public long Amount { get; set; }
 
         public BuyInsuranceMotorInsuranceDataViewModel Insurance { get; set; }
 

@@ -12,7 +12,10 @@ namespace LianAgentPortal.Commons.Constants
         {
             get
             {
-                return new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase,  };
+                return new JsonSerializerOptions() { 
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                };
             }
         }
     }

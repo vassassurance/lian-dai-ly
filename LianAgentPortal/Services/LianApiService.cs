@@ -46,7 +46,7 @@ namespace LianAgentPortal.Services
 
                 BuyInsuranceMotorViewModel model = _mapper.Map<BuyInsuranceMotorViewModel>(detail);
 
-                string payload = Encoding.UTF8.GetString(System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(model, GeneralConstants.CamelCaseJsonSerializerOptions));
+                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
                 string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
                 string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
 
