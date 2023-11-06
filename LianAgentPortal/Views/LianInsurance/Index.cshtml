@@ -2,9 +2,13 @@
     ViewData["Title"] = "Bảo hiểm đã phát hành";
 }
 <div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
-    <span class="ui-jqgrid-title">
-        @ViewData["Title"]
-    </span>
+    <div class="row">
+        <span class="ui-jqgrid-title">
+            @ViewData["Title"]
+            <input id="search" value=""  placeholder="Tìm kiếm" />
+        </span>
+    </div>
+
 </div>
 <table id="gridLianInsurance" width="100%"></table>
 <div id="pagerLianInsurance"></div>
@@ -27,7 +31,7 @@
             beforeRequest: function () {
                 gridLianInsurance.jqGrid('setGridParam', {
                     postData: {
-                        Search: 'văn'
+                        Search: $("#search").val()
                     }
                 });
             },
@@ -68,6 +72,14 @@
         }).navGrid('#pagerLianInsurance', {
             edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
         });
+
+        $('#search').on("keyup change", function (e) {
+            gridLianInsurance.trigger('reloadGrid');
+        })
+
+
+                
+
     </script>
 
     <script>
