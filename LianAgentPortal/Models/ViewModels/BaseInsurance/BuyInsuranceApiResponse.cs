@@ -11,7 +11,7 @@
     {
         public string PartnerTransaction { get; set; }
         public TimeCoverageObject TimeCoverage { get; set; }
-        public string CertificateDigitalLink { get; set; }
+        public List<string> CertificateDigitalLink { get; set; }
         public DateTime ExpiredDate { get; set; }
         public bool PassengerInsurance { get; set; }
         public DateTime EffectiveDate { get; set; }

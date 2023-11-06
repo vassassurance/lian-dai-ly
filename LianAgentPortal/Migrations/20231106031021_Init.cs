@@ -98,8 +98,10 @@ namespace LianAgentPortal.Migrations
                     IdentityNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Birhtday = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Ranking = table.Column<int>(type: "int", nullable: false),
+                    CertificateDigitalLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InsuranceMasterId = table.Column<long>(type: "bigint", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    StatusMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgentPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PartnerTransaction = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EffectiveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -134,8 +136,10 @@ namespace LianAgentPortal.Migrations
                     IdentityNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PassengerInsurance = table.Column<bool>(type: "bit", nullable: false),
                     Birhtday = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CertificateDigitalLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InsuranceMasterId = table.Column<long>(type: "bigint", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    StatusMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgentPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PartnerTransaction = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EffectiveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -166,8 +170,10 @@ namespace LianAgentPortal.Migrations
                     IdentityNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Birhtday = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Ranking = table.Column<int>(type: "int", nullable: false),
+                    CertificateDigitalLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InsuranceMasterId = table.Column<long>(type: "bigint", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    StatusMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgentPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PartnerTransaction = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EffectiveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -320,7 +326,7 @@ namespace LianAgentPortal.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreateDate", "Email", "EmailConfirmed", "GoogleAuthenticatorSecretCode", "IsActivated", "LianAgentId", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdateDate", "UserName" },
-                values: new object[] { "00000000-0000-0000-0000-000000000001", 0, "4cf84b04-0131-4bd8-9dd2-6ecb59b81d49", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0962473427", true, "ABB80D77", true, 1L, false, null, "0962473427", "0962473427", "AQAAAAIAAYagAAAAEKdp1jlfbEfZEiR0FO9x/dScyuXSS0RJ8+MOjBseuCO8O7jShmtxWL1zrZI88oiQBQ==", "", true, "00000000-0000-0000-0000-000000000000", false, null, "0962473427" });
+                values: new object[] { "00000000-0000-0000-0000-000000000001", 0, "049b10bf-85db-4afd-bbec-6b60942a36ce", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0962473427", true, "ABB80D77", true, 1L, false, null, "0962473427", "0962473427", "AQAAAAIAAYagAAAAEGL9Hnw/u1T3AXAUMDenByUi9nTARBf4YEM9a8hqoUoIMYlbEUuV4TNqyl9Pp5z9Fw==", "", true, "00000000-0000-0000-0000-000000000000", false, null, "0962473427" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

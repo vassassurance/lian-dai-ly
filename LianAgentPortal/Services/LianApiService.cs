@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Hangfire;
 using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Commons.Enums;
@@ -8,6 +9,7 @@ using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using LianAgentPortal.Models.ViewModels.InsuranceMotorDetail;
 using LianAgentPortal.Models.ViewModels.LianAgent;
+using LianAgentPortal.Models.ViewModels.LianInsurance;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -22,6 +24,7 @@ namespace LianAgentPortal.Services
     {
         CalculateInsurancePremiumResponse CalculatePremiumInsuranceMotorDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
         BuyInsuranceApiResponse BuyInsuranceMotor(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
+        LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey);
     }
     public class LianApiService : ILianApiService
     {
@@ -36,6 +39,65 @@ namespace LianAgentPortal.Services
             _mapper = mapper;
             _backgroundJobs = backgroundJobs;
             _configuration = configuration;
+        }
+
+        public LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey)
+        {
+            try
+            {
+                string path = "/be/lian/insurances";
+
+                int start = jqgridRequest.page == 1 ? 0 : ((jqgridRequest.page - 1) * jqgridRequest.rows);
+                string sortObject = "{\"createdAt\":-1}";
+                if (jqgridRequest.sidx == "CreatedAt")
+                {
+                    if (jqgridRequest.sord == "desc")
+                    {
+                        sortObject = "{\"createdAt\":-1}";
+                    }
+                    else
+                    {
+                        sortObject = "{\"createdAt\":1}";
+                    }
+                }
+                else if (jqgridRequest.sidx == "ExpiredDate")
+                {
+                    if (jqgridRequest.sord == "desc")
+                    {
+                        sortObject = "{\"expiredDate\":-1}";
+                    }
+                    else
+                    {
+                        sortObject = "{\"expiredDate\":1}";
+                    }
+                }
+
+                string payload = "{\"filter\":{\"search\":\"" + jqgridRequest.Search + "\",\"accountIds\":[],\"isIncludeCommission\":true},\"paging\":{\"start\":" + start + ",\"limit\":" + jqgridRequest.rows + "},\"sort\":" + sortObject + "}";
+                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
+                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
+
+                HttpClient client = new HttpClient();
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
+                request.Headers.Add("x-api-client", apiKey.AppId);
+                request.Headers.Add("x-api-validate", xApiValidate);
+                request.Content = new StringContent(payload);
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage response = client.Send(request);
+                response.EnsureSuccessStatusCode();
+                var taskReadString = response.Content.ReadAsStringAsync();
+                taskReadString.Wait();
+                string responseBody = taskReadString.Result;
+                return JsonConvert.DeserializeObject<LianInsuranceSearchResponseViewModel>(responseBody);
+            }
+            catch (Exception ex)
+            {
+                return new LianInsuranceSearchResponseViewModel()
+                {
+                    Code = 500,
+                    Message = ex.Message,
+                };
+            }
         }
 
         public BuyInsuranceApiResponse BuyInsuranceMotor(InsuranceMotorDetail detail, LianAgentApiKey apiKey)

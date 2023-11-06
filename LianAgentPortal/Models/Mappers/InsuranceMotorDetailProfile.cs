@@ -68,15 +68,15 @@ namespace LianAgentPortal.Models.Mappers
 
         private string MapInsuranceDetailStatus(InsuranceDetailStatusEnum status)
         {
-            if (status == InsuranceDetailStatusEnum.NEW) return "<i class=\"fa fa-file-o\" aria-hidden=\"true\"></i> TẠO MỚI";
+            if (status == InsuranceDetailStatusEnum.NEW) return "<i class=\"fa fa-file-o\" aria-hidden=\"true\" title=\"TẠO MỚI\"></i>";
 
-            if (status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_SUCCESS) return "<i class=\"fa fa-check-square text-success\" aria-hidden=\"true\"></i> TÍNH PHÍ - THÀNH CÔNG";
-            if (status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_ERROR) return "<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\"></i> TÍNH PHÍ - LỖI";
-            if (status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\"></i> ĐANG TÍNH PHÍ";
+            if (status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_SUCCESS) return "<i class=\"fa fa-check-square text-success\" aria-hidden=\"true\" title=\"TÍNH PHÍ - THÀNH CÔNG\"></i>";
+            if (status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_ERROR) return "<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\" title=\"TÍNH PHÍ - LỖI\"></i>";
+            if (status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\" title=\"ĐANG TÍNH PHÍ\"></i>";
 
-            if (status == InsuranceDetailStatusEnum.SYNC_SUCCESS) return "<i class=\"fa fa-money text-success\" aria-hidden=\"true\"></i> PHÁT HÀNH - THÀNH CÔNG";
-            if (status == InsuranceDetailStatusEnum.SYNC_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\"></i> ĐANG PHÁT HÀNH";
-            if (status == InsuranceDetailStatusEnum.SYNC_ERROR) return "<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\"></i> PHÁT HÀNH - LỖI";
+            if (status == InsuranceDetailStatusEnum.SYNC_SUCCESS) return "<i class=\"fa fa-paper-plane text-success\" aria-hidden=\"true\" title=\"PHÁT HÀNH - THÀNH CÔNG\" ></i>";
+            if (status == InsuranceDetailStatusEnum.SYNC_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\" title=\"ĐANG PHÁT HÀNH\"></i>\"></i>";
+            if (status == InsuranceDetailStatusEnum.SYNC_ERROR) return "<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\" title=\"PHÁT HÀNH - LỖI\"></i>";
 
             return "";
         }

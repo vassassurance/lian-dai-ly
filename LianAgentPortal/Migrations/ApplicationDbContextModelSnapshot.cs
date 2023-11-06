@@ -415,7 +415,7 @@ namespace LianAgentPortal.Migrations
                         {
                             Id = "00000000-0000-0000-0000-000000000001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "52492879-ae22-4559-ad71-649c4856a833",
+                            ConcurrencyStamp = "049b10bf-85db-4afd-bbec-6b60942a36ce",
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0962473427",
                             EmailConfirmed = true,
@@ -425,7 +425,7 @@ namespace LianAgentPortal.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "0962473427",
                             NormalizedUserName = "0962473427",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJqxDyQNnA1AKO0BVVJm/EYP90qCDSGCskUvYPIKqpoF8Gpo0RVa8ngi7E9LolhO/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGL9Hnw/u1T3AXAUMDenByUi9nTARBf4YEM9a8hqoUoIMYlbEUuV4TNqyl9Pp5z9Fw==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",

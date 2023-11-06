@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Bảo hiểm đã phát hành";
+}
+<div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+    <span class="ui-jqgrid-title">
+        @ViewData["Title"]
+    </span>
+</div>
+<table id="gridLianInsurance" width="100%"></table>
+<div id="pagerLianInsurance"></div>
+
+@section Scripts {
+    <script>
+
+        doCopy = function (value) {
+            navigator.clipboard.writeText(value);
+            toastr.success(value, 'Đã copy');
+        }
+
+        copiableCellFormatter = function (cellvalue, options, rowobject) {
+            return '<button type="button" class="float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> ' + cellvalue + '</button>';
+        }
+
+        gridLianInsurance = $("#gridLianInsurance");
+        gridLianInsurance.jqGrid({
+            url: '/LianInsurance/GetListInsuranceMotorDetailJqgrid',
+            beforeRequest: function () {
+                gridLianInsurance.jqGrid('setGridParam', {
+                    postData: {
+                        Search: 'văn'
+                    }
+                });
+            },
+            mtype: 'GET',
+            datatype: "json",
+            colNames: ['Mã giao dịch', 'Type', 'Gói', 'Họ & Tên', 'Từ', 'Đến',
+                'Mã bảo hiểm', 'Trạng thái', 'Phí BH', 'Tài trợ', 'Thu nhập', 'Time', 'Tạo Lúc'
+            ],
+            colModel: [
+                { name: 'Transaction', index: 'Transaction', hidden: false, key: true, align: "center", sortable: false, width: 60, formatter: copiableCellFormatter, width: 65 },
+
+                { name: 'Type', index: 'Type', align: "center", sortable: false, hidden: true },
+                { name: 'PackageName', index: 'PackageName', align: "center", sortable: false },
+                { name: 'Fullname', index: 'Fullname', align: "center", sortable: false },
+                { name: 'EffectiveDate', index: 'EffectiveDate', align: "center", sortable: false },
+                { name: 'ExpiredDate', index: 'ExpiredDate', align: "center" },
+
+                { name: 'InsuranceCode', index: 'InsuranceCode', align: "center", sortable: false, width: 60, formatter: copiableCellFormatter, width: 85 },
+                { name: 'State', index: 'State', align: "center", sortable: false },
+                { name: 'Amount', index: 'Amount', align: "center", sortable: false, formatter: 'integer', align: "right", width: 80 },
+                { name: 'Sponsor', index: 'Sponsor', align: "center", sortable: false, formatter: 'integer', align: "right", width: 70 },
+                { name: 'Income', index: 'Income', align: "center", sortable: false, formatter: 'integer', align: "right", width: 70 },
+                { name: 'Time', index: 'Time', align: "center", sortable: false, hidden: true },
+                { name: 'CreatedAt', index: 'CreatedAt', align: "center", formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center", width: 150 }
+            ],
+            rowNum: common.configs.mainGrid.getRowNum(),
+            autowidth: true,
+            rownumbers: true,
+            rowList: common.configs.mainGrid.getRowList(),
+            pager: '#pagerLianInsurance',
+            sortname: 'DateCreate',
+            hidegrid: false,
+            viewrecords: true,
+            height: common.configs.mainGrid.getHeight(),
+            ondblClickRow: function (rowid) {
+                window.location.pathname = ('/LianInsurance/ViewDetail/' + rowid);
+            }
+        }).navGrid('#pagerLianInsurance', {
+            edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
+        });
+    </script>
+
+    <script>
+        resetGridsWidth = function () {
+            common.functions.resetGridWidth(gridLianInsurance);
+        }
+
+        $(window).on("resize", resetGridsWidth);
+        resetGridsWidth();
+    </script>
+}

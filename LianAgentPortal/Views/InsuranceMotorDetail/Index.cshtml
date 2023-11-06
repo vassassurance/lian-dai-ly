@@ -27,11 +27,6 @@
                     <input value="@Model.TotalPremium.ToString("N0") VND" readonly class="form-control text-end" />
                 </div>
 
-                <div class="mb-2">
-                    <label class="control-label">Tổng số tiền bảo hiểm:</label>
-                    <input value="@Model.TotalInsuranceAmount.ToString("N0") VND" readonly class="form-control text-end" />
-                </div>
-
                 <form asp-action="CalculatePremium" asp-route-id="@Model.Id">
                     <button type="submit" class="w-100 ui-button ui-widget ui-corner-all mb-2"> Tính phí <i class="fa fa-calculator" aria-hidden="true"></i></button>
                 </form>
@@ -82,24 +77,24 @@
             datatype: "json",
             colNames: ['Id', 'Mã giao dịch', 'Biển số', 'Số khung', 'Số máy', 'Họ tên chủ xe', 
                 'Số điện thoại', 'CCCD/CMND', 'Ngày sinh', 'Tham gia NNTX',
-                'Loại xe', 'Hiệu lực từ', 'Hiệu lực đến', 'Phí bảo hiểm', 'Trạng thái', 'Kết quả API'],
+                'Loại xe', 'Hiệu lực từ', 'Hiệu lực đến', 'Phí', 'Kết quả API', 'Trạng thái'],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
-                { name: 'PartnerTransaction', index: 'PartnerTransaction', align: "center", formatter: copiableCellFormatter, width: 130 },
+                { name: 'PartnerTransaction', index: 'PartnerTransaction', align: "center", formatter: copiableCellFormatter, width: 100 },
                 { name: 'LicensePlates', index: 'LicensePlates', align: "center" },
                 { name: 'ChassisNumber', index: 'ChassisNumber', align: "center" },
                 { name: 'MachineNumber', index: 'MachineNumber', align: "center" },
                 { name: 'Fullname', index: 'Fullname' },
-                { name: 'Phone', index: 'Phone', align: "center" },
-                { name: 'IdentityNumber', index: 'IdentityNumber' },
-                { name: 'Birhtday', index: 'Birhtday', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center" },
-                { name: 'PassengerInsurance', index: 'PassengerInsurance', align: "center", editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 150 },
-                { name: 'MotorType', index: 'MotorType', align: "center" },
-                { name: 'EffectiveDate', index: 'EffectiveDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center" },
-                { name: 'EndDate', index: 'EndDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center" },
-                { name: 'Amount', index: 'Amount', formatter: 'integer', align: "right" },
-                { name: 'Status', index: 'Status', align: "center", width: 200 },
+                { name: 'Phone', index: 'Phone', align: "center", width: 100 },
+                { name: 'IdentityNumber', index: 'IdentityNumber', align: "center", hidden: true },
+                { name: 'Birhtday', index: 'Birhtday', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", hidden: true },
+                { name: 'PassengerInsurance', index: 'PassengerInsurance', align: "center", editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 50 },
+                { name: 'MotorType', index: 'MotorType', align: "center", width: 120 },
+                { name: 'EffectiveDate', index: 'EffectiveDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
+                { name: 'EndDate', index: 'EndDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
+                { name: 'Amount', index: 'Amount', formatter: 'integer', align: "right", width: 90 },
                 { name: 'StatusMessage', index: 'StatusMessage', align: "center", width: 200 },
+                { name: 'Status', index: 'Status', align: "center", width: 50 },
 
             ],
             rowNum: common.configs.mainGrid.getRowNum(),

@@ -77,12 +77,13 @@ namespace LianAgentPortal.Services
                 );
                 if (itemToUpdate != null)
                 {
+                    itemToUpdate.PartnerTransaction = Guid.NewGuid().ToString().Replace("-", "");
                     BuyInsuranceApiResponse result = _lianApiService.BuyInsuranceMotor(itemToUpdate, apiKey);
                     if (result.Code == (long)BuyInsuranceResultEnum.SUCCESS)
                     {
                         itemToUpdate.Status = Commons.Enums.InsuranceDetailStatusEnum.SYNC_SUCCESS;
                         itemToUpdate.StatusMessage = result.Message;
-                        itemToUpdate.CertificateDigitalLink = result.Data.CertificateDigitalLink;
+                        itemToUpdate.CertificateDigitalLink = (result.Data.CertificateDigitalLink!= null && result.Data.CertificateDigitalLink.Count >= 1) ? result.Data.CertificateDigitalLink[0] : "";
                         itemMaster.TotalIssuedRows += 1;
                     }
                     else
