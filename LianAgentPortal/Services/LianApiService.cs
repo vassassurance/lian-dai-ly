@@ -172,6 +172,42 @@ namespace LianAgentPortal.Services
 
         }
 
+        public CalculateInsurancePremiumResponse CalculatePremiumInsuranceAutomobileDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey)
+        {
+            try
+            {
+                string path = "/be/lian/calculateInsuranceFee";
+                CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor> model = _mapper.Map<CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor>>(detail);
+                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
+                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
+                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
+
+                HttpClient client = new HttpClient();
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
+                request.Headers.Add("x-api-client", apiKey.AppId);
+                request.Headers.Add("x-api-validate", xApiValidate);
+                request.Content = new StringContent(payload);
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage response = client.Send(request);
+                response.EnsureSuccessStatusCode();
+                var taskReadString = response.Content.ReadAsStringAsync();
+                taskReadString.Wait();
+                string responseBody = taskReadString.Result;
+                return JsonConvert.DeserializeObject<CalculateInsurancePremiumResponse>(responseBody);
+            }
+            catch (Exception ex)
+            {
+                return new CalculateInsurancePremiumResponse()
+                {
+                    Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
+                    Message = ex.Message
+                };
+            }
+
+        }
+
+
         private void Test(LianAgentApiKey apiKey)
         {
 

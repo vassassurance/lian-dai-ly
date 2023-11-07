@@ -35,4 +35,20 @@ namespace LianAgentPortal.Models.ViewModels.BaseInsurance
         public bool PassengerInsurance { get; set; }
         public string MotorType { get; set; }
     }
+
+    public class AutomobileAttributes
+    {
+        public string Seat { get; set; }
+        public AutomobileTypeCategoryEnum Category { get; set; }
+    }
+
+    public class CalculateInsurancePremiumDetailAutomobile : ICalculateInsurancePremiumDetail
+    {
+        public AutomobileTypeEnum AutomobilesType { get; set; }
+        public long PassengerFee { get; set; }
+        public int PassengerCount { get; set; }
+        public AutomobileAttributes Attributes { get; set; }
+
+    }
+
 }
