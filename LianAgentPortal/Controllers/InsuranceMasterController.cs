@@ -21,15 +21,13 @@ using System.Globalization;
 namespace LianAgentPortal.Controllers
 {
     [Authorize]
-    public class InsuranceMasterController : Controller
+    public class InsuranceMasterController : BaseController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _db;
-        public InsuranceMasterController(ApplicationDbContext db, IMapper mapper, IWebHostEnvironment webHostEnvironment) 
+        public InsuranceMasterController(ApplicationDbContext db, IMapper mapper, IWebHostEnvironment webHostEnvironment) : base(db)
         {
             _webHostEnvironment = webHostEnvironment;
-            _db = db;
             _mapper = mapper;
         }
 
@@ -40,7 +38,7 @@ namespace LianAgentPortal.Controllers
 
         public IActionResult GetListInsuranceMasterJqgrid(BaseJqgridRequestViewModel gridRequest)
         {
-            List<InsuranceMaster> data = _db.InsuranceMasters.ToList();
+            List<InsuranceMaster> data = _db.InsuranceMasters.Where(item => item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin).ToList();
             JqgridResponseViewModel<InsuranceMasterViewModel> result = new JqgridResponseViewModel<InsuranceMasterViewModel>();
             IQueryable<InsuranceMasterViewModel> source = _mapper.Map<List<InsuranceMasterViewModel>>(data).AsQueryable();
 
@@ -77,7 +75,7 @@ namespace LianAgentPortal.Controllers
 
         public ActionResult ViewDetail(int id) 
         {
-            var master = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id && item.UserCreate == User.Identity.Name);
+            var master = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id && (item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin));
             if (master == null) return RedirectToAction("index");
 
 
@@ -323,7 +321,6 @@ namespace LianAgentPortal.Controllers
                 {
 
                 }
-
             }
             return details;
         }

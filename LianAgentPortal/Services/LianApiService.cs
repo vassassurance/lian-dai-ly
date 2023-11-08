@@ -28,8 +28,9 @@ namespace LianAgentPortal.Services
 
         CalculateInsurancePremiumResponse CalculatePremiumInsuranceMotorDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
         BuyInsuranceApiResponse BuyInsuranceMotor(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
-        
-        
+
+
+        LianInsuranceDetailResponseViewModel GetDetailLianInsurance(string lianTransaction, LianAgentApiKey apiKey);
         LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey);
     }
     public class LianApiService : ILianApiService
@@ -46,7 +47,7 @@ namespace LianAgentPortal.Services
             _backgroundJobs = backgroundJobs;
             _configuration = configuration;
         }
-
+        #region Automobile
         public BuyInsuranceApiResponse BuyInsuranceAutomobile(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey)
         {
             try
@@ -56,22 +57,8 @@ namespace LianAgentPortal.Services
                 BuyInsuranceAutomobileViewModel model = _mapper.Map<BuyInsuranceAutomobileViewModel>(detail);
 
                 string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
-                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
-                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
 
-                HttpClient client = new HttpClient();
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
-                request.Headers.Add("x-api-client", apiKey.AppId);
-                request.Headers.Add("x-api-validate", xApiValidate);
-                request.Content = new StringContent(payload);
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                HttpResponseMessage response = client.Send(request);
-                response.EnsureSuccessStatusCode();
-                var taskReadString = response.Content.ReadAsStringAsync();
-                taskReadString.Wait();
-                string responseBody = taskReadString.Result;
-                return JsonConvert.DeserializeObject<BuyInsuranceApiResponse>(responseBody);
+                return MakePostRequest<BuyInsuranceApiResponse>(path, payload, apiKey);
             }
             catch (Exception ex)
             {
@@ -82,7 +69,89 @@ namespace LianAgentPortal.Services
                 };
             }
         }
+        public CalculateInsurancePremiumResponse CalculatePremiumInsuranceAutomobileDetail(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey)
+        {
+            try
+            {
+                string path = "/be/lian/calculateInsuranceFee";
+                CalculateInsurancePremium<CalculateInsurancePremiumDetailAutomobile> model = _mapper.Map<CalculateInsurancePremium<CalculateInsurancePremiumDetailAutomobile>>(detail);
+                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
 
+                CalculateInsurancePremiumResponse result = MakePostRequest<CalculateInsurancePremiumResponse>(path, payload, apiKey);
+                if (result.Code == (long)CalculateInsurancePremiumResultEnum.SUCCESS && result.Data.TotalAmount <= 0)
+                {
+                    return new CalculateInsurancePremiumResponse()
+                    {
+                        Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
+                        Message = "Không tìm thấy biểu phí"
+                    };
+                }
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                return new CalculateInsurancePremiumResponse()
+                {
+                    Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
+                    Message = ex.Message
+                };
+            }
+
+        }
+        #endregion
+
+        #region Motor
+        public BuyInsuranceApiResponse BuyInsuranceMotor(InsuranceMotorDetail detail, LianAgentApiKey apiKey)
+        {
+            try
+            {
+                string path = "/be/lian/postpaid/buyInsurance";
+
+                BuyInsuranceMotorViewModel model = _mapper.Map<BuyInsuranceMotorViewModel>(detail);
+
+                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
+                return MakePostRequest<BuyInsuranceApiResponse>(path, payload, apiKey);
+            }
+            catch (Exception ex)
+            {
+                return new BuyInsuranceApiResponse()
+                {
+                    Code = (long)BuyInsuranceResultEnum.UNKNOWN_ERROR,
+                    Message = ex.Message
+                };
+            }
+
+        }
+        public CalculateInsurancePremiumResponse CalculatePremiumInsuranceMotorDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey)
+        {
+            try
+            {
+                string path = "/be/lian/calculateInsuranceFee";
+                CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor> model = _mapper.Map<CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor>>(detail);
+                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
+                return MakePostRequest<CalculateInsurancePremiumResponse>(path, payload, apiKey);
+            }
+            catch (Exception ex)
+            {
+                return new CalculateInsurancePremiumResponse()
+                {
+                    Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
+                    Message = ex.Message
+                };
+            }
+
+        }
+        #endregion
+        
+        #region LianInsurance
+        public LianInsuranceDetailResponseViewModel GetDetailLianInsurance(string lianTransaction, LianAgentApiKey apiKey)
+        {
+            string path = "/be/lian/insurance/detail";
+            string payload = "{\"transaction\":\"" + lianTransaction + "\"}";
+            return MakePostRequest<LianInsuranceDetailResponseViewModel>(path, payload, apiKey);
+
+        }
         public LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey)
         {
             try
@@ -115,22 +184,8 @@ namespace LianAgentPortal.Services
                 }
 
                 string payload = "{\"filter\":{\"search\":\"" + jqgridRequest.Search + "\",\"accountIds\":[],\"isIncludeCommission\":true},\"paging\":{\"start\":" + start + ",\"limit\":" + jqgridRequest.rows + "},\"sort\":" + sortObject + "}";
-                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
-                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
 
-                HttpClient client = new HttpClient();
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
-                request.Headers.Add("x-api-client", apiKey.AppId);
-                request.Headers.Add("x-api-validate", xApiValidate);
-                request.Content = new StringContent(payload);
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                HttpResponseMessage response = client.Send(request);
-                response.EnsureSuccessStatusCode();
-                var taskReadString = response.Content.ReadAsStringAsync();
-                taskReadString.Wait();
-                string responseBody = taskReadString.Result;
-                return JsonConvert.DeserializeObject<LianInsuranceSearchResponseViewModel>(responseBody);
+                return MakePostRequest<LianInsuranceSearchResponseViewModel>(path, payload, apiKey);
             }
             catch (Exception ex)
             {
@@ -142,146 +197,27 @@ namespace LianAgentPortal.Services
             }
         }
 
-        public BuyInsuranceApiResponse BuyInsuranceMotor(InsuranceMotorDetail detail, LianAgentApiKey apiKey)
+        #endregion
+
+        private TResult MakePostRequest<TResult>(string path, string payload, LianAgentApiKey apiKey)
         {
-            try
-            {
-                string path = "/be/lian/postpaid/buyInsurance";
-
-                BuyInsuranceMotorViewModel model = _mapper.Map<BuyInsuranceMotorViewModel>(detail);
-
-                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
-                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
-                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
-
-                HttpClient client = new HttpClient();
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
-                request.Headers.Add("x-api-client", apiKey.AppId);
-                request.Headers.Add("x-api-validate", xApiValidate);
-                request.Content = new StringContent(payload);
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                HttpResponseMessage response = client.Send(request);
-                response.EnsureSuccessStatusCode();
-                var taskReadString = response.Content.ReadAsStringAsync();
-                taskReadString.Wait();
-                string responseBody = taskReadString.Result;
-                return JsonConvert.DeserializeObject<BuyInsuranceApiResponse>(responseBody);
-            }
-            catch (Exception ex)
-            {
-                return new BuyInsuranceApiResponse()
-                {
-                    Code = (long)BuyInsuranceResultEnum.UNKNOWN_ERROR,
-                    Message = ex.Message
-                };
-            }
-
-        }
-
-        public CalculateInsurancePremiumResponse CalculatePremiumInsuranceMotorDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey)
-        {
-            try
-            {
-                string path = "/be/lian/calculateInsuranceFee";
-                CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor> model = _mapper.Map<CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor>>(detail);
-                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
-                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
-                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
-
-                HttpClient client = new HttpClient();
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
-                request.Headers.Add("x-api-client", apiKey.AppId);
-                request.Headers.Add("x-api-validate", xApiValidate);
-                request.Content = new StringContent(payload);
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                HttpResponseMessage response = client.Send(request);
-                response.EnsureSuccessStatusCode();
-                var taskReadString = response.Content.ReadAsStringAsync();
-                taskReadString.Wait();
-                string responseBody = taskReadString.Result;
-                return JsonConvert.DeserializeObject<CalculateInsurancePremiumResponse>(responseBody);
-            }
-            catch (Exception ex)
-            {
-                return new CalculateInsurancePremiumResponse()
-                {
-                    Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
-                    Message = ex.Message
-                };
-            }
-
-        }
-
-        public CalculateInsurancePremiumResponse CalculatePremiumInsuranceAutomobileDetail(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey)
-        {
-            try
-            {
-                string path = "/be/lian/calculateInsuranceFee";
-                CalculateInsurancePremium<CalculateInsurancePremiumDetailAutomobile> model = _mapper.Map<CalculateInsurancePremium<CalculateInsurancePremiumDetailAutomobile>>(detail);
-                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
-                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
-                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
-
-                HttpClient client = new HttpClient();
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
-                request.Headers.Add("x-api-client", apiKey.AppId);
-                request.Headers.Add("x-api-validate", xApiValidate);
-                request.Content = new StringContent(payload);
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                HttpResponseMessage response = client.Send(request);
-                response.EnsureSuccessStatusCode();
-                var taskReadString = response.Content.ReadAsStringAsync();
-                taskReadString.Wait();
-                string responseBody = taskReadString.Result;
-
-                CalculateInsurancePremiumResponse result = JsonConvert.DeserializeObject<CalculateInsurancePremiumResponse>(responseBody);
-                if (result.Code == (long)CalculateInsurancePremiumResultEnum.SUCCESS && result.Data.TotalAmount <= 0)
-                {
-                    return new CalculateInsurancePremiumResponse()
-                    {
-                        Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
-                        Message = "Không tìm thấy biểu phí"
-                    };
-                }
-                return result;
-
-            }
-            catch (Exception ex)
-            {
-                return new CalculateInsurancePremiumResponse()
-                {
-                    Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
-                    Message = ex.Message
-                };
-            }
-
-        }
-
-
-        private void Test(LianAgentApiKey apiKey)
-        {
-
-			string path = "/be/lian/insurances";
-			string payload = "{\"filter\":{\"filterType\":\"SUCCEEDED\",\"search\":\"NGUYEN VAN A\",\"accountIds\":[],\"isIncludeCommission\":true},\"paging\":{\"start\":1,\"limit\":20},\"sort\":{\"paymentAt\":-1,\"createdAt\":-1}}";
-			string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
+            string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
             string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
 
-			HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient();
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
             request.Headers.Add("x-api-client", apiKey.AppId);
             request.Headers.Add("x-api-validate", xApiValidate);
-			request.Content = new StringContent(payload);
+            request.Content = new StringContent(payload);
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             HttpResponseMessage response = client.Send(request);
             response.EnsureSuccessStatusCode();
             var taskReadString = response.Content.ReadAsStringAsync();
             taskReadString.Wait();
-			string responseBody = taskReadString.Result;
-
+            string responseBody = taskReadString.Result;
+            return JsonConvert.DeserializeObject<TResult>(responseBody);
         }
+
     }
 }

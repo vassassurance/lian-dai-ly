@@ -1,4 +1,5 @@
-﻿using LianAgentPortal.Data;
+﻿using LianAgentPortal.Commons.Constants;
+using LianAgentPortal.Data;
 using LianAgentPortal.Models.ViewModels.LianAgent;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,14 @@ namespace LianAgentPortal.Controllers
         public BaseController(ApplicationDbContext db)
         {
             _db = db;
+        }
+
+        public bool IsCurrentUserHasRoleAdmin
+        {
+            get
+            {
+                return User.IsInRole(AuthenticatorConstants.ADMIN_ROLE);
+            }
         }
 
         public LianAgentApiKey CurrentUserApiKey

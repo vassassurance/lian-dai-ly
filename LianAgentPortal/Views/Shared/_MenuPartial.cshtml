@@ -18,9 +18,12 @@
             <ul class="navbar-nav me-auto">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="Index"><i class="fa fa-users" aria-hidden="true"></i> Quản Lý User</a>
-                    </li>
+                    @if(User.IsInRole(LianAgentPortal.Commons.Constants.AuthenticatorConstants.ADMIN_ROLE))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Index"><i class="fa fa-users" aria-hidden="true"></i> Quản Lý User</a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="InsuranceMaster" asp-action="Index"><i class="fa fa-list-alt" aria-hidden="true"></i> Bảng kê Bảo hiểm</a>
                     </li>

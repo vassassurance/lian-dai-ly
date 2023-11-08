@@ -48,6 +48,12 @@ namespace LianAgentPortal.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
+                if (!user.IsActivated)
+                {
+                    ModelState.AddModelError(string.Empty, "Thông tin đăng nhập không đúng");
+                    return View(model);
+                }
+
                 //if (user != null && user.IsActivated)
                 //{
                 //    var validateTfa = ValidateTwoFactorPIN(model.Pin, user.GoogleAuthenticatorSecretCode);

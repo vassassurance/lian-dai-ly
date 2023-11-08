@@ -2,13 +2,10 @@
     ViewData["Title"] = "Bảo hiểm đã phát hành";
 }
 <div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
-    <div class="row">
-        <span class="ui-jqgrid-title">
-            @ViewData["Title"]
-            <input id="search" value=""  placeholder="Tìm kiếm" />
-        </span>
-    </div>
-
+    <span class="ui-jqgrid-title">
+        @ViewData["Title"]
+        <input id="search" value=""  placeholder="Tìm kiếm" />
+    </span>
 </div>
 <table id="gridLianInsurance" width="100%"></table>
 <div id="pagerLianInsurance"></div>
@@ -27,7 +24,7 @@
 
         gridLianInsurance = $("#gridLianInsurance");
         gridLianInsurance.jqGrid({
-            url: '/LianInsurance/GetListInsuranceMotorDetailJqgrid',
+            url: '/LianInsurance/GetListLianInsuranceJqgrid',
             beforeRequest: function () {
                 gridLianInsurance.jqGrid('setGridParam', {
                     postData: {
@@ -37,20 +34,19 @@
             },
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Mã giao dịch', 'Type', 'Gói', 'Họ & Tên', 'Từ', 'Đến',
-                'Mã bảo hiểm', 'Trạng thái', 'Phí BH', 'Tài trợ', 'Thu nhập', 'Time', 'Tạo Lúc'
+            colNames: ['Mã giao dịch', 'Gói', 'Họ & Tên', 'Từ', 'Đến',
+                'Số GCN', 'Trạng thái', 'Phí BH', 'Tài trợ', 'Thu nhập', 'Time', 'Tạo Lúc'
             ],
             colModel: [
                 { name: 'Transaction', index: 'Transaction', hidden: false, key: true, align: "center", sortable: false, width: 60, formatter: copiableCellFormatter, width: 65 },
 
-                { name: 'Type', index: 'Type', align: "center", sortable: false, hidden: true },
-                { name: 'PackageName', index: 'PackageName', align: "center", sortable: false },
+                { name: 'TypeName', index: 'TypeName', align: "center", sortable: false },
                 { name: 'Fullname', index: 'Fullname', align: "center", sortable: false },
                 { name: 'EffectiveDate', index: 'EffectiveDate', align: "center", sortable: false },
                 { name: 'ExpiredDate', index: 'ExpiredDate', align: "center" },
 
                 { name: 'InsuranceCode', index: 'InsuranceCode', align: "center", sortable: false, width: 60, formatter: copiableCellFormatter, width: 85 },
-                { name: 'State', index: 'State', align: "center", sortable: false },
+                { name: 'StateName', index: 'StateName', align: "center", sortable: false },
                 { name: 'Amount', index: 'Amount', align: "center", sortable: false, formatter: 'integer', align: "right", width: 80 },
                 { name: 'Sponsor', index: 'Sponsor', align: "center", sortable: false, formatter: 'integer', align: "right", width: 70 },
                 { name: 'Income', index: 'Income', align: "center", sortable: false, formatter: 'integer', align: "right", width: 70 },
@@ -67,7 +63,7 @@
             viewrecords: true,
             height: common.configs.mainGrid.getHeight(),
             ondblClickRow: function (rowid) {
-                window.location.pathname = ('/LianInsurance/ViewDetail/' + rowid);
+                window.location.pathname = ('/LianInsurance/Detail/' + rowid);
             }
         }).navGrid('#pagerLianInsurance', {
             edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"

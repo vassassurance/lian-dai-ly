@@ -1,0 +1,192 @@
+﻿@model LianAgentPortal.Models.ViewModels.LianInsurance.LianInsuranceDetailResponseViewModel
+@{
+    ViewData["Title"] = "Chi tiết bảo hiểm đã phát hành";
+}
+
+<h1>Detail</h1>
+
+
+<div class="modal modal-lg fade" id="detail-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+                <h1 class="modal-title fs-5"> <i class="fa fa-list-alt" aria-hidden="true"></i> @ViewData["Title"] </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 pb-4 ps-0 pe-0">
+                        <div class="card">
+                            <div class="card-header ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+                                <i class="fa fa-info-circle" aria-hidden="true"></i> Thông tin chung
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6 mb-2">
+                                        <label asp-for="Data.InsuranceCode" class="control-label"></label>
+                                        <input asp-for="Data.InsuranceCode" class="form-control" disabled />
+                                    </div>
+                                    <div class="col-sm-6 mb-2">
+                                        <label asp-for="Data.Transaction" class="control-label"></label>
+                                        <input asp-for="Data.Transaction" class="form-control" disabled />
+                                    </div>
+                                    <div class="col-sm-6 mb-2">
+                                        <label asp-for="Data.StateName" class="control-label"></label> @Html.Raw(Model.Data.StateIcon)
+                                        <input asp-for="Data.StateName" class="form-control" disabled />
+                                    </div>
+                                    <div class="col-sm-6 mb-2">
+                                        <label asp-for="Data.EffectiveDate" class="control-label"></label>
+                                        <input value='@Model.Data.EffectiveDate.ToString("dd/MM/yyyy")' class="form-control" disabled   />
+                                    </div>
+                                    <div class="col-sm-6 mb-2">
+                                        <label asp-for="Data.ExpiredDate" class="control-label"></label>
+                                        <input value='@Model.Data.ExpiredDate.ToString("dd/MM/yyyy")' class="form-control" disabled  />
+                                    </div>
+                                    <div class="col-sm-6 mb-2">
+                                        <label asp-for="Data.CreatedAt" class="control-label"></label>
+                                        <input value='@Model.Data.CreatedAt.ToString("dd/MM/yyyy")' class="form-control" disabled />
+                                    </div>
+
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 pb-4 ps-0 pe-0">
+                        <div class="card">
+                            <div class="card-header ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+                                @Html.Raw(Model.Data.TypeName)
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6 mb-2">
+                                        <label asp-for="Data.Fullname" class="control-label"></label>
+                                        <input asp-for="Data.Fullname" class="form-control" disabled />
+                                    </div>
+
+                                    @if(Model.Data.Type != LianAgentPortal.Commons.Constants.InsuranceTypeEnum.MOTORBIKE
+                                        && Model.Data.Type != LianAgentPortal.Commons.Constants.InsuranceTypeEnum.AUTOMOBILES)
+                                    {
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.Birthday" class="control-label"></label>
+                                            <input asp-for="Data.Birthday" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.Address" class="control-label"></label>
+                                            <input asp-for="Data.Address" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.Gender" class="control-label"></label>
+                                            <input asp-for="Data.Gender" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.Ranking" class="control-label"></label>
+                                            <input asp-for="Data.Ranking" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.IdentityNumber" class="control-label"></label>
+                                            <input asp-for="Data.IdentityNumber" class="form-control" disabled />
+                                        </div>
+                                    }
+
+                                    @if(Model.Data.Type == LianAgentPortal.Commons.Constants.InsuranceTypeEnum.MOTORBIKE
+                                        || Model.Data.Type == LianAgentPortal.Commons.Constants.InsuranceTypeEnum.AUTOMOBILES)
+                                    {
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.LicensePlates" class="control-label"></label>
+                                            <input asp-for="Data.LicensePlates" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.ChassisNumber" class="control-label"></label>
+                                            <input asp-for="Data.ChassisNumber" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.MachineNumber" class="control-label"></label>
+                                            <input asp-for="Data.MachineNumber" class="form-control" disabled />
+                                        </div>
+                                    }
+                                    @if (Model.Data.Type == LianAgentPortal.Commons.Constants.InsuranceTypeEnum.MOTORBIKE)
+                                    {
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.MotorTypeName" class="control-label"></label>
+                                            <input asp-for="Data.MotorTypeName" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.PassengerInsuranceStr" class="control-label"></label>
+                                            <input asp-for="Data.PassengerInsuranceStr" class="form-control" disabled />
+                                        </div>
+                                    }
+
+                                    @if (Model.Data.Type == LianAgentPortal.Commons.Constants.InsuranceTypeEnum.AUTOMOBILES)
+                                    {
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.AutomobilesTypeName" class="control-label"></label>
+                                            <input asp-for="Data.AutomobilesTypeName" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.AutomobileAttributesSeat" class="control-label"></label>
+                                            <input asp-for="Data.AutomobileAttributesSeat" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.AutomobileAttributesCategoryName" class="control-label"></label>
+                                            <input asp-for="Data.AutomobileAttributesCategoryName" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.PassengerFee" class="control-label"></label>
+                                            <input value='@Model.Data.PassengerFee.ToString("N0")' class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.PassengerCount" class="control-label"></label>
+                                            <input asp-for="Data.PassengerCount" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <label asp-for="Data.LiabilityInsuranceFee" class="control-label"></label>
+                                            <input value='@Model.Data.LiabilityInsuranceFee.ToString("N0")' class="form-control" disabled />
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+
+
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                @if (Model.Data.CertificateDigitalLinkToDownLoad != null)
+                {
+                    <a href="@Model.Data.CertificateDigitalLinkToDownLoad" target="_blank" class="ui-button ui-widget ui-corner-all pe-4 ps-4">  Tải giấy chứng nhận <i class="fa fa-cloud-download" aria-hidden="true"></i> </a>
+                }
+
+                <div class="ui-button ui-widget ui-corner-all pe-4 ps-4" data-bs-dismiss="modal"> Ok </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        const myModal = new bootstrap.Modal('#detail-modal', {
+            keyboard: true,
+            backdrop: "static"
+        })
+        myModal.show();
+        myModal._element.addEventListener('hidden.bs.modal', event => {
+            window.location.href = "/LianInsurance";
+        })
+
+
+    </script>
+}

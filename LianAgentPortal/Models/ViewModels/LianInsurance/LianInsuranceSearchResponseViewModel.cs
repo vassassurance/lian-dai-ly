@@ -1,4 +1,8 @@
-﻿namespace LianAgentPortal.Models.ViewModels.LianInsurance
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using LianAgentPortal.Commons.Constants;
+using System.ComponentModel.DataAnnotations;
+
+namespace LianAgentPortal.Models.ViewModels.LianInsurance
 {
     public class LianInsuranceSearchResponseViewModel
     {
@@ -14,13 +18,34 @@
     public class LianInsuranceSearchResponseDataViewModel
     {
         public string Transaction { get; set; }
-        public string Type { get; set; }
+
+        public InsuranceTypeEnum Type { get; set; }
+        public string TypeName
+        {
+            get
+            {
+                return Commons.Functions.ConvertInsuranceTypeEnumToString(this.Type);
+            }
+        }
+
         public string PackageName { get; set; }
         public string Fullname { get; set; }
         public string ExpiredDate { get; set; }
         public string EffectiveDate { get; set; }
         public string InsuranceCode { get; set; }
-        public string State { get; set; }
+
+        public LianInsuranceStateEnum State { get; set; }
+        public string StateName
+        {
+            get
+            {
+                var result = LianInsuranceStateConstants.Data.FirstOrDefault(item => item.TypeEnum == State);
+                if (result == null) return "";
+
+                return result.TypeNameIcon + " " + result.TypeName;
+            }
+        }
+
         public long Amount { get; set; }
         public long Sponsor { get; set; }
         public long Income { get; set; }

@@ -75,9 +75,18 @@ namespace LianAgentPortal.Commons
             if (status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\" title=\"ĐANG TÍNH PHÍ\"></i>";
 
             if (status == InsuranceDetailStatusEnum.SYNC_SUCCESS) return "<i class=\"fa fa-paper-plane text-success\" aria-hidden=\"true\" title=\"PHÁT HÀNH - THÀNH CÔNG\" ></i>";
-            if (status == InsuranceDetailStatusEnum.SYNC_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\" title=\"ĐANG PHÁT HÀNH\"></i>\"></i>";
+            if (status == InsuranceDetailStatusEnum.SYNC_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\" title=\"ĐANG PHÁT HÀNH\"></i>";
             if (status == InsuranceDetailStatusEnum.SYNC_ERROR) return "<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\" title=\"PHÁT HÀNH - LỖI\"></i>";
 
+            return "";
+        }
+
+        public static string ConvertInsuranceTypeEnumToString(InsuranceTypeEnum type)
+        {
+            if (type == InsuranceTypeEnum.FAMILY_BREADWINNER) return "<i class=\"fa fa-home\" aria-hidden=\"true\"></i> TRỤ CỘT GIA ĐÌNH";
+            if (type == InsuranceTypeEnum.PERSONAL_ACCIDENT) return "<i class=\"fa fa-universal-access\" aria-hidden=\"true\"></i> TAI NẠN CÁ NHÂN";
+            if (type == InsuranceTypeEnum.MOTORBIKE) return "<i class=\"fa fa-motorcycle\" aria-hidden=\"true\"></i> TNDS BB XE MÁY";
+            if (type == InsuranceTypeEnum.AUTOMOBILES) return "<i class=\"fa fa-car\" aria-hidden=\"true\"></i> TNDS BB OTO";
             return "";
         }
 

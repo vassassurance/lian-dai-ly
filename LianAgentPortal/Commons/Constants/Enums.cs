@@ -21,13 +21,7 @@
         AUTOMOBILES = 500
     }
 
-    public enum MotorTypeEnum
-    {
-        UNDER = 100,
-        OVER = 200,
-        TRICYCLE = 300,
-        OTHER = 400
-    }
+
 
     public enum PersonalAccidentRankEnum
     {

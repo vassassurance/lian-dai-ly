@@ -27,7 +27,7 @@ namespace LianAgentPortal.Controllers
             return View();
         }
 
-        public IActionResult GetListInsuranceMotorDetailJqgrid(ListLianInsuranceJqGridRequestViewModel gridRequest)
+        public IActionResult GetListLianInsuranceJqgrid(ListLianInsuranceJqGridRequestViewModel gridRequest)
         {
             LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey);
             JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel> result = new JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel>();
@@ -43,6 +43,13 @@ namespace LianAgentPortal.Controllers
             result.rows = source.ToList();
 
             return Ok(result);
+        }
+
+        public IActionResult Detail(string id)
+        {
+            LianInsuranceDetailResponseViewModel model = _lianApiService.GetDetailLianInsurance(id, base.CurrentUserApiKey);
+            model.Data.Transaction = id;
+            return View(model);
         }
     }
 }
