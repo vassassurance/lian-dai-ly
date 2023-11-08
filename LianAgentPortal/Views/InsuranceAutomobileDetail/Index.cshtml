@@ -1,6 +1,6 @@
 ﻿@model LianAgentPortal.Models.ViewModels.InsuranceMaster.InsuranceMasterViewModel
 @{
-    ViewData["Title"] = "Chi tiết bảng kê bảo hiểm TNDS XE MÁY";
+    ViewData["Title"] = "Chi tiết bảng kê bảo hiểm TNDS OTO";
 }
 <div class="row">
     <div class="col-sm-2 pe-sm-3 p-0">
@@ -44,8 +44,8 @@
                 @ViewData["Title"]
             </span>
         </div>
-        <table id="gridInsuranceMotorDetail" width="100%"></table>
-        <div id="pagerInsuranceMotorDetail"></div>
+        <table id="gridInsuranceAutomobileDetail" width="100%"></table>
+        <div id="pagerInsuranceAutomobileDetail"></div>
     </div>
 
 </div>
@@ -63,11 +63,11 @@
             return '<button type="button" class="float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> copy mã GD</button>';
         }
 
-        gridInsuranceMotorDetail = $("#gridInsuranceMotorDetail");
-        gridInsuranceMotorDetail.jqGrid({
-            url: '/InsuranceMotorDetail/GetListInsuranceMotorDetailJqgrid',
+        gridInsuranceAutomobileDetail = $("#gridInsuranceAutomobileDetail");
+        gridInsuranceAutomobileDetail.jqGrid({
+            url: '/InsuranceAutomobileDetail/GetListInsuranceAutomobileDetailJqgrid',
             beforeRequest: function () {
-                gridInsuranceMotorDetail.jqGrid('setGridParam', {
+                gridInsuranceAutomobileDetail.jqGrid('setGridParam', {
                     postData: {
                         InsuranceMasterId: @Html.Raw(Model.Id)
                     }
@@ -75,56 +75,52 @@
             },
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Id', 'Mã giao dịch', 'Biển số', 'Số khung', 'Số máy', 'Họ tên chủ xe', 
-                'Số điện thoại', 'CCCD/CMND', 'Ngày sinh', 'Tham gia NNTX',
-                'Loại xe', 'Hiệu lực từ', 'Hiệu lực đến', 'Phí', 'Kết quả API', 'Trạng thái'],
+            colNames: ['Id', 'PartnerTransaction', 'FullTypeName', 'LicensePlates', 'ChassisNumber', 'MachineNumber', 'Fullname',
+                'Phone', 'EffectiveDate', 'EndDate', 'Amount', 'StatusMessage', 'Status'
+            ],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
                 { name: 'PartnerTransaction', index: 'PartnerTransaction', align: "center", formatter: copiableCellFormatter, width: 100 },
+                { name: 'FullTypeName', index: 'FullTypeName', align: "center", width: 300},
                 { name: 'LicensePlates', index: 'LicensePlates', align: "center" },
                 { name: 'ChassisNumber', index: 'ChassisNumber', align: "center" },
                 { name: 'MachineNumber', index: 'MachineNumber', align: "center" },
                 { name: 'Fullname', index: 'Fullname' },
                 { name: 'Phone', index: 'Phone', align: "center", width: 100 },
-                { name: 'IdentityNumber', index: 'IdentityNumber', align: "center", hidden: true },
-                { name: 'Birhtday', index: 'Birhtday', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", hidden: true },
-                { name: 'PassengerInsurance', index: 'PassengerInsurance', align: "center", editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 50 },
-                { name: 'MotorType', index: 'MotorType', align: "center", width: 120 },
                 { name: 'EffectiveDate', index: 'EffectiveDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
                 { name: 'EndDate', index: 'EndDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
                 { name: 'Amount', index: 'Amount', formatter: 'integer', align: "right", width: 90 },
                 { name: 'StatusMessage', index: 'StatusMessage', align: "center", width: 200 },
                 { name: 'Status', index: 'Status', align: "center", width: 50 },
-
             ],
             rowNum: common.configs.mainGrid.getRowNum(),
             autowidth: true,
             rownumbers: true,
             rowList: common.configs.mainGrid.getRowList(),
-            pager: '#pagerInsuranceMotorDetail',
+            pager: '#pagerInsuranceAutomobileDetail',
             sortname: 'Id',
             hidegrid: false,
             viewrecords: true,
             height: common.configs.mainGrid.getHeight(),
             ondblClickRow: function (rowid) {
-                //window.location.pathname = ('/InsuranceMotorDetail/Edit/' + rowid);
+                //window.location.pathname = ('/InsuranceAutomobileDetail/Edit/' + rowid);
             }
-        }).navGrid('#pagerInsuranceMotorDetail', {
+        }).navGrid('#pagerInsuranceAutomobileDetail', {
             edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
-        }).navButtonAdd('#pagerInsuranceMotorDetail', {
+        }).navButtonAdd('#pagerInsuranceAutomobileDetail', {
             buttonicon: "ui-icon-plusthick",
             title: "Tạo mới",
             caption: "Tạo mới",
             position: "last",
             onClickButton: function () {
-                //window.location.pathname = ('/InsuranceMotorDetail/Create');
+                //window.location.pathname = ('/InsuranceAutomobileDetail/Create');
             }
         });
     </script>
 
     <script>
         resetGridsWidth = function () {
-            common.functions.resetGridWidth(gridInsuranceMotorDetail);
+            common.functions.resetGridWidth(gridInsuranceAutomobileDetail);
         }
 
         $(window).on("resize", resetGridsWidth);

@@ -5,7 +5,7 @@ using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using LianAgentPortal.Models.ViewModels.InsuranceMaster;
-using LianAgentPortal.Models.ViewModels.InsuranceMotorDetail;
+using LianAgentPortal.Models.ViewModels.InsuranceAutomobileDetail;
 using LianAgentPortal.Models.ViewModels.JqGrid;
 using LianAgentPortal.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -15,12 +15,12 @@ using Microsoft.EntityFrameworkCore;
 namespace LianAgentPortal.Controllers
 {
     [Authorize]
-    public class InsuranceMotorDetailController : Controller
+    public class InsuranceAutomobileDetailController : Controller
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _db;
         private readonly IHangeFireJobService _hangeFireJobService;
-        public InsuranceMotorDetailController(IMapper mapper, ApplicationDbContext db, IHangeFireJobService hangeFireJobService) 
+        public InsuranceAutomobileDetailController(IMapper mapper, ApplicationDbContext db, IHangeFireJobService hangeFireJobService) 
         {
             _mapper = mapper;
             _db = db;
@@ -36,11 +36,11 @@ namespace LianAgentPortal.Controllers
             return View(model);
         }
 
-        public IActionResult GetListInsuranceMotorDetailJqgrid(ListInsuranceMotorDetailJqGridRequestViewModel gridRequest)
+        public IActionResult GetListInsuranceAutomobileDetailJqgrid(ListInsuranceAutomobileDetailJqGridRequestViewModel gridRequest)
         {
-            List<InsuranceMotorDetail> data = _db.InsuranceMotorDetails.Where(item => item.InsuranceMasterId == gridRequest.InsuranceMasterId).ToList();
-            JqgridResponseViewModel<InsuranceMotorDetailViewModel> result = new JqgridResponseViewModel<InsuranceMotorDetailViewModel>();
-            IQueryable<InsuranceMotorDetailViewModel> source = _mapper.Map<List<InsuranceMotorDetailViewModel>>(data).AsQueryable();
+            List<InsuranceAutomobileDetail> data = _db.InsuranceAutomobileDetails.Where(item => item.InsuranceMasterId == gridRequest.InsuranceMasterId).ToList();
+            JqgridResponseViewModel<InsuranceAutomobileDetailViewModel> result = new JqgridResponseViewModel<InsuranceAutomobileDetailViewModel>();
+            IQueryable<InsuranceAutomobileDetailViewModel> source = _mapper.Map<List<InsuranceAutomobileDetailViewModel>>(data).AsQueryable();
 
             int totalrecord = source.Count();
             int page = totalrecord / gridRequest.rows + (totalrecord % gridRequest.rows > 0 ? 1 : 0);
@@ -63,18 +63,19 @@ namespace LianAgentPortal.Controllers
             var insuranceMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id);
             if (insuranceMaster == null) return RedirectToAction("Index", "InsuranceMaster");
 
-            List<InsuranceMotorDetail> details = _db.InsuranceMotorDetails.Where(item =>
+            List<InsuranceAutomobileDetail> details = _db.InsuranceAutomobileDetails.Where(item =>
                 (item.Status == InsuranceDetailStatusEnum.NEW || item.Status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_ERROR)
                 && item.InsuranceMasterId == id
             ).ToList();
 
+            
             for (int i = 0; i < details.Count; i++)
             {
                 details[i].Status = InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS;
             }
             _db.SaveChanges();
 
-            _hangeFireJobService.MakeJobCalculatePremiumMotorInsurances(id, details.Select(item => item.Id).ToList(), User.Identity.Name);
+            _hangeFireJobService.MakeJobCalculatePremiumAutomobileInsurances(id, details.Select(item => item.Id).ToList(), User.Identity.Name);
            
             return RedirectToAction("index", new { id = id });
         }
@@ -86,7 +87,7 @@ namespace LianAgentPortal.Controllers
             var insuranceMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id);
             if (insuranceMaster == null) return RedirectToAction("Index", "InsuranceMaster");
 
-            List<InsuranceMotorDetail> details = _db.InsuranceMotorDetails.Where(item =>
+            List<InsuranceAutomobileDetail> details = _db.InsuranceAutomobileDetails.Where(item =>
                 (item.Status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_SUCCESS)
                 && item.InsuranceMasterId == id
             ).ToList();

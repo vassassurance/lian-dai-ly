@@ -1,4 +1,4 @@
-﻿using LianAgentPortal.Commons.Enums;
+﻿using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using System.ComponentModel.DataAnnotations.Schema;
 

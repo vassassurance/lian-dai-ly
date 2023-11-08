@@ -3,7 +3,6 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Hangfire;
 using LianAgentPortal.Commons.Constants;
-using LianAgentPortal.Commons.Enums;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
@@ -22,6 +21,7 @@ namespace LianAgentPortal.Services
 {
     public interface ILianApiService
     {
+        CalculateInsurancePremiumResponse CalculatePremiumInsuranceAutomobileDetail(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey);
         CalculateInsurancePremiumResponse CalculatePremiumInsuranceMotorDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
         BuyInsuranceApiResponse BuyInsuranceMotor(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
         LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey);
@@ -172,12 +172,12 @@ namespace LianAgentPortal.Services
 
         }
 
-        public CalculateInsurancePremiumResponse CalculatePremiumInsuranceAutomobileDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey)
+        public CalculateInsurancePremiumResponse CalculatePremiumInsuranceAutomobileDetail(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey)
         {
             try
             {
                 string path = "/be/lian/calculateInsuranceFee";
-                CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor> model = _mapper.Map<CalculateInsurancePremium<CalculateInsurancePremiumDetailMotor>>(detail);
+                CalculateInsurancePremium<CalculateInsurancePremiumDetailAutomobile> model = _mapper.Map<CalculateInsurancePremium<CalculateInsurancePremiumDetailAutomobile>>(detail);
                 string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
                 string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
                 string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;

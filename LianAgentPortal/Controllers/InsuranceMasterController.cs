@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
 using LianAgentPortal.Commons.Constants;
-using LianAgentPortal.Commons.Enums;
+using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.Account;
@@ -80,15 +80,20 @@ namespace LianAgentPortal.Controllers
             var master = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id && item.UserCreate == User.Identity.Name);
             if (master == null) return RedirectToAction("index");
 
-            if (master.Type == Commons.Enums.InsuranceTypeEnum.MOTORBIKE)
+
+            if (master.Type == InsuranceTypeEnum.AUTOMOBILES)
+            {
+                return RedirectToAction("Index", "InsuranceAutomobileDetail", new { id = id });
+            }
+            else if(master.Type == InsuranceTypeEnum.MOTORBIKE)
             {
                 return RedirectToAction("Index", "InsuranceMotorDetail", new { id = id });
             }
-            else if (master.Type == Commons.Enums.InsuranceTypeEnum.FAMILY_BREADWINNER)
+            else if (master.Type == InsuranceTypeEnum.FAMILY_BREADWINNER)
             {
                 return RedirectToAction("Index", "InsuranceFamilyBreadwinnerDetail", new { id = id });
             }
-            else if (master.Type == Commons.Enums.InsuranceTypeEnum.PERSONAL_ACCIDENT)
+            else if (master.Type == InsuranceTypeEnum.PERSONAL_ACCIDENT)
             {
                 return RedirectToAction("Index", "InsurancePersonalAccidentDetail", new { id = id });
             }
@@ -120,25 +125,25 @@ namespace LianAgentPortal.Controllers
                 _db.InsuranceMasters.Add(insuranceMaster);
                 _db.SaveChanges();
 
-                if (model.Type == Commons.Enums.InsuranceTypeEnum.MOTORBIKE)
+                if (model.Type == InsuranceTypeEnum.MOTORBIKE)
                 {
                     List<InsuranceMotorDetail> details = GetInsuranceMotorDetailFromExcel(mainSheet, model, insuranceMaster.Id);
                     _db.InsuranceMotorDetails.AddRange(details);
                     insuranceMaster.TotalRows = details.Count;
                 }
-                else if (model.Type == Commons.Enums.InsuranceTypeEnum.FAMILY_BREADWINNER)
+                else if (model.Type == InsuranceTypeEnum.FAMILY_BREADWINNER)
                 {
                     List<InsuranceFamilyBreadwinnerDetail> details = GetInsuranceFamilyBreadwinnerDetailFromExcel(mainSheet, model, insuranceMaster.Id);
                     _db.InsuranceFamilyBreadwinnerDetails.AddRange(details);
                     insuranceMaster.TotalRows = details.Count;
                 }
-                else if (model.Type == Commons.Enums.InsuranceTypeEnum.PERSONAL_ACCIDENT)
+                else if (model.Type == InsuranceTypeEnum.PERSONAL_ACCIDENT)
                 {
                     List<InsurancePersonalAccidentDetail> details = GetInsurancePersonalAccidentDetailFromExcel(mainSheet, model, insuranceMaster.Id);
                     _db.InsurancePersonalAccidentDetails.AddRange(details);
                     insuranceMaster.TotalRows = details.Count;
                 }
-                else if (model.Type == Commons.Enums.InsuranceTypeEnum.AUTOMOBILES)
+                else if (model.Type == InsuranceTypeEnum.AUTOMOBILES)
                 {
                     List<InsuranceAutomobileDetail> details = GetInsuranceAutomobileDetailFromExcel(mainSheet, model, insuranceMaster.Id);
                     _db.InsuranceAutomobileDetails.AddRange(details);
@@ -188,35 +193,34 @@ namespace LianAgentPortal.Controllers
 
         private AutomobileTypeEnum GetAutomobileTypeFromString(string type)
         {
-            if (type.ToLower().Trim() == "xe không kinh doanh") return AutomobileTypeEnum.NON_COMMERCIAL;
-            if (type.ToLower().Trim() == "xe buýt") return AutomobileTypeEnum.BUS;
-            if (type.ToLower().Trim() == "xe kinh doanh") return AutomobileTypeEnum.COMMERCIAL;
-            if (type.ToLower().Trim() == "xe tải chở hàng") return AutomobileTypeEnum.DELIVERY_TRUCK;
-            if (type.ToLower().Trim() == "xe tải nhỏ") return AutomobileTypeEnum.MINI_VAN;
-            if (type.ToLower().Trim() == "xe taxi") return AutomobileTypeEnum.TAXI;
-            if (type.ToLower().Trim() == "xe tải container") return AutomobileTypeEnum.CONTAINER;
-            if (type.ToLower().Trim() == "xe chuyên chở đặc biệt") return AutomobileTypeEnum.SPECIALIZED;
-            if (type.ToLower().Trim() == "xe tập lái") return AutomobileTypeEnum.TRAINER;
-            if (type.ToLower().Trim() == "xe tải tập lái") return AutomobileTypeEnum.TRAINER_TRUCK;
+            var result = AutomobileTypeConstants.Data.FirstOrDefault(item => item.TypeName.ToLower() == type.ToLower().Trim());
+            if (result != null)
+            {
+                return result.TypeEnum;
+            }
 
             throw new InvalidDataException(type);
         }
         private AutomobileTypeCategoryEnum GetAutomobileTypeCategoryFromString(string type)
         {
-            if (type.ToLower().Trim() == "xe không kinh doanh") return AutomobileTypeCategoryEnum.NON_COMMERCIAL;
-            if (type.ToLower().Trim() == "xe kinh doanh") return AutomobileTypeCategoryEnum.COMMERCIAL;
-            if (type.ToLower().Trim() == "xe dưới 3 tấn") return AutomobileTypeCategoryEnum.UNDER_THREE_TONS;
-            if (type.ToLower().Trim() == "xe từ 3 đến 8 tấn") return AutomobileTypeCategoryEnum.THREE_TO_EIGHT_TONS;
-            if (type.ToLower().Trim() == "xe từ 3 đến 8 tấn") return AutomobileTypeCategoryEnum.EIGHT_TO_FIFTEEN_TONS;
-            if (type.ToLower().Trim() == "xe trên 15 tấn") return AutomobileTypeCategoryEnum.OVER_FIFTEEN_TONS;
-            if (type.ToLower().Trim() == "xe chở tiền") return AutomobileTypeCategoryEnum.MONEY_TRUCK;
-            if (type.ToLower().Trim() == "xe cứu thương") return AutomobileTypeCategoryEnum.AMBULANCE;
-            if (type.ToLower().Trim() == "xe tập lái") return AutomobileTypeCategoryEnum.TRAINER;
-            if (type.ToLower().Trim() == "xe tải tập lái") return AutomobileTypeCategoryEnum.TRAINER_TRUCK;
+            var result = AutomobileTypeCategoryConstants.Data.FirstOrDefault(item => item.TypeName.ToLower().Trim() == type.ToLower().Trim());
+            if (result != null)
+            {
+                return result.TypeEnum;
+            }
 
             throw new InvalidDataException(type);
         }
         
+        private GenderEnum GetGenderFromString(string gender)
+        {
+            if (gender == "1"
+                || gender.ToLower().Trim() == "nam")
+            {
+                return GenderEnum.MALE;
+            }
+            return GenderEnum.FEMALE;
+        }
 
         private List<InsuranceAutomobileDetail> GetInsuranceAutomobileDetailFromExcel(IXLWorksheet mainSheet, CreateInsuranceMasterViewModel model, long masterId)
         {
@@ -227,7 +231,7 @@ namespace LianAgentPortal.Controllers
             List<InsuranceAutomobileDetail> details = new List<InsuranceAutomobileDetail>();
             TimeCoverageObject defaultTimeCoverage = new TimeCoverageObject()
             {
-                Unit = Commons.Enums.TimeCoverageUnitEnum.YEAR,
+                Unit = TimeCoverageUnitEnum.YEAR,
                 Value = 1
             };
             for (int i = 2; i <= lastRowNumber; i++)
@@ -242,26 +246,27 @@ namespace LianAgentPortal.Controllers
                         LicensePlates = GetNumberCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
                         AutomobilesType = GetAutomobileTypeFromString(GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString())),
                         Attributes_Seat = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
-                        Attributes_Category = GetAutomobileTypeCategoryFromString(GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString())).
-                        //MotorType = GetMotorTypeFromString(GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString())),
-                        //ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
-                        //MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
-                        //Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
-                        //Birhtday = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        //Phone = GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
-                        //IdentityNumber = GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
-                        //PassengerInsurance = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()) == "1",
-                        //EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        //Status = Commons.Enums.InsuranceDetailStatusEnum.NEW,
-                        //AgentPhone = userRequest.LianAgent.RegistedPhone,
-                        //Language = "vi",
-                        //TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(defaultTimeCoverage),
-                        //PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
+                        Attributes_Category = GetAutomobileTypeCategoryFromString(GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString())),
+                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
+                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()),
+                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
+                        PassengerFee = long.Parse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString())),
+                        PassengerCount = long.Parse(GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString())),
+                        LiabilityInsuranceFee = long.Parse(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString())),
+                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString()),
+                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString()),
+                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(13).Value.ToString())),
+                        Description = null,
+                        EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(14).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        Status = InsuranceDetailStatusEnum.NEW,
+                        Language = "vi",
+                        TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(defaultTimeCoverage),
+                        PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
                     });
                 }
                 catch (Exception ex)
                 {
-
+                    ModelState.AddModelError(string.Empty, ex.Message);
                 }
 
             }
@@ -277,7 +282,7 @@ namespace LianAgentPortal.Controllers
             List<InsuranceMotorDetail> details = new List<InsuranceMotorDetail>();
             TimeCoverageObject defaultTimeCoverage = new TimeCoverageObject()
             {
-                Unit = Commons.Enums.TimeCoverageUnitEnum.YEAR,
+                Unit = TimeCoverageUnitEnum.YEAR,
                 Value = 1
             };
             for (int i = 2; i <= lastRowNumber; i++)
@@ -299,7 +304,7 @@ namespace LianAgentPortal.Controllers
                         IdentityNumber = GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
                         PassengerInsurance = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()) == "1",
                         EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        Status = Commons.Enums.InsuranceDetailStatusEnum.NEW,
+                        Status = InsuranceDetailStatusEnum.NEW,
                         AgentPhone = userRequest.LianAgent.RegistedPhone,
                         Language = "vi",
                         TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(defaultTimeCoverage),

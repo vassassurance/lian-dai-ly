@@ -1,5 +1,5 @@
 ﻿using LianAgentPortal.Commons.Attributes;
-using LianAgentPortal.Commons.Enums;
+using LianAgentPortal.Commons.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace LianAgentPortal.Models.ViewModels.InsuranceMaster

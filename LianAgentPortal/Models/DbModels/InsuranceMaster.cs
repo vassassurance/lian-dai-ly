@@ -1,4 +1,4 @@
-﻿using LianAgentPortal.Commons.Enums;
+﻿using LianAgentPortal.Commons.Constants;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 

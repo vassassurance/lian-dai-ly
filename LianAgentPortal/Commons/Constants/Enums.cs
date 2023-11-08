@@ -1,7 +1,4 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
-using System.Runtime.Serialization;
-
-namespace LianAgentPortal.Commons.Enums
+﻿namespace LianAgentPortal.Commons.Constants
 {
     public enum InsuranceDetailStatusEnum
     {
@@ -10,7 +7,7 @@ namespace LianAgentPortal.Commons.Enums
         CALCULATE_PREMIUM_INPROGRESS = 200,
         CALCULATE_PREMIUM_SUCCESS = 210,
         CALCULATE_PREMIUM_ERROR = -220,
-        
+
         SYNC_INPROGRESS = 300,
         SYNC_SUCCESS = 310,
         SYNC_ERROR = -310,
@@ -30,34 +27,6 @@ namespace LianAgentPortal.Commons.Enums
         OVER = 200,
         TRICYCLE = 300,
         OTHER = 400
-    }
-
-    public enum AutomobileTypeEnum
-    {
-        NON_COMMERCIAL = 100,
-        BUS = 200,
-        COMMERCIAL = 300,
-        DELIVERY_TRUCK = 400,
-        MINI_VAN = 500,
-        TAXI = 600,
-        CONTAINER = 700,
-        SPECIALIZED = 800,
-        TRAINER = 900,
-        TRAINER_TRUCK = 1000
-    }
-
-    public enum AutomobileTypeCategoryEnum
-    {
-        NON_COMMERCIAL = 100,
-        COMMERCIAL = 300,
-        UNDER_THREE_TONS = 400,
-        THREE_TO_EIGHT_TONS = 500, 
-        EIGHT_TO_FIFTEEN_TONS = 600,
-        OVER_FIFTEEN_TONS = 700,
-        MONEY_TRUCK = 800,
-        AMBULANCE = 900,
-        TRAINER = 1000,
-        TRAINER_TRUCK = 1100
     }
 
     public enum PersonalAccidentRankEnum
@@ -134,5 +103,4 @@ namespace LianAgentPortal.Commons.Enums
         /// </summary>
         UNKNOWN_ERROR = -1
     }
-
 }

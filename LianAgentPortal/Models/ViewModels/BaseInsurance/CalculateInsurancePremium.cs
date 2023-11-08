@@ -1,4 +1,5 @@
-﻿using LianAgentPortal.Commons.Enums;
+﻿using LianAgentPortal.Commons.Constants;
+using LianAgentPortal.Commons.Constants;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

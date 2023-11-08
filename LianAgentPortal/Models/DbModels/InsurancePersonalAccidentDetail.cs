@@ -1,4 +1,4 @@
-﻿using LianAgentPortal.Commons.Enums;
+﻿using LianAgentPortal.Commons.Constants;
 
 namespace LianAgentPortal.Models.DbModels
 {
