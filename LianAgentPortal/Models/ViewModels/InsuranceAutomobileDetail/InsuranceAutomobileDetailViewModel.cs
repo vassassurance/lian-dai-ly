@@ -14,9 +14,6 @@ namespace LianAgentPortal.Models.ViewModels.InsuranceAutomobileDetail
         public decimal? Amount { get; set; }
         public string LicensePlates { get; set; }
         public string FullTypeName { get; set; }
-        public string AutomobilesType { get; set; }
-        public string Attributes_Seat { get; set; }
-        public string Attributes_Category { get; set; }
         public string Fullname { get; set; }
         public string ChassisNumber { get; set; }
         public string MachineNumber { get; set; }

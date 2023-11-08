@@ -1,5 +1,4 @@
 ﻿using LianAgentPortal.Commons.Constants;
-using LianAgentPortal.Commons.Constants;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -43,12 +42,18 @@ namespace LianAgentPortal.Models.ViewModels.BaseInsurance
         public AutomobileTypeCategoryEnum Category { get; set; }
     }
 
+    public class AutomobileAttributesString
+    {
+        public string Seat { get; set; }
+        public string Category { get; set; }
+    }
+
     public class CalculateInsurancePremiumDetailAutomobile : ICalculateInsurancePremiumDetail
     {
-        public AutomobileTypeEnum AutomobilesType { get; set; }
+        public string AutomobilesType { get; set; }
         public long PassengerFee { get; set; }
         public int PassengerCount { get; set; }
-        public AutomobileAttributes Attributes { get; set; }
+        public AutomobileAttributesString Attributes { get; set; }
 
     }
 

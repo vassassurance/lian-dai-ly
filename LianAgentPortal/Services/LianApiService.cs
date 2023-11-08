@@ -6,6 +6,7 @@ using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
+using LianAgentPortal.Models.ViewModels.InsuranceAutomobileDetail;
 using LianAgentPortal.Models.ViewModels.InsuranceMotorDetail;
 using LianAgentPortal.Models.ViewModels.LianAgent;
 using LianAgentPortal.Models.ViewModels.LianInsurance;
@@ -22,8 +23,13 @@ namespace LianAgentPortal.Services
     public interface ILianApiService
     {
         CalculateInsurancePremiumResponse CalculatePremiumInsuranceAutomobileDetail(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey);
+        BuyInsuranceApiResponse BuyInsuranceAutomobile(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey);
+
+
         CalculateInsurancePremiumResponse CalculatePremiumInsuranceMotorDetail(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
         BuyInsuranceApiResponse BuyInsuranceMotor(InsuranceMotorDetail detail, LianAgentApiKey apiKey);
+        
+        
         LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey);
     }
     public class LianApiService : ILianApiService
@@ -39,6 +45,42 @@ namespace LianAgentPortal.Services
             _mapper = mapper;
             _backgroundJobs = backgroundJobs;
             _configuration = configuration;
+        }
+
+        public BuyInsuranceApiResponse BuyInsuranceAutomobile(InsuranceAutomobileDetail detail, LianAgentApiKey apiKey)
+        {
+            try
+            {
+                string path = "/be/lian/postpaid/buyInsurance";
+
+                BuyInsuranceAutomobileViewModel model = _mapper.Map<BuyInsuranceAutomobileViewModel>(detail);
+
+                string payload = System.Text.Json.JsonSerializer.Serialize(model, GeneralConstants.CamelCaseJsonSerializerOptions);
+                string xApiValidate = Commons.Functions.MD5Hash(path + "POST" + payload + apiKey.SecretKey);
+                string apiEndPoint = _configuration[AppSettingConfigKeyConstants.LianBaseApi] + path;
+
+                HttpClient client = new HttpClient();
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, apiEndPoint);
+                request.Headers.Add("x-api-client", apiKey.AppId);
+                request.Headers.Add("x-api-validate", xApiValidate);
+                request.Content = new StringContent(payload);
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage response = client.Send(request);
+                response.EnsureSuccessStatusCode();
+                var taskReadString = response.Content.ReadAsStringAsync();
+                taskReadString.Wait();
+                string responseBody = taskReadString.Result;
+                return JsonConvert.DeserializeObject<BuyInsuranceApiResponse>(responseBody);
+            }
+            catch (Exception ex)
+            {
+                return new BuyInsuranceApiResponse()
+                {
+                    Code = (long)BuyInsuranceResultEnum.UNKNOWN_ERROR,
+                    Message = ex.Message
+                };
+            }
         }
 
         public LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey)
@@ -194,7 +236,18 @@ namespace LianAgentPortal.Services
                 var taskReadString = response.Content.ReadAsStringAsync();
                 taskReadString.Wait();
                 string responseBody = taskReadString.Result;
-                return JsonConvert.DeserializeObject<CalculateInsurancePremiumResponse>(responseBody);
+
+                CalculateInsurancePremiumResponse result = JsonConvert.DeserializeObject<CalculateInsurancePremiumResponse>(responseBody);
+                if (result.Code == (long)CalculateInsurancePremiumResultEnum.SUCCESS && result.Data.TotalAmount <= 0)
+                {
+                    return new CalculateInsurancePremiumResponse()
+                    {
+                        Code = (long)CalculateInsurancePremiumResultEnum.ERROR,
+                        Message = "Không tìm thấy biểu phí"
+                    };
+                }
+                return result;
+
             }
             catch (Exception ex)
             {

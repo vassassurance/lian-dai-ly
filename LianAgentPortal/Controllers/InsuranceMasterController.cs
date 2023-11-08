@@ -229,15 +229,23 @@ namespace LianAgentPortal.Controllers
 
             int lastRowNumber = mainSheet.LastRowUsed().RowNumber();
             List<InsuranceAutomobileDetail> details = new List<InsuranceAutomobileDetail>();
-            TimeCoverageObject defaultTimeCoverage = new TimeCoverageObject()
+            string defaultTimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(new TimeCoverageObject()
             {
                 Unit = TimeCoverageUnitEnum.YEAR,
                 Value = 1
-            };
+            });
             for (int i = 2; i <= lastRowNumber; i++)
             {
                 try
                 {
+                    int passengerCount = 0;
+                    long passengerFee = 0;
+                    if (!int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()), out passengerCount))
+                    {
+                        passengerCount = 0;
+                        passengerFee = 10000;
+                    }
+
                     details.Add(new InsuranceAutomobileDetail()
                     {
                         InsuranceMasterId = masterId,
@@ -250,17 +258,17 @@ namespace LianAgentPortal.Controllers
                         Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
                         ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()),
                         MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
-                        PassengerFee = long.Parse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString())),
-                        PassengerCount = long.Parse(GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString())),
-                        LiabilityInsuranceFee = long.Parse(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString())),
-                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString()),
-                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString()),
-                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(13).Value.ToString())),
+                        PassengerFee = passengerFee,
+                        PassengerCount = passengerCount,
+                        LiabilityInsuranceFee = 0,
+                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
+                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
+                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString())),
                         Description = null,
-                        EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(14).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         Status = InsuranceDetailStatusEnum.NEW,
                         Language = "vi",
-                        TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(defaultTimeCoverage),
+                        TimeCoverage = defaultTimeCoverage,
                         PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
                     });
                 }

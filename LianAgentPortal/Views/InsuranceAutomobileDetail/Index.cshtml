@@ -41,7 +41,7 @@
     <div class="col-sm-10 p-sm-0 p-0">
         <div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
             <span class="ui-jqgrid-title">
-                @ViewData["Title"]
+                <i class="fa fa-car" aria-hidden="true"></i> @ViewData["Title"]
             </span>
         </div>
         <table id="gridInsuranceAutomobileDetail" width="100%"></table>
@@ -75,13 +75,15 @@
             },
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Id', 'PartnerTransaction', 'FullTypeName', 'LicensePlates', 'ChassisNumber', 'MachineNumber', 'Fullname',
-                'Phone', 'EffectiveDate', 'EndDate', 'Amount', 'StatusMessage', 'Status'
+            colNames: ['Id', 'Trạng Thái', 'Mã GD', 'Loại xe', 'Số chổ BH', 'Biển số', 'Số khung', 'Số Máy', 'Họ & Tên',
+                'Đt', 'Ngày bắt đầu', 'kết thúc', 'Tổng Phí', 'Thông báo'
             ],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
+                { name: 'Status', index: 'Status', align: "center", width: 50 },
                 { name: 'PartnerTransaction', index: 'PartnerTransaction', align: "center", formatter: copiableCellFormatter, width: 100 },
-                { name: 'FullTypeName', index: 'FullTypeName', align: "center", width: 300},
+                { name: 'FullTypeName', index: 'FullTypeName', align: "center", width: 300 },
+                { name: 'PassengerCount', index: 'PassengerCount', align: "center", width: 50 },
                 { name: 'LicensePlates', index: 'LicensePlates', align: "center" },
                 { name: 'ChassisNumber', index: 'ChassisNumber', align: "center" },
                 { name: 'MachineNumber', index: 'MachineNumber', align: "center" },
@@ -91,7 +93,7 @@
                 { name: 'EndDate', index: 'EndDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
                 { name: 'Amount', index: 'Amount', formatter: 'integer', align: "right", width: 90 },
                 { name: 'StatusMessage', index: 'StatusMessage', align: "center", width: 200 },
-                { name: 'Status', index: 'Status', align: "center", width: 50 },
+                
             ],
             rowNum: common.configs.mainGrid.getRowNum(),
             autowidth: true,

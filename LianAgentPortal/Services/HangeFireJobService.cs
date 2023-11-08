@@ -13,8 +13,10 @@ namespace LianAgentPortal.Services
 {
     public interface IHangeFireJobService
     {
-
+        //
         void MakeJobCalculatePremiumAutomobileInsurances(long masterId, List<long> ids, string username);
+        void MakeJobBuyAutomobileInsurances(long masterId, List<long> ids, string username);
+
 
         void MakeJobCalculatePremiumMotorInsurances(long masterId, List<long> ids, string username);
         void MakeJobBuyMotorInsurances(long masterId, List<long> ids, string username);
@@ -48,6 +50,25 @@ namespace LianAgentPortal.Services
                 );
             }
         }
+
+        public void MakeJobBuyAutomobileInsurances(long masterId, List<long> ids, string username)
+        {
+            var user = _db.Users.Include(item => item.LianAgent).FirstOrDefault(item => item.UserName == username);
+
+            if (user != null && user.LianAgent != null)
+            {
+                LianAgentApiKey apiKey = new LianAgentApiKey()
+                {
+                    AppId = user.LianAgent.AppId,
+                    SecretKey = user.LianAgent.SecretKey,
+                };
+
+                _backgroundJobs.Enqueue(() =>
+                    BuyInsuranceAutomobile(masterId, ids, apiKey)
+                );
+            }
+        }
+
 
         public void MakeJobCalculatePremiumMotorInsurances(long masterId, List<long> ids, string username)
         {
@@ -84,8 +105,40 @@ namespace LianAgentPortal.Services
                 );
             }
         }
+        
+        public void BuyInsuranceAutomobile(long masterId, List<long> ids, LianAgentApiKey apiKey)
+        {
+            var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
+            for (int i = 0; i < ids.Count; i++)
+            {
+                var itemToUpdate = _db.InsuranceAutomobileDetails.FirstOrDefault(item =>
+                    item.Id == ids[i]
+                    && item.InsuranceMasterId == masterId
+                    && item.Status == InsuranceDetailStatusEnum.SYNC_INPROGRESS
+                );
+                if (itemToUpdate != null)
+                {
+                    itemToUpdate.PartnerTransaction = Guid.NewGuid().ToString().Replace("-", "");
+                    BuyInsuranceApiResponse result = _lianApiService.BuyInsuranceAutomobile(itemToUpdate, apiKey);
+                    if (result.Code == (long)BuyInsuranceResultEnum.SUCCESS)
+                    {
+                        itemToUpdate.Status = InsuranceDetailStatusEnum.SYNC_SUCCESS;
+                        itemToUpdate.StatusMessage = result.Message;
+                        itemToUpdate.CertificateDigitalLink = (result.Data.CertificateDigitalLink != null && result.Data.CertificateDigitalLink.Count >= 1) ? result.Data.CertificateDigitalLink[0] : "";
+                        itemMaster.TotalIssuedRows += 1;
+                    }
+                    else
+                    {
+                        itemToUpdate.Status = InsuranceDetailStatusEnum.SYNC_ERROR;
+                        itemToUpdate.StatusMessage = result.Message;
+                    }
+                    _db.SaveChanges();
+                }
+            }
 
-
+            itemMaster.TotalIssuedRows = _db.InsuranceMotorDetails.AsNoTracking().Count(item => item.InsuranceMasterId == masterId && item.Status == InsuranceDetailStatusEnum.SYNC_SUCCESS);
+            _db.SaveChanges();
+        }
         public void BuyMotorInsurances(long masterId, List<long> ids, LianAgentApiKey apiKey)
         {
             var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
@@ -138,8 +191,10 @@ namespace LianAgentPortal.Services
                     {
                         itemToUpdate.Status = InsuranceDetailStatusEnum.CALCULATE_PREMIUM_SUCCESS;
                         itemToUpdate.Amount = result.Data.TotalAmount;
+                        itemToUpdate.LiabilityInsuranceFee = (long)result.Data.TotalAmount - (itemToUpdate.PassengerCount * itemToUpdate.PassengerFee);
                         itemToUpdate.StatusMessage = result.Message;
                         itemMaster.TotalPremium += result.Data.TotalAmount;
+
                     }
                     if (result.Code == (long)CalculateInsurancePremiumResultEnum.ERROR)
                     {

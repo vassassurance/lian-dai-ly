@@ -99,7 +99,7 @@ namespace LianAgentPortal.Controllers
             }
             _db.SaveChanges();
 
-            _hangeFireJobService.MakeJobBuyMotorInsurances(id, details.Select(item => item.Id).ToList(), User.Identity.Name);
+            _hangeFireJobService.MakeJobBuyAutomobileInsurances(id, details.Select(item => item.Id).ToList(), User.Identity.Name);
 
             return RedirectToAction("index", new { id = id });
         }

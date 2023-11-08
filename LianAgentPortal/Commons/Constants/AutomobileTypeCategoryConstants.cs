@@ -1,4 +1,7 @@
-﻿namespace LianAgentPortal.Commons.Constants
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.ComponentModel.DataAnnotations;
+
+namespace LianAgentPortal.Commons.Constants
 {
     public static class AutomobileTypeCategoryConstants
     {

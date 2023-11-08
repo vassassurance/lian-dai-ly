@@ -32,9 +32,7 @@ namespace LianAgentPortal.Controllers
             LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey);
             JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel> result = new JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel>();
             IQueryable<LianInsuranceSearchResponseDataViewModel> source = _mapper.Map<List<LianInsuranceSearchResponseDataViewModel>>(searchResult.Data).AsQueryable();
-
             
-
             int totalrecord = (gridRequest.page + 1) * gridRequest.rows;
             int page = totalrecord / gridRequest.rows + (totalrecord % gridRequest.rows > 0 ? 1 : 0);
             int totalPage = gridRequest.rows > 1 ? page : 1;
