@@ -40,6 +40,19 @@
                         <br />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
+
+                    <div class="mb-2">
+                        <label asp-for="Fullname" class="control-label"></label>
+                        <input asp-for="Fullname" class="form-control uppercase-input" />
+                        <span asp-validation-for="Fullname" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
                     <div class="mb-2">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" asp-for="IsAdmin">

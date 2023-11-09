@@ -10,6 +10,10 @@ namespace LianAgentPortal.Models.DbModels
         {
             GoogleAuthenticatorSecretCode = Guid.NewGuid().ToString().Split("-")[0];
         }
+
+        public string Fullname { get; set; }
+        public string Description { get; set; }
+
         [ForeignKey("LianAgent")]
         public long? LianAgentId { get; set; }
         public LianAgent LianAgent { get; set; }

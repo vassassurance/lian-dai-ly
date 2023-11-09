@@ -424,3 +424,6 @@ input[type="checkbox"].input-validation-error {
     height: 24px;
     border-radius: 5px;
 }
+.uppercase-input {
+    text-transform: uppercase;
+}

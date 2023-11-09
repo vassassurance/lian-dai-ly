@@ -62,11 +62,14 @@
             url: '/Account/GetListUserJqgrid',
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Id', 'UserName', 'Email xác nhận đổi pass', 'Ngày tạo', 'Ngày cập nhật', 'Admin', 'Còn hoạt động', 'Authenticator'],
+            colNames: ['Id', 'UserName', 'Họ tên', 'Ghi chú', 'Ngày tạo', 'Ngày cập nhật', 'Admin', 'Còn hoạt động', 'Authenticator'],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
                 { name: 'UserName', index: 'UserName' },
-                { name: 'EmailRecoverPassword', index: 'EmailRecoverPassword' },
+
+                { name: 'Fullname', index: 'Fullname' },
+                { name: 'Description', index: 'Description' },
+
                 { name: 'CreateDate', index: 'CreateDate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
                 { name: 'UpdateDate', index: 'UpdateDate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
                 { name: 'IsAdmin', index: 'IsAdmin', align: 'center', editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 30 },

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\deploy\daily.lian.vn</_PublishTargetUrl>
+    <History>True|2023-11-09T08:09:13.1033905Z;True|2023-11-09T15:03:43.7674199+07:00;True|2023-11-09T14:38:37.8607314+07:00;True|2023-11-09T14:33:49.2356477+07:00;True|2023-11-09T14:14:37.0966464+07:00;True|2023-11-09T12:34:19.2212666+07:00;True|2023-11-09T12:20:09.0960523+07:00;True|2023-11-09T12:02:57.0019629+07:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

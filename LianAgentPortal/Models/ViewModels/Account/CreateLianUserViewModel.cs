@@ -25,6 +25,14 @@ namespace LianAgentPortal.Models.ViewModels.Account
         [Compare("Password", ErrorMessage = "Không khớp")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
+        [Display(Name = "Họ tên")]
+        public string Fullname { get; set; }
+
+        [Display(Name = "Ghi chú")]
+        public string Description { get; set; }
+
+
         [Display(Name = "Quyền admin")]
         public bool IsAdmin { get; set; }
     }

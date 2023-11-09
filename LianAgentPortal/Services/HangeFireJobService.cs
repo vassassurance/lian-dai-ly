@@ -139,6 +139,7 @@ namespace LianAgentPortal.Services
             itemMaster.TotalIssuedRows = _db.InsuranceMotorDetails.AsNoTracking().Count(item => item.InsuranceMasterId == masterId && item.Status == InsuranceDetailStatusEnum.SYNC_SUCCESS);
             _db.SaveChanges();
         }
+
         public void BuyMotorInsurances(long masterId, List<long> ids, LianAgentApiKey apiKey)
         {
             var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);

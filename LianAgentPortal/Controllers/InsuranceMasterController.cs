@@ -68,7 +68,13 @@ namespace LianAgentPortal.Controllers
             if (ModelState.IsValid)
             {
                 long insertedId = InsertUploadToDatabase(model);
-                return RedirectToAction("ViewDetail", new { id = insertedId });
+
+                if (ModelState.IsValid)
+                {
+                    return RedirectToAction("ViewDetail", new { id = insertedId });
+                }    
+
+                
             }
             return View();
         }
@@ -238,10 +244,13 @@ namespace LianAgentPortal.Controllers
                 {
                     int passengerCount = 0;
                     long passengerFee = 0;
-                    if (!int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()), out passengerCount))
+
+                    long.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()), out passengerFee);
+                    int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()), out passengerCount);
+                    if (passengerCount == 0 || passengerFee == 0)
                     {
                         passengerCount = 0;
-                        passengerFee = 10000;
+                        passengerFee = 0;
                     }
 
                     details.Add(new InsuranceAutomobileDetail()
@@ -259,11 +268,11 @@ namespace LianAgentPortal.Controllers
                         PassengerFee = passengerFee,
                         PassengerCount = passengerCount,
                         LiabilityInsuranceFee = 0,
-                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
-                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
-                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString())),
+                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
+                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString()),
+                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString())),
                         Description = null,
-                        EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        EffectiveDate = mainSheet.Row(i).Cell(13).GetDateTime(),
                         Status = InsuranceDetailStatusEnum.NEW,
                         Language = "vi",
                         TimeCoverage = defaultTimeCoverage,

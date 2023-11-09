@@ -94,6 +94,8 @@ namespace LianAgentPortal.Controllers
                     LockoutEnabled = false,
                     CreateDate = DateTime.Now,
                     LianAgentId = model.AgentId,
+                    Fullname = model.Fullname.ToUpper(),
+                    Description = model.Description
                 };
                 var createTask = await _userManager.CreateAsync(dbUser, model.Password);
                 if (createTask.Succeeded)
@@ -137,7 +139,9 @@ namespace LianAgentPortal.Controllers
                         Id = dbUser.Id,
                         AgentId = dbUser.LianAgentId ?? 0,
                         IsActivated = dbUser.IsActivated,
-                        IsAdmin = await _userManager.IsInRoleAsync(dbUser, AuthenticatorConstants.ADMIN_ROLE)
+                        IsAdmin = await _userManager.IsInRoleAsync(dbUser, AuthenticatorConstants.ADMIN_ROLE),
+                        Fullname = dbUser.Fullname,
+                        Description= dbUser.Description
                     });
                 }
             }
@@ -153,8 +157,7 @@ namespace LianAgentPortal.Controllers
                 if (dbUser != null)
                 {
                     ViewBag.Username = dbUser.UserName;
-                    if ((dbUser.UserName == "admin789bdev" || dbUser.UserName == "admin789b")
-                        && !model.IsActivated)
+                    if (dbUser.UserName == "0962473427" && !model.IsActivated)
                     {
                         ModelState.AddModelError("", "Bạn không thể hủy user này");
                         return View(model);
@@ -163,6 +166,8 @@ namespace LianAgentPortal.Controllers
                     dbUser.IsActivated = model.IsActivated;
                     dbUser.UpdateDate = DateTime.Now;
                     dbUser.LianAgentId = model.AgentId;
+                    dbUser.Fullname = model.Fullname.ToUpper();
+                    dbUser.Description = model.Description;
 
                     if (model.Password != null && model.Password.Length > 0)
                     {

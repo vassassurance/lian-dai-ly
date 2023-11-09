@@ -20,10 +20,10 @@
                     <div class="mb-2">
                         <label asp-for="Type" class="control-label"></label>
                         <select asp-for="Type" class="form-control">
-                            <option value="@LianAgentPortal.Commons.Constants.InsuranceTypeEnum.AUTOMOBILES">XE OTO</option>
-                            <option value="@LianAgentPortal.Commons.Constants.InsuranceTypeEnum.MOTORBIKE">XE MÁY</option>
+                            <option value="@LianAgentPortal.Commons.Constants.InsuranceTypeEnum.AUTOMOBILES">TNDS BB xe OTO</option>
+@*                            <option value="@LianAgentPortal.Commons.Constants.InsuranceTypeEnum.MOTORBIKE">TNDS BB xe MÁY</option>
                             <option value="@LianAgentPortal.Commons.Constants.InsuranceTypeEnum.PERSONAL_ACCIDENT">TAI NẠN CÁ NHÂN</option>
-                            <option value="@LianAgentPortal.Commons.Constants.InsuranceTypeEnum.FAMILY_BREADWINNER">TRỤ CỘT GIA ĐÌNH</option>
+                            <option value="@LianAgentPortal.Commons.Constants.InsuranceTypeEnum.FAMILY_BREADWINNER">TRỤ CỘT GIA ĐÌNH</option>*@
                         </select>
                         <span asp-validation-for="Type" class="text-danger"></span>
                     </div>
@@ -38,10 +38,10 @@
                                 <i class="fa fa-download" aria-hidden="true"></i> File mẫu
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tndsbb-oto.xlsx"><i class="fa fa-download" aria-hidden="true"></i> XE MÁY</a></li>
-                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tndsbb-moto.xlsx"><i class="fa fa-download" aria-hidden="true"></i> XE MÁY</a></li>
-                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tncn.xlsx"><i class="fa fa-download" aria-hidden="true"></i> TAI NẠN CÁ NHÂN</a></li>
-                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tcgd.xlsx"><i class="fa fa-download" aria-hidden="true"></i> TRỤ CỘT GIA ĐÌNH</a></li>
+                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tndsbb-oto.xlsx?"><i class="fa fa-download" aria-hidden="true"></i> TNDS BB xe OTO </a></li>
+@*                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tndsbb-moto.xlsx?"><i class="fa fa-download" aria-hidden="true"></i> TNDS BB xe MÁY </a></li>
+                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tncn.xlsx?"><i class="fa fa-download" aria-hidden="true"></i> TAI NẠN CÁ NHÂN </a></li>
+                                <li><a class="dropdown-item" href="~/mau-upload-dai-ly-lian/mau-upload-dai-ly-lian-tcgd.xlsx?"><i class="fa fa-download" aria-hidden="true"></i> TRỤ CỘT GIA ĐÌNH </a></li>*@
                             </ul>
                         </div>
                     </div>

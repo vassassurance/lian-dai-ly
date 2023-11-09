@@ -9,6 +9,14 @@ namespace LianAgentPortal.Models.ViewModels.Account
         [Display(Name = "Username")]
         public string UserName { get; set; }
 
+
+        [Display(Name = "Họ tên")]
+        public string Fullname { get; set; }
+
+        [Display(Name = "Ghi chú")]
+        public string Description { get; set; }
+
+
         [Display(Name = "GG Authenticator")]
         public string QrCode { get; set; }
 

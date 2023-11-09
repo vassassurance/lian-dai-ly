@@ -32,7 +32,7 @@
                 </form>
 
                 <form asp-action="BuyInsurance" asp-route-id="@Model.Id">
-                    <button type="submit" class="w-100 ui-button ui-widget ui-corner-all"> Tính Phí & phát hành <i class="bi bi-send-check-fill"></i></button>
+                    <button type="submit" class="w-100 ui-button ui-widget ui-corner-all"> Phát hành <i class="bi bi-send-check-fill"></i></button>
                 </form>
                 
             </div>
@@ -109,15 +109,16 @@
             }
         }).navGrid('#pagerInsuranceAutomobileDetail', {
             edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
-        }).navButtonAdd('#pagerInsuranceAutomobileDetail', {
-            buttonicon: "ui-icon-plusthick",
-            title: "Tạo mới",
-            caption: "Tạo mới",
-            position: "last",
-            onClickButton: function () {
-                //window.location.pathname = ('/InsuranceAutomobileDetail/Create');
-            }
         });
+        //.navButtonAdd('#pagerInsuranceAutomobileDetail', {
+        //    buttonicon: "ui-icon-plusthick",
+        //    title: "Tạo mới",
+        //    caption: "Tạo mới",
+        //    position: "last",
+        //    onClickButton: function () {
+        //        //window.location.pathname = ('/InsuranceAutomobileDetail/Create');
+        //    }
+        //});
     </script>
 
     <script>
