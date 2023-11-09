@@ -69,7 +69,6 @@ namespace LianAgentPortal.Services
             }
         }
 
-
         public void MakeJobCalculatePremiumMotorInsurances(long masterId, List<long> ids, string username)
         {
             var user = _db.Users.Include(item => item.LianAgent).FirstOrDefault(item => item.UserName == username);
@@ -111,13 +110,20 @@ namespace LianAgentPortal.Services
             var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
             {
-                var itemToUpdate = _db.InsuranceAutomobileDetails.FirstOrDefault(item =>
+                var itemToUpdate = _db.InsuranceAutomobileDetails.Include(item => item.InsuranceMaster).FirstOrDefault(item =>
                     item.Id == ids[i]
                     && item.InsuranceMasterId == masterId
                     && item.Status == InsuranceDetailStatusEnum.SYNC_INPROGRESS
                 );
+
                 if (itemToUpdate != null)
                 {
+                    if (itemToUpdate.InsuranceMaster.IsDeleted)
+                    {
+                        itemToUpdate.Status = InsuranceDetailStatusEnum.SYNC_ERROR;
+                        itemToUpdate.StatusMessage = "Bảng kê bị xóa";
+                    }
+
                     itemToUpdate.PartnerTransaction = Guid.NewGuid().ToString().Replace("-", "");
                     BuyInsuranceApiResponse result = _lianApiService.BuyInsuranceAutomobile(itemToUpdate, apiKey);
                     if (result.Code == (long)BuyInsuranceResultEnum.SUCCESS)
@@ -125,6 +131,8 @@ namespace LianAgentPortal.Services
                         itemToUpdate.Status = InsuranceDetailStatusEnum.SYNC_SUCCESS;
                         itemToUpdate.StatusMessage = result.Message;
                         itemToUpdate.CertificateDigitalLink = (result.Data.CertificateDigitalLink != null && result.Data.CertificateDigitalLink.Count >= 1) ? result.Data.CertificateDigitalLink[0] : "";
+                        itemToUpdate.Transaction = result.Data.Transaction;
+                        itemToUpdate.InsuranceCode = result.Data.InsuranceCode;
                         itemMaster.TotalIssuedRows += 1;
                     }
                     else
@@ -145,13 +153,19 @@ namespace LianAgentPortal.Services
             var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
             {
-                var itemToUpdate = _db.InsuranceMotorDetails.FirstOrDefault(item => 
+                var itemToUpdate = _db.InsuranceMotorDetails.Include(item => item.InsuranceMaster).FirstOrDefault(item => 
                     item.Id == ids[i] 
                     && item.InsuranceMasterId == masterId
                     && item.Status == InsuranceDetailStatusEnum.SYNC_INPROGRESS
                 );
                 if (itemToUpdate != null)
                 {
+                    if (itemToUpdate.InsuranceMaster.IsDeleted)
+                    {
+                        itemToUpdate.Status = InsuranceDetailStatusEnum.SYNC_ERROR;
+                        itemToUpdate.StatusMessage = "Bảng kê bị xóa";
+                    }
+
                     itemToUpdate.PartnerTransaction = Guid.NewGuid().ToString().Replace("-", "");
                     BuyInsuranceApiResponse result = _lianApiService.BuyInsuranceMotor(itemToUpdate, apiKey);
                     if (result.Code == (long)BuyInsuranceResultEnum.SUCCESS)
@@ -159,6 +173,8 @@ namespace LianAgentPortal.Services
                         itemToUpdate.Status = InsuranceDetailStatusEnum.SYNC_SUCCESS;
                         itemToUpdate.StatusMessage = result.Message;
                         itemToUpdate.CertificateDigitalLink = (result.Data.CertificateDigitalLink!= null && result.Data.CertificateDigitalLink.Count >= 1) ? result.Data.CertificateDigitalLink[0] : "";
+                        itemToUpdate.Transaction = result.Data.Transaction;
+                        itemToUpdate.InsuranceCode = result.Data.InsuranceCode;
                         itemMaster.TotalIssuedRows += 1;
                     }
                     else
@@ -179,7 +195,7 @@ namespace LianAgentPortal.Services
             var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
             {
-                var itemToUpdate = _db.InsuranceAutomobileDetails.FirstOrDefault(item =>
+                var itemToUpdate = _db.InsuranceAutomobileDetails.Include(item => item.InsuranceMaster).FirstOrDefault(item =>
                     item.Id == ids[i]
                     && item.InsuranceMasterId == masterId
                     && item.Status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS
@@ -187,6 +203,14 @@ namespace LianAgentPortal.Services
 
                 if (itemToUpdate != null)
                 {
+                    if (itemToUpdate.InsuranceMaster.IsDeleted)
+                    {
+                        itemToUpdate.Status = InsuranceDetailStatusEnum.CALCULATE_PREMIUM_ERROR;
+                        itemToUpdate.StatusMessage = "Bảng kê bị xóa";
+                        _db.SaveChanges();
+                        continue;
+                    }
+
                     CalculateInsurancePremiumResponse result = _lianApiService.CalculatePremiumInsuranceAutomobileDetail(itemToUpdate, apiKey);
                     if (result.Code == (long)CalculateInsurancePremiumResultEnum.SUCCESS)
                     {
@@ -220,7 +244,7 @@ namespace LianAgentPortal.Services
             var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
             {
-                var itemToUpdate = _db.InsuranceMotorDetails.FirstOrDefault(item =>
+                var itemToUpdate = _db.InsuranceMotorDetails.Include(item => item.InsuranceMaster).FirstOrDefault(item =>
                     item.Id == ids[i]
                     && item.InsuranceMasterId == masterId
                     && item.Status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_INPROGRESS
@@ -228,6 +252,14 @@ namespace LianAgentPortal.Services
                 
                 if (itemToUpdate != null)
                 {
+                    if (itemToUpdate.InsuranceMaster.IsDeleted)
+                    {
+                        itemToUpdate.Status = InsuranceDetailStatusEnum.CALCULATE_PREMIUM_ERROR;
+                        itemToUpdate.StatusMessage = "Bảng kê bị xóa";
+                        _db.SaveChanges();
+                        continue;
+                    }
+
                     CalculateInsurancePremiumResponse result = _lianApiService.CalculatePremiumInsuranceMotorDetail(itemToUpdate, apiKey);
                     if (result.Code == (long)CalculateInsurancePremiumResultEnum.SUCCESS)
                     {

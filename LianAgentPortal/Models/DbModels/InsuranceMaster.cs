@@ -7,6 +7,7 @@ namespace LianAgentPortal.Models.DbModels
     [Index("UserCreate", IsUnique = false)]
     [Index("DateCreate", IsUnique = false)]
     [Index("Type", IsUnique = false)]
+    [Index("IsDeleted", IsUnique = false)]
     public class InsuranceMaster
     {
         public long Id { get; set; }
@@ -23,5 +24,6 @@ namespace LianAgentPortal.Models.DbModels
         public decimal TotalPremium { get; set; }
         public decimal TotalInsuranceAmount { get; set; }
         public InsuranceTypeEnum Type { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

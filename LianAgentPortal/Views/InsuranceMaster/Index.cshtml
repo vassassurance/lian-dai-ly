@@ -12,19 +12,28 @@
 
 @section Scripts {
     <script>
+        deletableCellFormatter = function (cellvalue, options, rowobject) {
+            return '<button type="button" onclick="window.location.href=\'/InsuranceMaster/Delete/' + rowobject.Id + '\'"  class="h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-trash" aria-hidden="true"></i> xóa </button>';
+        }
+
+
         gridUser = $("#gridInsuranceMaster");
         gridUser.jqGrid({
             url: '/InsuranceMaster/GetListInsuranceMasterJqgrid',
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Mã', 'Người Tạo', 'Ngày Tạo', 'Người Sửa', 'Ngày Sửa', 'Tổng Số Dòng', 'Số Dòng Đã Phát Hành', 'Tổng Phí', 'Tổng Tiền Bảo Hiểm', 'Loại Bảng Kê'],
+            colNames: ['Mã', 'Người Tạo', 'Ngày Tạo', 
+                //'Người Sửa', 'Ngày Sửa', 
+                'Tổng Số Dòng', 'Số Dòng Đã Phát Hành', 'Tổng Phí', 
+                'Tổng Tiền Bảo Hiểm', 'Loại Bảng Kê', 'Xóa'
+            ],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: false, key: true, align: "center", width: 50 },
 
                 { name: 'UserCreate', index: 'UserCreate', align: "center", width: 100 },
                 { name: 'DateCreate', index: 'DateCreate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center", width: 150 },
-                { name: 'LastUserUpdate', index: 'LastUserUpdate', width: 100 },
-                { name: 'LastDateUpdate', index: 'LastDateUpdate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center", width: 150 },
+                //{ name: 'LastUserUpdate', index: 'LastUserUpdate', width: 100 },
+                //{ name: 'LastDateUpdate', index: 'LastDateUpdate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center", width: 150 },
 
                 { name: 'TotalRows', index: 'TotalRows', formatter: 'integer', align: "right" },
                 { name: 'TotalIssuedRows', index: 'TotalIssuedRows', formatter: 'integer', align: "right" },
@@ -32,6 +41,7 @@
                 { name: 'TotalInsuranceAmount', index: 'TotalInsuranceAmount', formatter: 'integer', align: "right", width: 200 },
 
                 { name: 'Type', index: 'Type', align: "center" },
+                { name: 'Delete', index: 'Delete', align: "center", formatter: deletableCellFormatter, width: 100 },
             ],
             rowNum: common.configs.mainGrid.getRowNum(),
             autowidth: true,

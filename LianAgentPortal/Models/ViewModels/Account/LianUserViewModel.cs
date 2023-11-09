@@ -6,6 +6,9 @@ namespace LianAgentPortal.Models.ViewModels.Account
     {
         public string Id { get; set; }
 
+        [Display(Name = "Đại lý")]
+        public string AgentName { get; set; }
+
         [Display(Name = "Username")]
         public string UserName { get; set; }
 

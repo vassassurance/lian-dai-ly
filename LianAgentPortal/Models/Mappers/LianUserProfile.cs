@@ -8,7 +8,9 @@ namespace LianAgentPortal.Models.Mappers
     {
         public LianUserProfile()
         {
-            CreateMap<LianUser, LianUserViewModel>();
+            CreateMap<LianUser, LianUserViewModel>()
+                 .ForMember(dest => dest.AgentName, opt => opt.MapFrom(src => src.LianAgent != null ? src.LianAgent.Name : "" ))
+            ;
         }
     }
 }

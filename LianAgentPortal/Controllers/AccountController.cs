@@ -43,7 +43,7 @@ namespace LianAgentPortal.Controllers
         public async Task<IActionResult> GetListUserJqgridAsync(BaseJqgridRequestViewModel gridRequest)
         {
 
-            List<LianUser> data = _userManager.Users.ToList();
+            List<LianUser> data = _userManager.Users.Include(item => item.LianAgent).ToList();
             JqgridResponseViewModel<LianUserViewModel> result = new JqgridResponseViewModel<LianUserViewModel>();
             IQueryable<LianUserViewModel> source = _mapper.Map<List<LianUserViewModel>>(data).AsQueryable();
 

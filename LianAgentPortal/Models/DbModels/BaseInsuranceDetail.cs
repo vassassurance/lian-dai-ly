@@ -6,6 +6,7 @@ namespace LianAgentPortal.Models.DbModels
 {
     [Index("Type", IsUnique = false)]
     [Index("Status", IsUnique = false)]
+    [Index("Transaction", IsUnique = false)]
     public class BaseInsuranceDetail
     {
         public long Id { get; set; }
@@ -20,6 +21,8 @@ namespace LianAgentPortal.Models.DbModels
         public string StatusMessage { get; set; }
         public string AgentPhone { get; set; }
         public string PartnerTransaction { get; set; }
+        public string Transaction { get; set; }
+        public string InsuranceCode { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string TimeCoverage { get; set; }
         public decimal? Amount { get; set; }

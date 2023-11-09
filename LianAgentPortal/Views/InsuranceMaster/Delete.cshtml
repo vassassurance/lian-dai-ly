@@ -1,0 +1,67 @@
+﻿@model LianAgentPortal.Models.DbModels.InsuranceMaster
+@{
+    ViewData["Title"] = "Xóa bảng kê " + Model.Id;
+}
+
+<div class="modal fade" id="delete-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+                <h1 class="modal-title fs-5">@ViewData["Title"]</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="position-relative pb-3">
+                    <div class="position-absolute">Loại bảng kê:</div>
+                    <div class="text-end"><b>@Html.Raw(LianAgentPortal.Commons.Functions.ConvertInsuranceTypeEnumToString(Model.Type))</b></div>
+
+                    <div class="position-absolute">Tổng số dòng:</div>
+                    <div class="text-end"><b>@Model.TotalRows.ToString("N0")</b></div>
+
+                    <div class="position-absolute">Số dòng đã phát hành:</div>
+                    <div class="text-end"><b>@Model.TotalIssuedRows.ToString("N0")</b></div>
+
+                    <div class="position-absolute">File đã upload:</div>
+                    <div class="text-end"><a href="@Model.FilePath"> Tải về <i class="fa fa-cloud-download" aria-hidden="true"></i> </a></div>
+
+                </div>
+
+                <div class="mb-2">
+                    <label class="control-label">Tổng phí bảo hiểm:</label>
+                    <input value="@Model.TotalPremium.ToString("N0") VND" readonly class="form-control text-end" />
+                </div>
+
+                
+
+            </div>
+            <div class="modal-footer">
+                <div class="ui-button ui-widget ui-corner-all pe-4 ps-4" data-bs-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Hủy </div>
+                <form asp-action="Delete">
+                    
+                    <button type="submit" class="ui-button ui-widget ui-corner-all pe-4 ps-4" autofocus><i class="fa fa-trash" aria-hidden="true"></i> Xóa </button>
+                    <input type="hidden" name="Id" asp-for="Id" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const myModal = new bootstrap.Modal('#delete-modal', {
+            keyboard: true,
+            backdrop: "static"
+        })
+        myModal.show();
+        myModal._element.addEventListener('hidden.bs.modal', event => {
+            window.location.href = "/InsuranceMaster";
+        })
+
+    </script>
+}

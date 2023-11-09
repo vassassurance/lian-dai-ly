@@ -4,6 +4,7 @@ using LianAgentPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LianAgentPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231109145204_FeatureDeleteInsuranceMaster")]
+    partial class FeatureDeleteInsuranceMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +68,6 @@ namespace LianAgentPortal.Migrations
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
-
-                    b.Property<string>("InsuranceCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("InsuranceMasterId")
                         .HasColumnType("bigint");
@@ -154,9 +154,6 @@ namespace LianAgentPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdentityNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InsuranceCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("InsuranceMasterId")
@@ -291,9 +288,6 @@ namespace LianAgentPortal.Migrations
                     b.Property<string>("IdentityNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InsuranceCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<long>("InsuranceMasterId")
                         .HasColumnType("bigint");
 
@@ -373,9 +367,6 @@ namespace LianAgentPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InsuranceCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("InsuranceMasterId")
@@ -552,7 +543,7 @@ namespace LianAgentPortal.Migrations
                         {
                             Id = "00000000-0000-0000-0000-000000000001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4b02587-fc9f-46ca-ad03-9771df012ff9",
+                            ConcurrencyStamp = "bc8f8f1b-9eaf-40a2-8e8d-3f84237b9bb9",
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0962473427",
                             EmailConfirmed = true,
@@ -562,7 +553,7 @@ namespace LianAgentPortal.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "0962473427",
                             NormalizedUserName = "0962473427",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBos/oI4oChprgNDkabdG3QL+4Imu0hnVc8SzQIOtp4UNe18JNZPUwIpo+pN2CruCA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPN4oApYj/S5pnvJPK/qOcLPn4rZqqy/zWn2pPa9OvRpYmQOJodzZ7qVyaGsSi8yeA==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",

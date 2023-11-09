@@ -9,6 +9,9 @@ namespace LianAgentPortal.Models.ViewModels.InsuranceAutomobileDetail
         public string Status { get; set; }
         public string StatusMessage { get; set; }
         public string PartnerTransaction { get; set; }
+        public string Transaction { get; set; }
+        public string InsuranceCode { get; set; }
+        public string CertificateDigitalLink { get; set; }
         public DateTime EffectiveDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal? Amount { get; set; }

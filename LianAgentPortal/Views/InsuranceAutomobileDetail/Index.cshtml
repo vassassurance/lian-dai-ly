@@ -60,7 +60,18 @@
         }
 
         copiableCellFormatter = function (cellvalue, options, rowobject) {
-            return '<button type="button" class="float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> copy mã GD</button>';
+            if (cellvalue && cellvalue != '') {
+                return '<button type="button" class="h-100 float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> ' + cellvalue + '</button>';
+            }
+            return "";
+            
+        }
+
+        gcnCellFormatter = function (cellvalue, options, rowobject) {
+            if (cellvalue && cellvalue != '') {
+                return '<button type="button"onclick="window.open(\'' + cellvalue + '\')" class="h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
+            }
+            return "";
         }
 
         gridInsuranceAutomobileDetail = $("#gridInsuranceAutomobileDetail");
@@ -75,15 +86,20 @@
             },
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Id', 'Trạng Thái', 'Mã GD', 'Loại xe', 'Số chổ BH', 'Biển số', 'Số khung', 'Số Máy', 'Họ & Tên',
+            colNames: ['Id', 'Trạng Thái', 'Số GCN', 'GCN', 'Loại xe', 'Số chổ BH', 'Phí BH/1 chổ', 'Biển số', 'Số khung', 'Số Máy', 'Họ & Tên',
                 'Đt', 'Ngày bắt đầu', 'kết thúc', 'Tổng Phí', 'Thông báo'
             ],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
                 { name: 'Status', index: 'Status', align: "center", width: 50 },
-                { name: 'PartnerTransaction', index: 'PartnerTransaction', align: "center", formatter: copiableCellFormatter, width: 100 },
+                { name: 'InsuranceCode', index: 'InsuranceCode', align: "center", formatter: copiableCellFormatter, width: 100 },
+                { name: 'CertificateDigitalLink', index: 'CertificateDigitalLink', align: "center", formatter: gcnCellFormatter, width: 100 },
+                
                 { name: 'FullTypeName', index: 'FullTypeName', align: "center", width: 300 },
                 { name: 'PassengerCount', index: 'PassengerCount', align: "center", width: 50 },
+                { name: 'PassengerFee', index: 'PassengerFee', formatter: 'integer', align: "right", width: 100 },
+                
+
                 { name: 'LicensePlates', index: 'LicensePlates', align: "center" },
                 { name: 'ChassisNumber', index: 'ChassisNumber', align: "center" },
                 { name: 'MachineNumber', index: 'MachineNumber', align: "center" },

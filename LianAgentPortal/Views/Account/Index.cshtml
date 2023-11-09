@@ -37,7 +37,7 @@
         });
 
         googleAuthenticatorCellFormatter = function(cellvalue, options, rowobject) {
-            return '<button type="button" class="ui-button ui-widget ui-corner-all" onclick="getGgAuthenticator(\'' + rowobject.Id + '\')"> <span class="ui-icon ui-icon-locked"></span> GG Authenticator</button>'; 
+            return '<button type="button" class="h-100 ps-2 pe-2 ui-button ui-widget ui-corner-all" onclick="getGgAuthenticator(\'' + rowobject.Id + '\')"> <span class="ui-icon ui-icon-locked"></span> GG Authenticator</button>';
         }
 
         getGgAuthenticator = function(id) {
@@ -62,16 +62,17 @@
             url: '/Account/GetListUserJqgrid',
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Id', 'UserName', 'Họ tên', 'Ghi chú', 'Ngày tạo', 'Ngày cập nhật', 'Admin', 'Còn hoạt động', 'Authenticator'],
+            colNames: ['Id', 'Đại lý', 'UserName', 'Họ tên', 'Ghi chú', 'Ngày tạo', 'Ngày cập nhật', 'Admin', 'Còn hoạt động', 'Authenticator'],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
-                { name: 'UserName', index: 'UserName' },
+                { name: 'AgentName', index: 'AgentName', align: "center" },
+                { name: 'UserName', index: 'UserName', align: "center" },
 
                 { name: 'Fullname', index: 'Fullname' },
                 { name: 'Description', index: 'Description' },
 
-                { name: 'CreateDate', index: 'CreateDate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
-                { name: 'UpdateDate', index: 'UpdateDate', formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
+                { name: 'CreateDate', index: 'CreateDate', align: "center", formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
+                { name: 'UpdateDate', index: 'UpdateDate', align: "center", formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption },
                 { name: 'IsAdmin', index: 'IsAdmin', align: 'center', editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 30 },
                 { name: 'IsActivated', index: 'IsActivated', align: 'center', editable: true, edittype: 'checkbox', editoptions: { value: "True:False" }, formatter: "checkbox", formatoptions: { disabled: true }, width: 30 },
                 { name: 'Authenticator', index: 'Authenticator', sortable: false, formatter: googleAuthenticatorCellFormatter, width: 50},

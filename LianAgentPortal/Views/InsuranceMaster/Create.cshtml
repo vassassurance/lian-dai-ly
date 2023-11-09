@@ -27,6 +27,7 @@
                         </select>
                         <span asp-validation-for="Type" class="text-danger"></span>
                     </div>
+
                     <div class="mb-2">
                         <label asp-for="ReportFile" class="control-label"></label>
                         <input asp-for="ReportFile" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
@@ -45,12 +46,24 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="mb-2">
+                        <div class="alert alert-primary d-flex align-items-center" role="alert">
+
+                            <div>
+                                Để việc phát hành GCN được nhanh chóng, chúng tôi khuyến nghị quý đại lý upload tối đa <b>100 dòng mỗi file</b>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
 
                     <div class="ui-button ui-widget ui-corner-all pe-4 ps-4" data-bs-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Hủy </div>
-                    <button type="submit" class="ui-button ui-widget ui-corner-all pe-4 ps-4"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </button>
+                    <button id="btn-submit" type="submit" class="ui-button ui-widget ui-corner-all pe-4 ps-4"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </button>
 
+                    <button id="btn-loading" class="ui-button ui-widget ui-corner-all pe-4 ps-4 d-none" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status"> Lưu </span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -64,8 +77,9 @@
 
         lockForm = function() {
             $('#btn-submit').attr("disabled", true);
+            $('#btn-submit').addClass("d-none");
+            $('#btn-loading').removeClass("d-none");
             $("#upload-form :input").prop("readonly", "readonly");
-            $('#btn-submit').prop('value', 'Xin chờ trong giây lát...');
             NProgress.start();
         }
 

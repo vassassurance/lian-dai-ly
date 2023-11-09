@@ -6,6 +6,7 @@ namespace LianAgentPortal.Models.ViewModels.InsuranceMaster
 {
     public class CreateInsuranceMasterViewModel
     {
+        [Display(Name = "Nghiệp vụ")]
         public InsuranceTypeEnum Type { get; set; }
 
         [Required(ErrorMessage = "Hãy chọn file")]

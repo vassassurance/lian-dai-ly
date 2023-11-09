@@ -8,6 +8,8 @@ using LianAgentPortal.Models.ViewModels.LianInsurance;
 using LianAgentPortal.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace LianAgentPortal.Controllers
 {
@@ -30,6 +32,9 @@ namespace LianAgentPortal.Controllers
         public IActionResult GetListLianInsuranceJqgrid(ListLianInsuranceJqGridRequestViewModel gridRequest)
         {
             LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey);
+
+            searchResult = UpdateLicensePlates_IdentityNumber(searchResult);
+
             JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel> result = new JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel>();
             IQueryable<LianInsuranceSearchResponseDataViewModel> source = _mapper.Map<List<LianInsuranceSearchResponseDataViewModel>>(searchResult.Data).AsQueryable();
             
@@ -51,5 +56,23 @@ namespace LianAgentPortal.Controllers
             model.Data.Transaction = id;
             return View(model);
         }
+        //LicensePlates_IdentityNumber
+        private LianInsuranceSearchResponseViewModel UpdateLicensePlates_IdentityNumber(LianInsuranceSearchResponseViewModel result)
+        {
+            for (int i=0; i<result.Data.Count; i++)
+            {
+                if (result.Data[i].Type == Commons.Constants.InsuranceTypeEnum.AUTOMOBILES)
+                {
+                    var automobile = _db.InsuranceAutomobileDetails.AsNoTracking().FirstOrDefault(item => item.Transaction == result.Data[i].Transaction);
+                    if(automobile != null)
+                    {
+                        result.Data[i].LicensePlates_IdentityNumber = automobile.LicensePlates;
+                    }
+                }
+            }
+
+            return result;
+        }
+
     }
 }

@@ -38,7 +38,10 @@ namespace LianAgentPortal.Controllers
 
         public IActionResult GetListInsuranceMasterJqgrid(BaseJqgridRequestViewModel gridRequest)
         {
-            List<InsuranceMaster> data = _db.InsuranceMasters.Where(item => item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin).ToList();
+            List<InsuranceMaster> data = _db.InsuranceMasters.Where(item => 
+                (item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin)
+                && !item.IsDeleted
+            ).ToList();
             JqgridResponseViewModel<InsuranceMasterViewModel> result = new JqgridResponseViewModel<InsuranceMasterViewModel>();
             IQueryable<InsuranceMasterViewModel> source = _mapper.Map<List<InsuranceMasterViewModel>>(data).AsQueryable();
 
@@ -81,7 +84,10 @@ namespace LianAgentPortal.Controllers
 
         public ActionResult ViewDetail(int id) 
         {
-            var master = _db.InsuranceMasters.FirstOrDefault(item => item.Id == id && (item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin));
+            var master = _db.InsuranceMasters.FirstOrDefault(item => 
+                item.Id == id && 
+                (item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin)
+            );
             if (master == null) return RedirectToAction("index");
 
 
@@ -105,6 +111,40 @@ namespace LianAgentPortal.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Delete(int id)
+        {
+            var master = _db.InsuranceMasters.FirstOrDefault(item =>
+                item.Id == id &&
+                (item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin)
+            );
+            if (master == null) return RedirectToAction("index");
+            return View(master);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(DeleteInsuranceMasterViewModel model)
+        {
+            try
+            {
+                var master = _db.InsuranceMasters.FirstOrDefault(item =>
+                    item.Id == model.Id &&
+                    (item.UserCreate == User.Identity.Name || IsCurrentUserHasRoleAdmin)
+                );
+                if (master == null) return RedirectToAction("index");
+
+                master.IsDeleted = true;
+                master.LastDateUpdate = DateTime.Now;
+                master.LastUserUpdate = User.Identity.Name;
+                _db.SaveChanges();
+                TempData[TempDataConstants.TEMP_DATA_INFO_MESSAGE] = "Xóa thành công đơn " + master.Id;
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View();
+            }
+        }
 
         private long InsertUploadToDatabase(CreateInsuranceMasterViewModel model)
         {
@@ -119,12 +159,12 @@ namespace LianAgentPortal.Controllers
                     DateCreate = DateTime.Now,
                     UserCreate = User.Identity.Name,
                     FileName = model.ReportFile.FileName,
-                    FilePath = "",
                     Type = model.Type,
                     TotalInsuranceAmount = 0,
                     TotalIssuedRows = 0,
                     TotalPremium = 0,
                     TotalRows = 0,
+                    IsDeleted = false,
                 };
                 _db.InsuranceMasters.Add(insuranceMaster);
                 _db.SaveChanges();

@@ -27,7 +27,7 @@ namespace LianAgentPortal.Models.ViewModels.LianInsurance
                 return Commons.Functions.ConvertInsuranceTypeEnumToString(this.Type);
             }
         }
-
+        public string LicensePlates_IdentityNumber { get; set; }
         public string PackageName { get; set; }
         public string Fullname { get; set; }
         public string ExpiredDate { get; set; }
