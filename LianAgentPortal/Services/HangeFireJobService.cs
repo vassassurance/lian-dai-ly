@@ -107,7 +107,6 @@ namespace LianAgentPortal.Services
         
         public void BuyInsuranceAutomobile(long masterId, List<long> ids, LianAgentApiKey apiKey)
         {
-            var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
             {
                 var itemToUpdate = _db.InsuranceAutomobileDetails.Include(item => item.InsuranceMaster).FirstOrDefault(item =>
@@ -133,7 +132,7 @@ namespace LianAgentPortal.Services
                         itemToUpdate.CertificateDigitalLink = (result.Data.CertificateDigitalLink != null && result.Data.CertificateDigitalLink.Count >= 1) ? result.Data.CertificateDigitalLink[0] : "";
                         itemToUpdate.Transaction = result.Data.Transaction;
                         itemToUpdate.InsuranceCode = result.Data.InsuranceCode;
-                        itemMaster.TotalIssuedRows += 1;
+                        itemToUpdate.InsuranceMaster.TotalIssuedRows += 1;
                     }
                     else
                     {
@@ -144,13 +143,13 @@ namespace LianAgentPortal.Services
                 }
             }
 
-            itemMaster.TotalIssuedRows = _db.InsuranceMotorDetails.AsNoTracking().Count(item => item.InsuranceMasterId == masterId && item.Status == InsuranceDetailStatusEnum.SYNC_SUCCESS);
+            var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
+            itemMaster.TotalIssuedRows = _db.InsuranceAutomobileDetails.AsNoTracking().Count(item => item.InsuranceMasterId == masterId && item.Status == InsuranceDetailStatusEnum.SYNC_SUCCESS);
             _db.SaveChanges();
         }
 
         public void BuyMotorInsurances(long masterId, List<long> ids, LianAgentApiKey apiKey)
         {
-            var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
             {
                 var itemToUpdate = _db.InsuranceMotorDetails.Include(item => item.InsuranceMaster).FirstOrDefault(item => 
@@ -175,7 +174,7 @@ namespace LianAgentPortal.Services
                         itemToUpdate.CertificateDigitalLink = (result.Data.CertificateDigitalLink!= null && result.Data.CertificateDigitalLink.Count >= 1) ? result.Data.CertificateDigitalLink[0] : "";
                         itemToUpdate.Transaction = result.Data.Transaction;
                         itemToUpdate.InsuranceCode = result.Data.InsuranceCode;
-                        itemMaster.TotalIssuedRows += 1;
+                        itemToUpdate.InsuranceMaster.TotalIssuedRows += 1;
                     }
                     else
                     {
@@ -186,6 +185,7 @@ namespace LianAgentPortal.Services
                 }
             }
 
+            var itemMaster = _db.InsuranceMasters.FirstOrDefault(item => item.Id == masterId);
             itemMaster.TotalIssuedRows = _db.InsuranceMotorDetails.AsNoTracking().Count(item => item.InsuranceMasterId == masterId && item.Status == InsuranceDetailStatusEnum.SYNC_SUCCESS);
             _db.SaveChanges();
         }

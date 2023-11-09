@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Office.CustomUI;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.InsuranceMaster;
@@ -63,10 +64,21 @@ namespace LianAgentPortal.Controllers
             {
                 if (result.Data[i].Type == Commons.Constants.InsuranceTypeEnum.AUTOMOBILES)
                 {
-                    var automobile = _db.InsuranceAutomobileDetails.AsNoTracking().FirstOrDefault(item => item.Transaction == result.Data[i].Transaction);
+                    var automobile = _db.InsuranceAutomobileDetails.Include(item => item.InsuranceMaster).AsNoTracking().FirstOrDefault(item => item.Transaction == result.Data[i].Transaction);
                     if(automobile != null)
                     {
                         result.Data[i].LicensePlates_IdentityNumber = automobile.LicensePlates;
+                        result.Data[i].CertificateDigitalLink = automobile.CertificateDigitalLink;
+                        if (automobile.InsuranceMaster != null)
+                        {
+                            var user = _db.Users.Include(item => item.LianAgent).AsNoTracking().FirstOrDefault(item => item.UserName == automobile.InsuranceMaster.UserCreate);
+                            if (user != null)
+                            {
+                                result.Data[i].UserCreate = user.UserName + " - " + user.Fullname;
+                                result.Data[i].AgentName = user.LianAgent.Name;
+                            }
+
+                        }
                     }
                 }
             }

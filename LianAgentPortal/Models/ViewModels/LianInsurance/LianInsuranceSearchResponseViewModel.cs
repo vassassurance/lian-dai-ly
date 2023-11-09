@@ -17,6 +17,8 @@ namespace LianAgentPortal.Models.ViewModels.LianInsurance
 
     public class LianInsuranceSearchResponseDataViewModel
     {
+        public string AgentName { get; set; }
+        public string UserCreate { get; set; }
         public string Transaction { get; set; }
 
         public InsuranceTypeEnum Type { get; set; }
@@ -28,6 +30,7 @@ namespace LianAgentPortal.Models.ViewModels.LianInsurance
             }
         }
         public string LicensePlates_IdentityNumber { get; set; }
+        public string CertificateDigitalLink { get; set; }
         public string PackageName { get; set; }
         public string Fullname { get; set; }
         public string ExpiredDate { get; set; }
