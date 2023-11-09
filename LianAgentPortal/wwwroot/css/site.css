@@ -427,3 +427,7 @@ input[type="checkbox"].input-validation-error {
 .uppercase-input {
     text-transform: uppercase;
 }
+
+.custom-jqgrid-button {
+    font-size: 13px!important;
+}

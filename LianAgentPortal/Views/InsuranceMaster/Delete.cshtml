@@ -41,7 +41,7 @@
                 <div class="ui-button ui-widget ui-corner-all pe-4 ps-4" data-bs-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Hủy </div>
                 <form asp-action="Delete">
                     
-                    <button type="submit" class="ui-button ui-widget ui-corner-all pe-4 ps-4" autofocus><i class="fa fa-trash" aria-hidden="true"></i> Xóa </button>
+                    <button id="btn-submit" type="submit" class="ui-button ui-widget ui-corner-all pe-4 ps-4"><i class="fa fa-trash" aria-hidden="true"></i> Xóa </button>
                     <input type="hidden" name="Id" asp-for="Id" />
                 </form>
             </div>
@@ -61,6 +61,9 @@
         myModal.show();
         myModal._element.addEventListener('hidden.bs.modal', event => {
             window.location.href = "/InsuranceMaster";
+        })
+        myModal._element.addEventListener('shown.bs.modal', () => {
+            $("#btn-submit").focus();
         })
 
     </script>

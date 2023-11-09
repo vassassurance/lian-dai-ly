@@ -61,7 +61,7 @@
 
         copiableCellFormatter = function (cellvalue, options, rowobject) {
             if (cellvalue && cellvalue != '') {
-                return '<button type="button" class="h-100 float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> ' + cellvalue + '</button>';
+                return '<button type="button" class="custom-jqgrid-button h-100 float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> ' + cellvalue + '</button>';
             }
             return "";
             

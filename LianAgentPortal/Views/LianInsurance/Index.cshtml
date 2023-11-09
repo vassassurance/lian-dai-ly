@@ -15,7 +15,7 @@
 
         gcnCellFormatter = function (cellvalue, options, rowobject) {
             if (cellvalue && cellvalue != '') {
-                return '<button type="button"onclick="window.open(\'' + cellvalue + '\')" class="h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
+                return '<button type="button"onclick="window.open(\'' + cellvalue + '\')" class="custom-jqgrid-button h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
             }
             return "";
         }
@@ -36,10 +36,11 @@
             },
             mtype: 'GET',
             datatype: "json",
-            colNames: [ 'Người phát hành', 'GCN', 'Gói', 'Biển số/CMND/CCCD', 'Họ & Tên', 'Từ', 'Đến',
+            colNames: ['Transaction', 'Người phát hành', 'GCN', 'Gói', 'Biển số/CMND/CCCD', 'Họ & Tên', 'Từ', 'Đến',
                 'Trạng thái', 'Phí BH', 'Tài trợ', 'Thu nhập', 'Time', 'Tạo Lúc'
             ],
             colModel: [
+                { name: 'Transaction', index: 'Transaction', hidden: true, key: true },
                 { name: 'UserCreate', index: 'UserCreate', align: "center", sortable: false },
                 { name: 'CertificateDigitalLink', index: 'CertificateDigitalLink', align: "center", sortable: false, formatter: gcnCellFormatter, width: 100 },
                 { name: 'TypeName', index: 'TypeName', align: "center", sortable: false },
