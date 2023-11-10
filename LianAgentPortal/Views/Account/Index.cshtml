@@ -37,7 +37,7 @@
         });
 
         googleAuthenticatorCellFormatter = function(cellvalue, options, rowobject) {
-            return '<button type="button" class="custom-jqgrid-button h-100 ps-2 pe-2 ui-button ui-widget ui-corner-all" onclick="getGgAuthenticator(\'' + rowobject.Id + '\')"> <span class="ui-icon ui-icon-locked"></span> GG Authenticator</button>';
+            return '<button type="button" class="h-100 ps-2 pe-2 ui-button ui-widget ui-corner-all" onclick="getGgAuthenticator(\'' + rowobject.Id + '\')"> <span class="ui-icon ui-icon-locked"></span> GG Authenticator</button>';
         }
 
         getGgAuthenticator = function(id) {

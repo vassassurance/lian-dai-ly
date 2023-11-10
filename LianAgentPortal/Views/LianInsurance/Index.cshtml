@@ -15,7 +15,7 @@
 
         gcnCellFormatter = function (cellvalue, options, rowobject) {
             if (cellvalue && cellvalue != '') {
-                return '<button type="button"onclick="window.open(\'' + cellvalue + '\')" class="custom-jqgrid-button h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
+                return '<button type="button"onclick="window.open(\'' + cellvalue + '\')" class=" h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
             }
             return "";
         }
@@ -37,7 +37,7 @@
             mtype: 'GET',
             datatype: "json",
             colNames: ['Transaction', 'Người phát hành', 'GCN', 'Gói', 'Biển số/CMND/CCCD', 'Họ & Tên', 'Từ', 'Đến',
-                'Trạng thái', 'Phí BH', 'Tài trợ', 'Thu nhập', 'Time', 'Tạo Lúc'
+                'Trạng thái', 'Phí BB net', 'Thuế BB vat', 'Phí NNTX', 'Tổng phí', 'Time', 'Tạo Lúc'
             ],
             colModel: [
                 { name: 'Transaction', index: 'Transaction', hidden: true, key: true },
@@ -54,9 +54,16 @@
 
                 
                 { name: 'StateName', index: 'StateName', align: "center", sortable: false, width: 100 },
+
+//result.Data[i].NetAmount = netAmount;
+//result.Data[i].VatAmount = vatAmount;
+//result.Data[i].NntxAmount = nntxAmount;
+                { name: 'NetAmount', NetAmount: 'Amount', align: "center", sortable: false, formatter: 'integer', align: "right", width: 80 },
+                { name: 'VatAmount', index: 'VatAmount', align: "center", sortable: false, formatter: 'integer', align: "right", width: 80 },
+                { name: 'NntxAmount', index: 'NntxAmount', align: "center", sortable: false, formatter: 'integer', align: "right", width: 80 },
+
                 { name: 'Amount', index: 'Amount', align: "center", sortable: false, formatter: 'integer', align: "right", width: 80 },
-                { name: 'Sponsor', index: 'Sponsor', align: "center", sortable: false, formatter: 'integer', align: "right", width: 70 },
-                { name: 'Income', index: 'Income', align: "center", sortable: false, formatter: 'integer', align: "right", width: 70 },
+
                 { name: 'Time', index: 'Time', align: "center", sortable: false, hidden: true },
                 { name: 'CreatedAt', index: 'CreatedAt', align: "center", formatter: "date", formatoptions: common.configs.grid.datetimeFormatOption, align: "center", width: 150 }
             ],

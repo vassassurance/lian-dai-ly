@@ -48,6 +48,9 @@ namespace LianAgentPortal.Models.ViewModels.LianInsurance
                 return result.TypeNameIcon + " " + result.TypeName;
             }
         }
+        public long NetAmount { get; set; }
+        public long VatAmount { get; set; }
+        public long NntxAmount { get; set; }
 
         public long Amount { get; set; }
         public long Sponsor { get; set; }

@@ -34,7 +34,7 @@ namespace LianAgentPortal.Controllers
         {
             LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey);
 
-            searchResult = UpdateLicensePlates_IdentityNumber(searchResult);
+            searchResult = UpdateLocalFields(searchResult);
 
             JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel> result = new JqgridResponseViewModel<LianInsuranceSearchResponseDataViewModel>();
             IQueryable<LianInsuranceSearchResponseDataViewModel> source = _mapper.Map<List<LianInsuranceSearchResponseDataViewModel>>(searchResult.Data).AsQueryable();
@@ -58,7 +58,7 @@ namespace LianAgentPortal.Controllers
             return View(model);
         }
         //LicensePlates_IdentityNumber
-        private LianInsuranceSearchResponseViewModel UpdateLicensePlates_IdentityNumber(LianInsuranceSearchResponseViewModel result)
+        private LianInsuranceSearchResponseViewModel UpdateLocalFields(LianInsuranceSearchResponseViewModel result)
         {
             for (int i=0; i<result.Data.Count; i++)
             {
@@ -69,6 +69,15 @@ namespace LianAgentPortal.Controllers
                     {
                         result.Data[i].LicensePlates_IdentityNumber = automobile.LicensePlates;
                         result.Data[i].CertificateDigitalLink = automobile.CertificateDigitalLink;
+
+                        long nntxAmount = automobile.PassengerCount * automobile.PassengerFee;
+                        long netAmount = (long)((automobile.Amount - nntxAmount) / 100 * 90);
+                        long vatAmount = (long)automobile.Amount - netAmount - nntxAmount;
+
+                        result.Data[i].NetAmount = netAmount;
+                        result.Data[i].VatAmount = vatAmount;
+                        result.Data[i].NntxAmount = nntxAmount;
+
                         if (automobile.InsuranceMaster != null)
                         {
                             var user = _db.Users.Include(item => item.LianAgent).AsNoTracking().FirstOrDefault(item => item.UserName == automobile.InsuranceMaster.UserCreate);
