@@ -282,11 +282,15 @@ namespace LianAgentPortal.Controllers
             {
                 try
                 {
+                    string fullTypeName = GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString());
+                    AutomobilesFullTypeObject automobilesFullType = AutomobilesFullTypeConstants.Data.FirstOrDefault(item => item.DisplayName.ToLower().Trim() == fullTypeName.ToLower().Trim());
+                    if (automobilesFullType == null) continue;
+
                     int passengerCount = 0;
                     long passengerFee = 0;
 
-                    long.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()), out passengerFee);
-                    int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()), out passengerCount);
+                    long.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()), out passengerFee);
+                    int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()), out passengerCount);
                     if (passengerCount == 0 || passengerFee == 0)
                     {
                         passengerCount = 0;
@@ -299,20 +303,20 @@ namespace LianAgentPortal.Controllers
                         Type = model.Type,
                         Amount = null,
                         LicensePlates = GetNumberCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
-                        AutomobilesType = GetAutomobileTypeFromString(GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString())),
-                        Attributes_Seat = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
-                        Attributes_Category = GetAutomobileTypeCategoryFromString(GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString())),
-                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
-                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()),
-                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
+                        AutomobilesType = automobilesFullType.AutomobileType,
+                        Attributes_Seat = automobilesFullType.Attributes_Seat,
+                        Attributes_Category = automobilesFullType.Attributes_Category,
+                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
+                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
+                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
                         PassengerFee = passengerFee,
                         PassengerCount = passengerCount,
                         LiabilityInsuranceFee = 0,
-                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
-                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString()),
-                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString())),
+                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
+                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
+                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString())),
                         Description = null,
-                        EffectiveDate = mainSheet.Row(i).Cell(13).GetDateTime(),
+                        EffectiveDate = mainSheet.Row(i).Cell(11).GetDateTime(),
                         Status = InsuranceDetailStatusEnum.NEW,
                         Language = "vi",
                         TimeCoverage = defaultTimeCoverage,

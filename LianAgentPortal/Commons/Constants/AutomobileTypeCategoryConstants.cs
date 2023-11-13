@@ -16,7 +16,8 @@ namespace LianAgentPortal.Commons.Constants
             new AutomobileTypeCategoryObject() { TypeEnum = AutomobileTypeCategoryEnum.MONEY_TRUCK,  TypeName = "Xe chở tiền" },
             new AutomobileTypeCategoryObject() { TypeEnum = AutomobileTypeCategoryEnum.AMBULANCE,  TypeName = "Xe cứu thương" },
             new AutomobileTypeCategoryObject() { TypeEnum = AutomobileTypeCategoryEnum.TRAINER,  TypeName = "Xe tập lái" },
-            new AutomobileTypeCategoryObject() { TypeEnum = AutomobileTypeCategoryEnum.TRAINER_TRUCK,  TypeName = "Xe tải tập lái" }
+            new AutomobileTypeCategoryObject() { TypeEnum = AutomobileTypeCategoryEnum.TRAINER_TRUCK,  TypeName = "Xe tải tập lái" },
+            new AutomobileTypeCategoryObject() { TypeEnum = AutomobileTypeCategoryEnum.ALL,  TypeName = "Các loại" }
         };
 
     }
@@ -32,7 +33,8 @@ namespace LianAgentPortal.Commons.Constants
         MONEY_TRUCK = 800,
         AMBULANCE = 900,
         TRAINER = 1000,
-        TRAINER_TRUCK = 1100
+        TRAINER_TRUCK = 1100,
+        ALL = 1200
     }
 
     public class AutomobileTypeCategoryObject

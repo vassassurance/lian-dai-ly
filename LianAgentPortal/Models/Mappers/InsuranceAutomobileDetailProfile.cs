@@ -47,29 +47,18 @@ namespace LianAgentPortal.Models.Mappers
             };
         }
 
-        private string GetAutomobilesTypeName(AutomobileTypeEnum automobilesType)
-        {
-            var type = AutomobileTypeConstants.Data.FirstOrDefault(item => item.TypeEnum == automobilesType);
-            if (type != null)
-            {
-                return type.TypeName;
-            }
-            return "";
-        }
-
-        private string GetAttributesCategoryName (AutomobileTypeCategoryEnum automobileTypeCategory)
-        {
-            var type = AutomobileTypeCategoryConstants.Data.FirstOrDefault(item => item.TypeEnum == automobileTypeCategory);
-            if (type != null)
-            {
-                return type.TypeName;
-            }
-            return "";
-        }
-
         private string MapFullTypeName(InsuranceAutomobileDetail source)
         {
-            return GetAutomobilesTypeName(source.AutomobilesType) + " - " + source.Attributes_Seat + " chổ - " + GetAttributesCategoryName(source.Attributes_Category);
+            var result = AutomobilesFullTypeConstants.Data.FirstOrDefault(item =>
+                item.AutomobileType == source.AutomobilesType
+                && item.Attributes_Seat == source.Attributes_Seat
+                && item.Attributes_Category == source.Attributes_Category
+            );
+            if (result != null)
+            {
+                return result.DisplayName;
+            }
+            return "";
         }
 
     }
