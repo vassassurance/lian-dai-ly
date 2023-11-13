@@ -51,6 +51,18 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Update="wwwroot\mau-upload-dai-ly-lian\mau-upload-dai-ly-lian-tcgd.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\mau-upload-dai-ly-lian\mau-upload-dai-ly-lian-tncn.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\mau-upload-dai-ly-lian\mau-upload-dai-ly-lian-tndsbb-moto.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\mau-upload-dai-ly-lian\mau-upload-dai-ly-lian-tndsbb-oto.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

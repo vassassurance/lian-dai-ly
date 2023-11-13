@@ -71,8 +71,8 @@ namespace LianAgentPortal.Controllers
                         result.Data[i].CertificateDigitalLink = automobile.CertificateDigitalLink;
 
                         long nntxAmount = automobile.PassengerCount * automobile.PassengerFee;
-                        long netAmount = (long)((automobile.Amount - nntxAmount) / 100 * 90);
-                        long vatAmount = (long)automobile.Amount - netAmount - nntxAmount;
+                        long netAmount = (long)((automobile.LiabilityInsuranceFee) / 11 * 10);
+                        long vatAmount = (long)automobile.LiabilityInsuranceFee - netAmount;
 
                         result.Data[i].NetAmount = netAmount;
                         result.Data[i].VatAmount = vatAmount;
