@@ -87,14 +87,14 @@
 
 
 
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Dưới 3 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.UNDER_THREE_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Từ 3 đến 8 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.THREE_TO_EIGHT_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Trên 8 đến 15 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.EIGHT_TO_FIFTEEN_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Trên 15 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.OVER_FIFTEEN_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Dưới 3 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "2", Attributes_Category = AutomobileTypeCategoryEnum.UNDER_THREE_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Từ 3 đến 8 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "3", Attributes_Category = AutomobileTypeCategoryEnum.THREE_TO_EIGHT_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Trên 8 đến 15 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "3", Attributes_Category = AutomobileTypeCategoryEnum.EIGHT_TO_FIFTEEN_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHỞ HÀNG, XE TẢI Trên 15 tấn", AutomobileType = AutomobileTypeEnum.DELIVERY_TRUCK, Attributes_Seat = "3", Attributes_Category = AutomobileTypeCategoryEnum.OVER_FIFTEEN_TONS },
 
 
-            new AutomobilesFullTypeObject() { DisplayName = "Vừa chở hàng và người (Mini van, Pickup) Không KD", AutomobileType = AutomobileTypeEnum.MINI_VAN, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.NON_COMMERCIAL },
-            new AutomobilesFullTypeObject() { DisplayName = "Vừa chở hàng và người (Mini van, Pickup) Kinh doanh", AutomobileType = AutomobileTypeEnum.MINI_VAN, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.COMMERCIAL },
+            new AutomobilesFullTypeObject() { DisplayName = "Vừa chở hàng và người (Mini van, Pickup) Không KD", AutomobileType = AutomobileTypeEnum.MINI_VAN, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.NON_COMMERCIAL },
+            new AutomobilesFullTypeObject() { DisplayName = "Vừa chở hàng và người (Mini van, Pickup) Kinh doanh", AutomobileType = AutomobileTypeEnum.MINI_VAN, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.COMMERCIAL },
 
 
             new AutomobilesFullTypeObject() { DisplayName = "XE TAXI Dưới 06 chỗ", AutomobileType = AutomobileTypeEnum.TAXI, Attributes_Seat = "UNDER_SIX", Attributes_Category = AutomobileTypeCategoryEnum.COMMERCIAL },
@@ -111,15 +111,15 @@
             new AutomobilesFullTypeObject() { DisplayName = "XE TAXI 16 chỗ", AutomobileType = AutomobileTypeEnum.TAXI, Attributes_Seat = "16", Attributes_Category = AutomobileTypeCategoryEnum.COMMERCIAL },
 
 
-            new AutomobilesFullTypeObject() { DisplayName = "XE ĐẦU KÉO Các loại", AutomobileType = AutomobileTypeEnum.CONTAINER, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.ALL },
+            new AutomobilesFullTypeObject() { DisplayName = "XE ĐẦU KÉO Các loại", AutomobileType = AutomobileTypeEnum.CONTAINER, Attributes_Seat = "3", Attributes_Category = AutomobileTypeCategoryEnum.ALL },
 
 
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Dưới 3 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.UNDER_THREE_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Từ 3 đến 8 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.THREE_TO_EIGHT_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Trên 8 đến 15 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.EIGHT_TO_FIFTEEN_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Trên 15 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.OVER_FIFTEEN_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Xe cứu thương", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.AMBULANCE },
-            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Xe chở tiền", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.MONEY_TRUCK },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Dưới 3 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "2", Attributes_Category = AutomobileTypeCategoryEnum.UNDER_THREE_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Từ 3 đến 8 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "3", Attributes_Category = AutomobileTypeCategoryEnum.THREE_TO_EIGHT_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Trên 8 đến 15 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "3", Attributes_Category = AutomobileTypeCategoryEnum.EIGHT_TO_FIFTEEN_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Trên 15 tấn", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "3", Attributes_Category = AutomobileTypeCategoryEnum.OVER_FIFTEEN_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Xe cứu thương", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.AMBULANCE },
+            new AutomobilesFullTypeObject() { DisplayName = "XE Ô TÔ CHUYÊN DÙNG Xe chở tiền", AutomobileType = AutomobileTypeEnum.SPECIALIZED, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.MONEY_TRUCK },
 
 
             new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI (CHỞ NGƯỜI) 04 chỗ", AutomobileType = AutomobileTypeEnum.TRAINER, Attributes_Seat = "4", Attributes_Category = AutomobileTypeCategoryEnum.COMMERCIAL },
@@ -152,10 +152,10 @@
             new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI (CHỞ NGƯỜI) 60 chỗ", AutomobileType = AutomobileTypeEnum.TRAINER, Attributes_Seat = "60", Attributes_Category = AutomobileTypeCategoryEnum.COMMERCIAL },
 
 
-            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Dưới 3 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.UNDER_THREE_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Từ 3 đến 8 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.THREE_TO_EIGHT_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Trên 8 đến 15 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.EIGHT_TO_FIFTEEN_TONS },
-            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Trên 15 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "", Attributes_Category = AutomobileTypeCategoryEnum.OVER_FIFTEEN_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Dưới 3 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.UNDER_THREE_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Từ 3 đến 8 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.THREE_TO_EIGHT_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Trên 8 đến 15 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.EIGHT_TO_FIFTEEN_TONS },
+            new AutomobilesFullTypeObject() { DisplayName = "XE TẬP LÁI CHỞ HÀNG (XE TẢI) Trên 15 tấn", AutomobileType = AutomobileTypeEnum.TRAINER_TRUCK, Attributes_Seat = "1", Attributes_Category = AutomobileTypeCategoryEnum.OVER_FIFTEEN_TONS },
 
         };
     }
