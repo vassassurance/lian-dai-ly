@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Office.CustomUI;
+using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.InsuranceMaster;
@@ -14,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LianAgentPortal.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = AuthenticatorConstants.ADMIN_ROLE)]
     public class LianInsuranceController : BaseController
     {
         private readonly ILianApiService _lianApiService;

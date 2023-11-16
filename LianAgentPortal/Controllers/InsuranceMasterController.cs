@@ -321,6 +321,7 @@ namespace LianAgentPortal.Controllers
                         Language = "vi",
                         TimeCoverage = defaultTimeCoverage,
                         PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
+                        AgentPhone = userRequest.UserName,
                     });
                 }
                 catch (Exception ex)
@@ -364,7 +365,7 @@ namespace LianAgentPortal.Controllers
                         PassengerInsurance = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()) == "1",
                         EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         Status = InsuranceDetailStatusEnum.NEW,
-                        AgentPhone = userRequest.LianAgent.RegistedPhone,
+                        AgentPhone = userRequest.UserName,
                         Language = "vi",
                         TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(defaultTimeCoverage),
                         PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),

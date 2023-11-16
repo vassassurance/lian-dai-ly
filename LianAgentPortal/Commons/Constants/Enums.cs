@@ -18,7 +18,8 @@
         FAMILY_BREADWINNER = 200,
         PERSONAL_ACCIDENT = 300,
         BREAST_CANCER = 400,
-        AUTOMOBILES = 500
+        AUTOMOBILES = 500,
+        HOUSE = 600,
     }
 
 

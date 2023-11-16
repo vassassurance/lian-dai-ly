@@ -87,6 +87,10 @@ namespace LianAgentPortal.Commons
             if (type == InsuranceTypeEnum.PERSONAL_ACCIDENT) return "<i class=\"fa fa-universal-access\" aria-hidden=\"true\"></i> TAI NẠN CÁ NHÂN";
             if (type == InsuranceTypeEnum.MOTORBIKE) return "<i class=\"fa fa-motorcycle\" aria-hidden=\"true\"></i> TNDS BB XE MÁY";
             if (type == InsuranceTypeEnum.AUTOMOBILES) return "<i class=\"fa fa-car\" aria-hidden=\"true\"></i> TNDS BB OTO";
+            if (type == InsuranceTypeEnum.BREAST_CANCER) return "<i class=\"fa fa-female\" aria-hidden=\"true\"></i> UTV";
+            if (type == InsuranceTypeEnum.HOUSE) return "<i class=\"fa fa-building\" aria-hidden=\"true\"></i> CHÁY NỔ NHÀ CHUNG CƯ";
+            //
+
             return "";
         }
 

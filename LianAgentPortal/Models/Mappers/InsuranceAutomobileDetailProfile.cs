@@ -21,7 +21,7 @@ namespace LianAgentPortal.Models.Mappers
 
             CreateMap<InsuranceAutomobileDetail, CalculateInsurancePremiumDetailAutomobile>()
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => MapAutomobileAttributes(src)))
-                ;
+            ;
 
             CreateMap<InsuranceAutomobileDetail, CalculateInsurancePremium<CalculateInsurancePremiumDetailAutomobile>>()
                 .ForMember(dest => dest.Insurance, opt => opt.MapFrom(src => src))
