@@ -1,5 +1,6 @@
 ﻿using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Data;
+using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.LianAgent;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,15 @@ namespace LianAgentPortal.Controllers
             get
             {
                 return User.IsInRole(AuthenticatorConstants.ADMIN_ROLE);
+            }
+        }
+
+        public LianUser CurrentUser
+        {
+            get
+            {
+                var user = _db.Users.Include(item => item.LianAgent).FirstOrDefault(item => item.UserName == User.Identity.Name);
+                return user;
             }
         }
 

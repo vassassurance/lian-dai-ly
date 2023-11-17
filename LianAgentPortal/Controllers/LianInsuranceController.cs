@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LianAgentPortal.Controllers
 {
-    [Authorize(Roles = AuthenticatorConstants.ADMIN_ROLE)]
+    [Authorize]
     public class LianInsuranceController : BaseController
     {
         private readonly ILianApiService _lianApiService;
@@ -33,7 +33,7 @@ namespace LianAgentPortal.Controllers
 
         public IActionResult GetListLianInsuranceJqgrid(ListLianInsuranceJqGridRequestViewModel gridRequest)
         {
-            LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey);
+            LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey, CurrentUser.AccountId);
 
             searchResult = UpdateLocalFields(searchResult);
 

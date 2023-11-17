@@ -31,7 +31,7 @@ namespace LianAgentPortal.Services
 
 
         LianInsuranceDetailResponseViewModel GetDetailLianInsurance(string lianTransaction, LianAgentApiKey apiKey);
-        LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey);
+        LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey, string accountId);
     }
     public class LianApiService : ILianApiService
     {
@@ -152,7 +152,7 @@ namespace LianAgentPortal.Services
             return MakePostRequest<LianInsuranceDetailResponseViewModel>(path, payload, apiKey);
 
         }
-        public LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey)
+        public LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey, string accountId)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace LianAgentPortal.Services
                     }
                 }
 
-                string payload = "{\"filter\":{\"search\":\"" + jqgridRequest.Search + "\",\"accountIds\":[],\"isIncludeCommission\":true},\"paging\":{\"start\":" + start + ",\"limit\":" + jqgridRequest.rows + "},\"sort\":" + sortObject + "}";
+                string payload = "{\"filter\":{\"search\":\"" + jqgridRequest.Search + "\",\"accountIds\":[" + (accountId ?? "") + "],\"isIncludeCommission\":true},\"paging\":{\"start\":" + start + ",\"limit\":" + jqgridRequest.rows + "},\"sort\":" + sortObject + "}";
 
                 return MakePostRequest<LianInsuranceSearchResponseViewModel>(path, payload, apiKey);
             }

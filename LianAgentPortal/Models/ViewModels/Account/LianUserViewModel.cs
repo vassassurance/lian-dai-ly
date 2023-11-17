@@ -12,6 +12,8 @@ namespace LianAgentPortal.Models.ViewModels.Account
         [Display(Name = "Username")]
         public string UserName { get; set; }
 
+        [Display(Name = "Mã CTV (lấy từ LIAN)")]
+        public string AccountId { get; set; }
 
         [Display(Name = "Họ tên")]
         public string Fullname { get; set; }

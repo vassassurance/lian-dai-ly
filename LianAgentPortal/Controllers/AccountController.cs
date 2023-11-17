@@ -95,7 +95,8 @@ namespace LianAgentPortal.Controllers
                     CreateDate = DateTime.Now,
                     LianAgentId = model.AgentId,
                     Fullname = model.Fullname.ToUpper(),
-                    Description = model.Description
+                    Description = model.Description,
+                    AccountId = model.AccountId
                 };
                 var createTask = await _userManager.CreateAsync(dbUser, model.Password);
                 if (createTask.Succeeded)
@@ -168,6 +169,7 @@ namespace LianAgentPortal.Controllers
                     dbUser.LianAgentId = model.AgentId;
                     dbUser.Fullname = model.Fullname.ToUpper();
                     dbUser.Description = model.Description;
+                    dbUser.AccountId = model.AccountId;
 
                     if (model.Password != null && model.Password.Length > 0)
                     {

@@ -22,5 +22,7 @@ namespace LianAgentPortal.Models.DbModels
         public bool IsActivated { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
+        public string AccountId { get; set; }
+
     }
 }

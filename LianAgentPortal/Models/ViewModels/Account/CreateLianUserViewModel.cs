@@ -5,6 +5,11 @@ namespace LianAgentPortal.Models.ViewModels.Account
     public class CreateLianUserViewModel
     {
         [Required]
+        [MinLength(3)]
+        [Display(Name = "Mã CTV (lấy từ LIAN)")]
+        public string AccountId { get; set; }
+
+        [Required]
         [Range(0, long.MaxValue, ErrorMessage = "Giá trị không đúng")]
         [Display(Name = "Đại lý")]
         public long AgentId { get; set; }

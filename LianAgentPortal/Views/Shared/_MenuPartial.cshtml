@@ -27,12 +27,9 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="InsuranceMaster" asp-action="Index"><i class="fa fa-list-alt" aria-hidden="true"></i> Bảng kê Bảo hiểm</a>
                     </li>
-                    @if (User.IsInRole(LianAgentPortal.Commons.Constants.AuthenticatorConstants.ADMIN_ROLE))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="LianInsurance" asp-action="Index"><i class="bi bi-send-check-fill"></i> Bảo hiểm đã phát hành</a>
-                        </li>
-                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="LianInsurance" asp-action="Index"><i class="bi bi-send-check-fill"></i> Bảo hiểm đã phát hành</a>
+                    </li>
 
 @*                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

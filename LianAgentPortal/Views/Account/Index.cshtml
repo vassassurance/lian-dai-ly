@@ -62,12 +62,12 @@
             url: '/Account/GetListUserJqgrid',
             mtype: 'GET',
             datatype: "json",
-            colNames: ['Id', 'Đại lý', 'UserName', 'Họ tên', 'Ghi chú', 'Ngày tạo', 'Ngày cập nhật', 'Admin', 'Còn hoạt động', 'Authenticator'],
+            colNames: ['Id', 'Đại lý', 'UserName', 'Mã CTV Lian', 'Họ tên', 'Ghi chú', 'Ngày tạo', 'Ngày cập nhật', 'Admin', 'Còn hoạt động', 'Authenticator'],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
                 { name: 'AgentName', index: 'AgentName', align: "center" },
                 { name: 'UserName', index: 'UserName', align: "center" },
-
+                { name: 'AccountId', index: 'AccountId', align: "center" },
                 { name: 'Fullname', index: 'Fullname' },
                 { name: 'Description', index: 'Description' },
 
