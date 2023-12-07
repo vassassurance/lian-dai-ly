@@ -43,6 +43,13 @@ namespace LianAgentPortal.Commons
             return passHash.HashPassword(user, password);
         }
 
+        public static DateTime UnixDatetimeToDatetime(long unixTimeStamp)
+        {
+            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dateTime;
+        }
+
 
         public static DateTime MapEndDate(DateTime effectiveDate, string TimeCoverageJsonString)
         {

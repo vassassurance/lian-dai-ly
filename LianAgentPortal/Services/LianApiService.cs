@@ -10,8 +10,10 @@ using LianAgentPortal.Models.ViewModels.InsuranceAutomobileDetail;
 using LianAgentPortal.Models.ViewModels.InsuranceMotorDetail;
 using LianAgentPortal.Models.ViewModels.LianAgent;
 using LianAgentPortal.Models.ViewModels.LianInsurance;
+using LianAgentPortal.Models.ViewModels.LianSuccessedInsurance;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Net.Http;
@@ -32,6 +34,9 @@ namespace LianAgentPortal.Services
 
         LianInsuranceDetailResponseViewModel GetDetailLianInsurance(string lianTransaction, LianAgentApiKey apiKey);
         LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey, string accountId);
+
+
+        LianSearchSuccessedInsuranceResponseViewModel SearchSuccessedInsurance(ListSuccessedInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey);
     }
     public class LianApiService : ILianApiService
     {
@@ -145,6 +150,7 @@ namespace LianAgentPortal.Services
         #endregion
         
         #region LianInsurance
+        
         public LianInsuranceDetailResponseViewModel GetDetailLianInsurance(string lianTransaction, LianAgentApiKey apiKey)
         {
             string path = "/be/lian/insurance/detail";
@@ -152,6 +158,7 @@ namespace LianAgentPortal.Services
             return MakePostRequest<LianInsuranceDetailResponseViewModel>(path, payload, apiKey);
 
         }
+        
         public LianInsuranceSearchResponseViewModel SearchLianInsurance(ListLianInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey, string accountId)
         {
             try
@@ -193,6 +200,34 @@ namespace LianAgentPortal.Services
                 {
                     Code = 500,
                     Message = ex.Message,
+                };
+            }
+        }
+
+        #endregion
+
+        #region LianSuccessedInsurance
+
+        public LianSearchSuccessedInsuranceResponseViewModel SearchSuccessedInsurance(ListSuccessedInsuranceJqGridRequestViewModel jqgridRequest, LianAgentApiKey apiKey)
+        {
+            try
+            {
+                string path = "/be/lian/succeeded-insurances";
+
+                int start = jqgridRequest.page == 1 ? 0 : ((jqgridRequest.page - 1) * jqgridRequest.rows);
+
+                string from = jqgridRequest.From.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+                string to = jqgridRequest.To.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+                string payload = "{\"filter\":{\"from\":\"" + from + "\",\"to\":\"" + to + "\"},\"paging\":{\"start\":" + start + ",\"limit\":" + jqgridRequest.rows + "},\"sort\":{\"paymentAt\":-1}}";
+
+                return MakePostRequest<LianSearchSuccessedInsuranceResponseViewModel>(path, payload, apiKey);
+            }
+            catch (Exception ex)
+            {
+                return new LianSearchSuccessedInsuranceResponseViewModel()
+                {
+                    code = 500,
+                    message = ex.Message,
                 };
             }
         }

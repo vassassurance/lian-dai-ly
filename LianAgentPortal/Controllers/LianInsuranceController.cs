@@ -33,6 +33,12 @@ namespace LianAgentPortal.Controllers
 
         public IActionResult GetListLianInsuranceJqgrid(ListLianInsuranceJqGridRequestViewModel gridRequest)
         {
+            var test = _lianApiService.SearchSuccessedInsurance(new ListSuccessedInsuranceJqGridRequestViewModel()
+            {
+                From = DateTime.Now.AddDays(-10),
+                To = DateTime.Now.AddDays(10)
+            }, base.CurrentUserApiKey);
+
             LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey, CurrentUser.AccountId);
 
             searchResult = UpdateLocalFields(searchResult);

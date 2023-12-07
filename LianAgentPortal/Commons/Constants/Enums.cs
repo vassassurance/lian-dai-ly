@@ -12,6 +12,7 @@
         SYNC_SUCCESS = 310,
         SYNC_ERROR = -310,
     }
+
     public enum InsuranceTypeEnum
     {
         MOTORBIKE = 100,
@@ -19,7 +20,10 @@
         PERSONAL_ACCIDENT = 300,
         BREAST_CANCER = 400,
         AUTOMOBILES = 500,
-        HOUSE = 600,
+        TOURIST = 600,
+        LADY_CARE = 700,
+        HOME_PERSONAL = 800,
+        HOUSE = 900,
     }
 
 
