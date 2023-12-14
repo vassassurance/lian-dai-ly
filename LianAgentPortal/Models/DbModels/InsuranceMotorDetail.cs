@@ -14,5 +14,7 @@ namespace LianAgentPortal.Models.DbModels
         public string IdentityNumber { get; set; }
         public bool PassengerInsurance { get; set; }
         public DateTime? Birhtday { get; set; }
+        public string PaperCertificateNo { get; set; }
+        public string PaperCertificatePath { get; set; }
     }
 }

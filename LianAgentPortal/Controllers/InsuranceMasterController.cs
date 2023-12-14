@@ -193,10 +193,19 @@ namespace LianAgentPortal.Controllers
                     _db.InsuranceAutomobileDetails.AddRange(details);
                     insuranceMaster.TotalRows = details.Count;
                 }
-
-                insuranceMaster.FilePath = SaveFileToDisk(model);
-                _db.SaveChanges();
-                return insuranceMaster.Id;
+                if (ModelState.IsValid
+                    && insuranceMaster.TotalRows > 0)
+                {
+                    insuranceMaster.FilePath = SaveFileToDisk(model);
+                    _db.SaveChanges();
+                    return insuranceMaster.Id;
+                }
+                else
+                {
+                    insuranceMaster.IsDeleted = true;
+                    _db.SaveChanges();
+                }
+                return 0;
             }
         }
 
@@ -273,56 +282,91 @@ namespace LianAgentPortal.Controllers
 
             int lastRowNumber = mainSheet.LastRowUsed().RowNumber();
             List<InsuranceAutomobileDetail> details = new List<InsuranceAutomobileDetail>();
-            string defaultTimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(new TimeCoverageObject()
-            {
-                Unit = TimeCoverageUnitEnum.YEAR,
-                Value = 1
-            });
+
             for (int i = 2; i <= lastRowNumber; i++)
             {
                 try
                 {
                     string fullTypeName = GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString());
+                    
                     AutomobilesFullTypeObject automobilesFullType = AutomobilesFullTypeConstants.Data.FirstOrDefault(item => item.DisplayName.ToLower().Trim() == fullTypeName.ToLower().Trim());
                     if (automobilesFullType == null) continue;
+
+                    string vehicleSeat = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString());
+                    if (automobilesFullType.AutomobileType == AutomobileTypeEnum.TAXI
+                        && int.Parse(vehicleSeat) < 6)
+                    {
+                        vehicleSeat = "UNDER_SIX";
+                    }
 
                     int passengerCount = 0;
                     long passengerFee = 0;
 
-                    long.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()), out passengerFee);
-                    int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()), out passengerCount);
+                    long.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()), out passengerFee);
+                    int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()), out passengerCount);
                     if (passengerCount == 0 || passengerFee == 0)
                     {
                         passengerCount = 0;
                         passengerFee = 0;
                     }
+                    int numberInsuredYear;
 
-                    details.Add(new InsuranceAutomobileDetail()
+                    if(!int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(13).Value.ToString()), out numberInsuredYear)
+                        || numberInsuredYear < 1
+                        || numberInsuredYear > 3)
+                    {
+                        numberInsuredYear = 1;
+                    }
+
+                    var detailItem = new InsuranceAutomobileDetail()
                     {
                         InsuranceMasterId = masterId,
                         Type = model.Type,
                         Amount = null,
                         LicensePlates = GetNumberCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
                         AutomobilesType = automobilesFullType.AutomobileType,
-                        Attributes_Seat = automobilesFullType.Attributes_Seat,
+                        Attributes_Seat = vehicleSeat.ToString(),
                         Attributes_Category = automobilesFullType.Attributes_Category,
-                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
-                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
-                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
+                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
+                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
+                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()),
                         PassengerFee = passengerFee,
                         PassengerCount = passengerCount,
                         LiabilityInsuranceFee = 0,
-                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
-                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
-                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString())),
+                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
+                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
+                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString())),
                         Description = null,
-                        EffectiveDate = mainSheet.Row(i).Cell(11).GetDateTime(),
+                        EffectiveDate = mainSheet.Row(i).Cell(12).GetDateTime(),
+                        PaperCertificateNo = GetNumberCellValue(mainSheet.Row(i).Cell(14).Value.ToString()),
                         Status = InsuranceDetailStatusEnum.NEW,
                         Language = "vi",
-                        TimeCoverage = defaultTimeCoverage,
+                        TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(new TimeCoverageObject()
+                        {
+                            Unit = TimeCoverageUnitEnum.YEAR,
+                            Value = 1
+                            //Value = numberInsuredYear
+                        }),
                         PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
                         AgentPhone = userRequest.UserName,
-                    });
+                    };
+
+                    details.Add(detailItem);
+
+                    if (detailItem.PaperCertificateNo == null
+                        || detailItem.PaperCertificateNo.Length <= 1
+                        || detailItem.PaperCertificateNo == "0")
+                    {
+                        ModelState.AddModelError(string.Empty, "số ấn chỉ xe " + detailItem.LicensePlates + " không có");
+                    }
+                    else if (_db.InsuranceAutomobileDetails.Any(item =>
+                        item.Status == InsuranceDetailStatusEnum.SYNC_SUCCESS
+                        && item.PaperCertificateNo == detailItem.PaperCertificateNo)
+                        || details.Any(item => item.PaperCertificateNo == detailItem.PaperCertificateNo)
+                    )
+                    {
+                        ModelState.AddModelError(string.Empty, "số ấn chỉ xe " + detailItem.LicensePlates + " đã tồn tại: " + detailItem.PaperCertificateNo);
+                    }
                 }
                 catch (Exception ex)
                 {

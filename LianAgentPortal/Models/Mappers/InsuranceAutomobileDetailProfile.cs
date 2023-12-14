@@ -36,7 +36,6 @@ namespace LianAgentPortal.Models.Mappers
                  .ForMember(dest => dest.Insurance, opt => opt.MapFrom(src => src))
                  .ForMember(dest => dest.TimeCoverage, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<TimeCoverageObjectString>(src.TimeCoverage)))
             ;
-
         }
 
         private AutomobileAttributesString MapAutomobileAttributes(InsuranceAutomobileDetail source)
@@ -51,12 +50,12 @@ namespace LianAgentPortal.Models.Mappers
         {
             var result = AutomobilesFullTypeConstants.Data.FirstOrDefault(item =>
                 item.AutomobileType == source.AutomobilesType
-                && item.Attributes_Seat == source.Attributes_Seat
                 && item.Attributes_Category == source.Attributes_Category
             );
             if (result != null)
             {
-                return result.DisplayName;
+                string numberSeat = source.Attributes_Seat == "UNDER_SIX" ? "dưới 6" : source.Attributes_Seat;
+                return result.DisplayName + ", " + numberSeat + " chổ";
             }
             return "";
         }

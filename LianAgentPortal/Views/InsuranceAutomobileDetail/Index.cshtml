@@ -87,7 +87,7 @@
             mtype: 'GET',
             datatype: "json",
             colNames: ['Id', 'Trạng Thái', 'Số GCN', 'GCN', 'Loại xe', 'Số chổ BH', 'Phí BH/1 chổ', 'Biển số', 'Số khung', 'Số Máy', 'Họ & Tên',
-                'Đt', 'Ngày bắt đầu', 'kết thúc', 'Tổng Phí', 'Thông báo'
+                'Đt', 'Ngày bắt đầu', 'kết thúc', 'Tổng Phí', 'Seri Ac', 'Thông báo'
             ],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
@@ -108,6 +108,7 @@
                 { name: 'EffectiveDate', index: 'EffectiveDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
                 { name: 'EndDate', index: 'EndDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
                 { name: 'Amount', index: 'Amount', formatter: 'integer', align: "right", width: 90 },
+                { name: 'PaperCertificateNo', index: 'PaperCertificateNo', align: "center" },
                 { name: 'StatusMessage', index: 'StatusMessage', align: "center", width: 200 },
                 
             ],

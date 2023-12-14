@@ -18,5 +18,7 @@ namespace LianAgentPortal.Models.DbModels
         public string Email { get; set; }
         public GenderEnum Gender { get; set; }
         public string Description { get; set; }
+        public string PaperCertificateNo { get; set; }
+        public string PaperCertificatePath { get; set; }
     }
 }

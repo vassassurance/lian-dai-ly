@@ -33,12 +33,6 @@ namespace LianAgentPortal.Controllers
 
         public IActionResult GetListLianInsuranceJqgrid(ListLianInsuranceJqGridRequestViewModel gridRequest)
         {
-            var test = _lianApiService.SearchSuccessedInsurance(new ListSuccessedInsuranceJqGridRequestViewModel()
-            {
-                From = DateTime.Now.AddDays(-10),
-                To = DateTime.Now.AddDays(10)
-            }, base.CurrentUserApiKey);
-
             LianInsuranceSearchResponseViewModel searchResult = _lianApiService.SearchLianInsurance(gridRequest, base.CurrentUserApiKey, CurrentUser.AccountId);
 
             searchResult = UpdateLocalFields(searchResult);
@@ -64,7 +58,8 @@ namespace LianAgentPortal.Controllers
             model.Data.Transaction = id;
             return View(model);
         }
-        //LicensePlates_IdentityNumber
+
+
         private LianInsuranceSearchResponseViewModel UpdateLocalFields(LianInsuranceSearchResponseViewModel result)
         {
             for (int i=0; i<result.Data.Count; i++)
