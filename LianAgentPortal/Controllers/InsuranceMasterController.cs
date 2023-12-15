@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Globalization;
+using System.Net;
 
 namespace LianAgentPortal.Controllers
 {
@@ -311,7 +312,7 @@ namespace LianAgentPortal.Controllers
                     }
                     int numberInsuredYear;
 
-                    if(!int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(13).Value.ToString()), out numberInsuredYear)
+                    if(!int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(14).Value.ToString()), out numberInsuredYear)
                         || numberInsuredYear < 1
                         || numberInsuredYear > 3)
                     {
@@ -335,10 +336,11 @@ namespace LianAgentPortal.Controllers
                         LiabilityInsuranceFee = 0,
                         Phone = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
                         Email = GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
-                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString())),
+                        Address = GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString()),
+                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString())),
                         Description = null,
-                        EffectiveDate = mainSheet.Row(i).Cell(12).GetDateTime(),
-                        PaperCertificateNo = GetNumberCellValue(mainSheet.Row(i).Cell(14).Value.ToString()),
+                        EffectiveDate = mainSheet.Row(i).Cell(13).GetDateTime(),
+                        PaperCertificateNo = GetNumberCellValue(mainSheet.Row(i).Cell(15).Value.ToString()),
                         Status = InsuranceDetailStatusEnum.NEW,
                         Language = "vi",
                         TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(new TimeCoverageObject()
@@ -351,21 +353,15 @@ namespace LianAgentPortal.Controllers
                         AgentPhone = userRequest.UserName,
                     };
 
-                    details.Add(detailItem);
-
                     if (detailItem.PaperCertificateNo == null
                         || detailItem.PaperCertificateNo.Length <= 1
                         || detailItem.PaperCertificateNo == "0")
                     {
                         ModelState.AddModelError(string.Empty, "số ấn chỉ xe " + detailItem.LicensePlates + " không có");
                     }
-                    else if (_db.InsuranceAutomobileDetails.Any(item =>
-                        item.Status == InsuranceDetailStatusEnum.SYNC_SUCCESS
-                        && item.PaperCertificateNo == detailItem.PaperCertificateNo)
-                        || details.Any(item => item.PaperCertificateNo == detailItem.PaperCertificateNo)
-                    )
+                    else
                     {
-                        ModelState.AddModelError(string.Empty, "số ấn chỉ xe " + detailItem.LicensePlates + " đã tồn tại: " + detailItem.PaperCertificateNo);
+                        details.Add(detailItem);
                     }
                 }
                 catch (Exception ex)

@@ -87,7 +87,7 @@
             mtype: 'GET',
             datatype: "json",
             colNames: ['Id', 'Trạng Thái', 'Số GCN', 'GCN', 'Loại xe', 'Số chổ BH', 'Phí BH/1 chổ', 'Biển số', 'Số khung', 'Số Máy', 'Họ & Tên',
-                'Đt', 'Ngày bắt đầu', 'kết thúc', 'Tổng Phí', 'Seri Ac', 'Thông báo'
+                'Đt', 'Địa chỉ', 'Ngày bắt đầu', 'kết thúc', 'Tổng Phí', 'Seri Ac', 'Thông báo'
             ],
             colModel: [
                 { name: 'Id', index: 'Id', hidden: true, key: true },
@@ -99,12 +99,12 @@
                 { name: 'PassengerCount', index: 'PassengerCount', align: "center", width: 50 },
                 { name: 'PassengerFee', index: 'PassengerFee', formatter: 'integer', align: "right", width: 100 },
                 
-
                 { name: 'LicensePlates', index: 'LicensePlates', align: "center" },
                 { name: 'ChassisNumber', index: 'ChassisNumber', align: "center" },
                 { name: 'MachineNumber', index: 'MachineNumber', align: "center" },
                 { name: 'Fullname', index: 'Fullname' },
                 { name: 'Phone', index: 'Phone', align: "center", width: 100 },
+                { name: 'Address', index: 'Address', align: "center", width: 100 },
                 { name: 'EffectiveDate', index: 'EffectiveDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
                 { name: 'EndDate', index: 'EndDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
                 { name: 'Amount', index: 'Amount', formatter: 'integer', align: "right", width: 90 },
