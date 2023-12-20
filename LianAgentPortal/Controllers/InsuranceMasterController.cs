@@ -346,8 +346,8 @@ namespace LianAgentPortal.Controllers
                         TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(new TimeCoverageObject()
                         {
                             Unit = TimeCoverageUnitEnum.YEAR,
-                            Value = 1
-                            //Value = numberInsuredYear
+                            //Value = 1
+                            Value = numberInsuredYear
                         }),
                         PartnerTransaction = Guid.NewGuid().ToString().Replace("-", ""),
                         AgentPhone = userRequest.UserName,
