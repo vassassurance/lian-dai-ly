@@ -56,7 +56,9 @@ namespace LianAgentPortal.Data
         public DbSet<InsuranceMotorDetail> InsuranceMotorDetails { get; set; }
         public DbSet<InsurancePersonalAccidentDetail> InsurancePersonalAccidentDetails { get; set; }
         public DbSet<InsuranceAutomobileDetail> InsuranceAutomobileDetails { get; set; }
-        
+
+        public DbSet<InsuranceTnspDetail> InsuranceTnspDetails { get; set; }
+        public DbSet<InsuranceTnspMaster> InsuranceTnspMasters { get; set; }
 
     }
 }

@@ -88,6 +88,17 @@ namespace LianAgentPortal.Commons
             return "";
         }
 
+        public static string MapInsuranceOtherDetailStatus(InsuranceOtherStatusEnum status)
+        {
+            if (status == InsuranceOtherStatusEnum.NEW) return "<i class=\"fa fa-file-o\" aria-hidden=\"true\" title=\"TẠO MỚI\"></i>";
+
+            if (status == InsuranceOtherStatusEnum.GENCER_SUCCESS) return "<i class=\"fa fa-paper-plane text-success\" aria-hidden=\"true\" title=\"PHÁT HÀNH - THÀNH CÔNG\" ></i>";
+            if (status == InsuranceOtherStatusEnum.GENCER_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\" title=\"ĐANG PHÁT HÀNH\"></i>";
+            if (status == InsuranceOtherStatusEnum.GENCER_ERROR) return "<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\" title=\"PHÁT HÀNH - LỖI\"></i>";
+
+            return "";
+        }
+
         public static string ConvertInsuranceTypeEnumToString(InsuranceTypeEnum type)
         {
             if (type == InsuranceTypeEnum.FAMILY_BREADWINNER) return "<i class=\"fa fa-home\" aria-hidden=\"true\"></i> TRỤ CỘT GIA ĐÌNH";
@@ -101,5 +112,13 @@ namespace LianAgentPortal.Commons
             return "";
         }
 
+        public static string GetCellValue(string cachedValue)
+        {
+            if (cachedValue == null || cachedValue.Length == 0)
+            {
+                return "0";
+            }
+            return cachedValue;
+        }
     }
 }

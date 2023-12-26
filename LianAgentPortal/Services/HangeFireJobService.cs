@@ -13,6 +13,8 @@ namespace LianAgentPortal.Services
 {
     public interface IHangeFireJobService
     {
+        void MakeJobGenCerTnsp(long masterId, List<long> ids);
+
         //
         void MakeJobCalculatePremiumAutomobileInsurances(long masterId, List<long> ids, string username);
         void MakeJobBuyAutomobileInsurances(long masterId, List<long> ids, string username);
@@ -31,6 +33,46 @@ namespace LianAgentPortal.Services
             _backgroundJobs = backgroundJobs;
             _lianApiService = lianApiService;
             _db = db;
+        }
+
+        public void MakeJobGenCerTnsp(long masterId, List<long> ids)
+        {
+            var itemMaster = _db.InsuranceTnspMasters.FirstOrDefault(item => item.Id == masterId);
+            for (int i = 0; i < ids.Count; i++)
+            {
+                var itemToUpdate = _db.InsuranceTnspDetails.Include(item => item.InsuranceTnspMaster).FirstOrDefault(item =>
+                    item.Id == ids[i]
+                    && item.InsuranceTnspMasterId == masterId
+                    && item.Status == InsuranceOtherStatusEnum.GENCER_INPROGRESS
+                );
+
+                if (itemToUpdate != null)
+                {
+                    if (itemToUpdate.InsuranceTnspMaster.IsDeleted)
+                    {
+                        itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_ERROR;
+                        itemToUpdate.StatusMessage = "Bảng kê bị xóa";
+                        _db.SaveChanges();
+                        continue;
+                    }
+
+                    itemToUpdate.IdentityNumber = DateTime.Now.Ticks.ToString();
+                    itemToUpdate.CertificateDigitalLink = "/";
+
+                    itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_SUCCESS;
+                    itemToUpdate.StatusMessage = "Phát hành thành công";
+
+                    _db.SaveChanges();
+                }
+            }
+
+            itemMaster.TotalIssuedRows = _db.InsuranceTnspDetails.AsNoTracking()
+                .Count(item => 
+                    item.InsuranceTnspMasterId == masterId 
+                    && item.Status == InsuranceOtherStatusEnum.GENCER_SUCCESS
+                );
+
+            _db.SaveChanges();
         }
 
         public void MakeJobCalculatePremiumAutomobileInsurances(long masterId, List<long> ids, string username)

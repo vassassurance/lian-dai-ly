@@ -1,0 +1,143 @@
+﻿@model LianAgentPortal.Models.ViewModels.InsuranceTnspMaster.InsuranceTnspMasterViewModel
+@{
+    ViewData["Title"] = "Chi tiết bảng kê bảo hiểm TNDS OTO";
+}
+<div class="row">
+    <div class="col-md-2 pe-lg-3 p-0">
+        <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+                <span class="ui-jqgrid-title">
+                    Thông tin chung
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="position-relative pb-3">
+                    <div class="position-absolute">File đã upload:</div>
+                    <div class="text-end"><a href="@Model.FilePath"> Tải về <i class="fa fa-cloud-download" aria-hidden="true"></i> </a></div>
+
+                    <div class="position-absolute">Tổng số dòng:</div>
+                    <div class="text-end"><b>@Model.TotalRows.ToString("N0")</b></div>
+
+                    <div class="position-absolute">Số dòng đã phát hành:</div>
+                    <div class="text-end"><b>@Model.TotalIssuedRows.ToString("N0")</b></div>
+                </div>
+
+                <div class="mb-2">
+                    <label class="control-label">Tổng phí bảo hiểm:</label>
+                    <input value="@Model.TotalPremium.ToString("N0") VND" readonly class="form-control text-end" />
+                </div>
+
+                <form asp-action="GenerateCertificate" asp-route-id="@Model.Id">
+                    <button type="submit" class="w-100 ui-button ui-widget ui-corner-all"> Phát hành <i class="bi bi-send-check-fill"></i></button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 p-lg-0 p-0">
+        <div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title">
+                <i class="fa fa-car" aria-hidden="true"></i> @ViewData["Title"]
+            </span>
+        </div>
+        <table id="gridInsuranceTnspDetail" width="100%"></table>
+        <div id="pagerInsuranceTnspDetail"></div>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    <script>
+        doCopy = function (value) {
+            navigator.clipboard.writeText(value);
+            toastr.success(value, 'Đã copy');
+        }
+
+        copiableCellFormatter = function (cellvalue, options, rowobject) {
+            if (cellvalue && cellvalue != '') {
+                return '<button type="button" class=" h-100 float-start ps-1 pe-1 pt-0 ui-button ui-widget ui-corner-all" onclick="doCopy(\'' + cellvalue + '\')"> <i class="fa fa-files-o" aria-hidden="true"></i> ' + cellvalue + '</button>';
+            }
+            return "";
+
+        }
+
+        gcnCellFormatter = function (cellvalue, options, rowobject) {
+            if (cellvalue && cellvalue != '') {
+                return '<button type="button"onclick="window.open(\'' + cellvalue + '\')" class="h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
+            }
+            return "";
+        }
+
+        gridInsuranceTnspDetail = $("#gridInsuranceTnspDetail");
+        gridInsuranceTnspDetail.jqGrid({
+            url: '/InsuranceTnspDetail/GetListInsuranceTnspDetailJqgrid',
+            beforeRequest: function () {
+                gridInsuranceTnspDetail.jqGrid('setGridParam', {
+                    postData: {
+                        InsuranceTnspMasterId: @Html.Raw(Model.Id)
+                    }
+                });
+            },
+            mtype: 'GET',
+            datatype: "json",
+            colNames: ['Id', 'Trạng Thái', 'Số GCN', 'GCN', 'Mã đơn mua hàng', 
+                'Khách hàng', 'CCCD', 'Ngày bắt đầu', 'kết thúc', 
+                'Số tiền BH', 'Tổng Phí', 'Thông báo'
+            ],
+
+
+
+            colModel: [
+                { name: 'Id', index: 'Id', hidden: true, key: true },
+                { name: 'Status', index: 'Status', align: "center", width: 50 },
+                { name: 'InsuranceNo', index: 'InsuranceNo', align: "center", formatter: copiableCellFormatter, width: 100 },
+                { name: 'CertificateDigitalLink', index: 'CertificateDigitalLink', align: "center", formatter: gcnCellFormatter, width: 100 },
+
+                { name: 'OrderId', index: 'OrderId', align: "center", width: 300 },
+                { name: 'CustomerName', index: 'CustomerName', align: "left", width: 300 },
+                { name: 'IdentityNumber', index: 'IdentityNumber', align: "center", width: 300 },
+
+                { name: 'FromDate', index: 'FromDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
+                { name: 'ToDate', index: 'ToDate', formatter: "date", formatoptions: common.configs.grid.dateFormatOption, align: "center", width: 120 },
+
+                { name: 'InsuranceAmount', index: 'InsuranceAmount', formatter: 'integer', align: "right", width: 90 },
+                { name: 'Premium', index: 'Premium', formatter: 'integer', align: "right", width: 90 },
+                { name: 'StatusMessage', index: 'StatusMessage', align: "center", width: 200 },
+            ],
+            rowNum: common.configs.mainGrid.getRowNum(),
+            autowidth: true,
+            rownumbers: true,
+            rowList: common.configs.mainGrid.getRowList(),
+            pager: '#pagerInsuranceTnspDetail',
+            sortname: 'Id',
+            hidegrid: false,
+            viewrecords: true,
+            height: common.configs.mainGrid.getHeight(),
+            ondblClickRow: function (rowid) {
+                //window.location.pathname = ('/InsuranceTnspDetail/Edit/' + rowid);
+            }
+        }).navGrid('#pagerInsuranceTnspDetail', {
+            edit: false, add: false, del: false, search: false, refresh: true, view: false, position: "left"
+        });
+        //.navButtonAdd('#pagerInsuranceTnspDetail', {
+        //    buttonicon: "ui-icon-plusthick",
+        //    title: "Tạo mới",
+        //    caption: "Tạo mới",
+        //    position: "last",
+        //    onClickButton: function () {
+        //        //window.location.pathname = ('/InsuranceTnspDetail/Create');
+        //    }
+        //});
+    </script>
+
+    <script>
+        resetGridsWidth = function () {
+            common.functions.resetGridWidth(gridInsuranceTnspDetail);
+        }
+
+        $(window).on("resize", resetGridsWidth);
+        resetGridsWidth();
+    </script>
+}

@@ -4,6 +4,7 @@ using LianAgentPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LianAgentPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231226073305_TableTnsp")]
+    partial class TableTnsp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -471,12 +474,6 @@ namespace LianAgentPortal.Migrations
                     b.Property<decimal>("Premium")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StatusMessage")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ToDate")
                         .HasColumnType("datetime2");
 
@@ -667,7 +664,7 @@ namespace LianAgentPortal.Migrations
                         {
                             Id = "00000000-0000-0000-0000-000000000001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1ff15a05-0444-43ab-9c8f-c384ef904f86",
+                            ConcurrencyStamp = "b19941b8-f63c-4686-b602-60838c0fe127",
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0962473427",
                             EmailConfirmed = true,
@@ -677,7 +674,7 @@ namespace LianAgentPortal.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "0962473427",
                             NormalizedUserName = "0962473427",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOaZzAmHC4RCD8SVWo3+QJ/pYzHwi4bDdUKRIBoKShGeF2XE5nfNqFqq+DIPQdbzpA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO1OHdiDkFmKrrdhYBCPSBY+2WuLkl9sRV1nUKNmhk5fZUxcGHCwemfd9cwQ0Ic+tQ==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",

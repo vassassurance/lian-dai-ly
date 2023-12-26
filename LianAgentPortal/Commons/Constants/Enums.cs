@@ -13,6 +13,15 @@
         SYNC_ERROR = -310,
     }
 
+    public enum InsuranceOtherStatusEnum
+    {
+        NEW = 100,
+
+        GENCER_INPROGRESS = 300,
+        GENCER_SUCCESS = 310,
+        GENCER_ERROR = -310,
+    }
+
     public enum InsuranceTypeEnum
     {
         MOTORBIKE = 100,
