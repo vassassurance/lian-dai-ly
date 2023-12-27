@@ -2,9 +2,11 @@
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LianAgentPortal.Commons
 {
@@ -119,6 +121,18 @@ namespace LianAgentPortal.Commons
                 return "0";
             }
             return cachedValue;
+        }
+
+        public static string GetCertificatePath(string folder, long masterId, string filename, string insuranceNo)
+        {
+            return folder + masterId.ToString() + "/" + MakeValidFileName(filename) + "_" + insuranceNo + ".pdf";
+        }
+
+        private static string MakeValidFileName(string name)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "-");
         }
     }
 }

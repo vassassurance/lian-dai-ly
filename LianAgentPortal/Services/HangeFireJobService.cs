@@ -1,11 +1,13 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Hangfire;
+using LianAgentPortal.Commons;
 using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using LianAgentPortal.Models.ViewModels.LianAgent;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -27,15 +29,21 @@ namespace LianAgentPortal.Services
     {
         private readonly IBackgroundJobClient _backgroundJobs;
         private readonly ILianApiService _lianApiService;
+        private readonly ITnspService _tnspService;
         private readonly ApplicationDbContext _db;
-        public HangeFireJobService(IBackgroundJobClient backgroundJobs, ILianApiService lianApiService, ApplicationDbContext db) 
+        public HangeFireJobService(
+            IBackgroundJobClient backgroundJobs, 
+            ILianApiService lianApiService,
+            ITnspService tnspService,
+            ApplicationDbContext db) 
         {
             _backgroundJobs = backgroundJobs;
             _lianApiService = lianApiService;
+            _tnspService = tnspService;
             _db = db;
         }
 
-        public void MakeJobGenCerTnsp(long masterId, List<long> ids)
+        public void GenCerTnsp(long masterId, List<long> ids)
         {
             var itemMaster = _db.InsuranceTnspMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
@@ -56,8 +64,15 @@ namespace LianAgentPortal.Services
                         continue;
                     }
 
-                    itemToUpdate.IdentityNumber = DateTime.Now.Ticks.ToString();
-                    itemToUpdate.CertificateDigitalLink = "/";
+                    itemToUpdate.InsuranceNo = "020502-" + DateTime.Now.Ticks.ToString();
+                    itemToUpdate.CertificateDigitalLink = Functions.GetCertificatePath(
+                        CertificateFolders.Folder020502Tnsp,
+                        itemToUpdate.InsuranceTnspMasterId,
+                        itemToUpdate.OrderId, 
+                        itemToUpdate.InsuranceNo
+                    );
+
+                    _tnspService.GenCertificate(itemToUpdate);
 
                     itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_SUCCESS;
                     itemToUpdate.StatusMessage = "Phát hành thành công";
@@ -67,12 +82,19 @@ namespace LianAgentPortal.Services
             }
 
             itemMaster.TotalIssuedRows = _db.InsuranceTnspDetails.AsNoTracking()
-                .Count(item => 
-                    item.InsuranceTnspMasterId == masterId 
+                .Count(item =>
+                    item.InsuranceTnspMasterId == masterId
                     && item.Status == InsuranceOtherStatusEnum.GENCER_SUCCESS
                 );
 
             _db.SaveChanges();
+        }
+
+        public void MakeJobGenCerTnsp(long masterId, List<long> ids)
+        {
+            _backgroundJobs.Enqueue(() =>
+                GenCerTnsp(masterId, ids)
+            );
         }
 
         public void MakeJobCalculatePremiumAutomobileInsurances(long masterId, List<long> ids, string username)

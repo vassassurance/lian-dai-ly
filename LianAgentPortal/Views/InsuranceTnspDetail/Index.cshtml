@@ -65,7 +65,7 @@
 
         gcnCellFormatter = function (cellvalue, options, rowobject) {
             if (cellvalue && cellvalue != '') {
-                return '<button type="button"onclick="window.open(\'' + cellvalue + '\')" class="h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
+                return '<button type="button"onclick="window.open(\'' + '/' + cellvalue + '\')" class="h-100 ps-2 pe-2 pt-0 ui-button ui-widget ui-corner-all"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> GCN </button>';
             }
             return "";
         }
