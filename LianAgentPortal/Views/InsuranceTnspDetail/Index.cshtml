@@ -27,10 +27,13 @@
                     <input value="@Model.TotalPremium.ToString("N0") VND" readonly class="form-control text-end" />
                 </div>
 
-                <form asp-action="GenerateCertificate" asp-route-id="@Model.Id">
+                <form asp-action="GenerateCertificate" asp-route-id="@Model.Id" class="mb-2">
                     <button type="submit" class="w-100 ui-button ui-widget ui-corner-all"> Phát hành <i class="bi bi-send-check-fill"></i></button>
                 </form>
 
+                <form asp-action="DownloadCertificateZip" asp-route-id="@Model.Id" class="mb-2">
+                    <button type="submit" class="w-100 ui-button ui-widget ui-corner-all"> Tải các file đã phát hành <i class="bi bi-cloud-download-fill"></i></button>
+                </form>
             </div>
         </div>
     </div>

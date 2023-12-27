@@ -7,7 +7,9 @@ using LianAgentPortal.Models.ViewModels.InsuranceTnspMaster;
 using LianAgentPortal.Models.ViewModels.JqGrid;
 using LianAgentPortal.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.IO.Compression;
 
 namespace LianAgentPortal.Controllers
 {
@@ -16,10 +18,12 @@ namespace LianAgentPortal.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IHangeFireJobService _hangeFireJobService;
-        public InsuranceTnspDetailController(IMapper mapper, ApplicationDbContext db, IHangeFireJobService hangeFireJobService) : base(db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public InsuranceTnspDetailController(IMapper mapper, ApplicationDbContext db, IHangeFireJobService hangeFireJobService, IWebHostEnvironment webHostEnvironment) : base(db)
         {
             _mapper = mapper;
             _hangeFireJobService = hangeFireJobService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index(long id)
@@ -54,6 +58,37 @@ namespace LianAgentPortal.Controllers
         }
 
         [HttpPost]
+        public IActionResult DownloadCertificateZip(long id)
+        {
+            var insuranceTnspMaster = _db.InsuranceTnspMasters.FirstOrDefault(item => item.Id == id);
+            if (insuranceTnspMaster == null) return RedirectToAction("Index", "InsuranceTnspMaster");
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+
+            string startPath = Path.Combine(webRootPath, CertificateFolders.Folder020502Tnsp + insuranceTnspMaster.Id);
+            string zipPath = startPath + ".zip";
+
+            FileInfo file = new FileInfo(zipPath);
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+
+            ZipFile.CreateFromDirectory(startPath, zipPath);
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(zipPath);
+
+            file = new FileInfo(zipPath);
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+
+            return File(fileBytes, "application/force-download", "data.zip");
+        }
+
+
+        [HttpPost]
         public IActionResult GenerateCertificate(long id)
         {
             var insuranceTnspMaster = _db.InsuranceTnspMasters.FirstOrDefault(item => item.Id == id);
@@ -74,6 +109,7 @@ namespace LianAgentPortal.Controllers
             _db.SaveChanges();
 
             _hangeFireJobService.MakeJobGenCerTnsp(id, details.Select(item => item.Id).ToList());
+
 
             return RedirectToAction("index", new { id = id });
         }
