@@ -48,37 +48,50 @@ namespace LianAgentPortal.Services
             var itemMaster = _db.InsuranceTnspMasters.FirstOrDefault(item => item.Id == masterId);
             for (int i = 0; i < ids.Count; i++)
             {
-                var itemToUpdate = _db.InsuranceTnspDetails.Include(item => item.InsuranceTnspMaster).FirstOrDefault(item =>
-                    item.Id == ids[i]
-                    && item.InsuranceTnspMasterId == masterId
-                    && item.Status == InsuranceOtherStatusEnum.GENCER_INPROGRESS
-                );
-
-                if (itemToUpdate != null)
+                try
                 {
-                    if (itemToUpdate.InsuranceTnspMaster.IsDeleted)
-                    {
-                        itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_ERROR;
-                        itemToUpdate.StatusMessage = "Bảng kê bị xóa";
-                        _db.SaveChanges();
-                        continue;
-                    }
-
-                    itemToUpdate.InsuranceNo = "020502-" + DateTime.Now.Ticks.ToString();
-                    itemToUpdate.CertificateDigitalLink = Functions.GetCertificatePath(
-                        CertificateFolders.Folder020502Tnsp,
-                        itemToUpdate.InsuranceTnspMasterId,
-                        itemToUpdate.OrderId, 
-                        itemToUpdate.InsuranceNo
+                    var itemToUpdate = _db.InsuranceTnspDetails.Include(item => item.InsuranceTnspMaster).FirstOrDefault(item =>
+                        item.Id == ids[i]
+                        && item.InsuranceTnspMasterId == masterId
+                        && item.Status == InsuranceOtherStatusEnum.GENCER_INPROGRESS
                     );
 
-                    _tnspService.GenCertificate(itemToUpdate);
+                    if (itemToUpdate != null)
+                    {
+                        if (itemToUpdate.InsuranceTnspMaster.IsDeleted)
+                        {
+                            itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_ERROR;
+                            itemToUpdate.StatusMessage = "Bảng kê bị xóa";
+                            _db.SaveChanges();
+                            continue;
+                        }
 
-                    itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_SUCCESS;
-                    itemToUpdate.StatusMessage = "Phát hành thành công";
+                        itemToUpdate.InsuranceNo = (DateTime.Now.Year % 100)
+                            + "-25-31-020502-" + Commons.Functions.GenNumberZero(7 - itemToUpdate.Id.ToString().Length) + itemToUpdate.Id.ToString();
 
-                    _db.SaveChanges();
+                        itemToUpdate.CertificateDigitalLink = Functions.GetCertificatePath(
+                            CertificateFolders.Folder020502Tnsp,
+                            itemToUpdate.InsuranceTnspMasterId,
+                            itemToUpdate.OrderId,
+                            itemToUpdate.InsuranceNo
+                        );
+
+                        _tnspService.GenCertificate(itemToUpdate);
+
+                        itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_SUCCESS;
+                        itemToUpdate.StatusMessage = "Phát hành thành công";
+                        itemMaster.TotalIssuedRows++;
+
+                        _db.SaveChanges();
+                    }
                 }
+                catch
+                {
+
+                }
+
+
+
             }
 
             itemMaster.TotalIssuedRows = _db.InsuranceTnspDetails.AsNoTracking()
@@ -88,6 +101,7 @@ namespace LianAgentPortal.Services
                 );
 
             _db.SaveChanges();
+
         }
 
         public void MakeJobGenCerTnsp(long masterId, List<long> ids)

@@ -1,11 +1,4 @@
-﻿using AutoMapper;
-using Hangfire;
-using LianAgentPortal.Commons;
-using LianAgentPortal.Commons.Constants;
-using LianAgentPortal.Data;
-using LianAgentPortal.Models.DbModels;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
+﻿using LianAgentPortal.Models.DbModels;
 using SelectPdf;
 
 namespace LianAgentPortal.Services
@@ -19,11 +12,13 @@ namespace LianAgentPortal.Services
     public class TnspService : ITnspService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly string CertificateTemplate = "cer-template/020502-tnsp.htm";
+        private readonly ISignPdfService _signPdfService;
+        private readonly string CertificateTemplate = "cer-template/020502-tnsp-v2.htm";
 
-        public TnspService(IWebHostEnvironment webHostEnvironment)
+        public TnspService(IWebHostEnvironment webHostEnvironment, ISignPdfService signPdfService)
         {
             _webHostEnvironment = webHostEnvironment;
+            _signPdfService = signPdfService;
         }
 
 
@@ -32,6 +27,7 @@ namespace LianAgentPortal.Services
             string webRootPath = _webHostEnvironment.WebRootPath;
 
             string pathToFile = Path.Combine(webRootPath, model.CertificateDigitalLink);
+            string pathToFilTemp = Path.Combine(webRootPath, model.CertificateDigitalLink);
 
             if (!Directory.Exists(Path.GetDirectoryName(pathToFile))
                 || !File.Exists(pathToFile))
@@ -52,10 +48,51 @@ namespace LianAgentPortal.Services
                 PdfDocument pdfDocument = new SelectPdf.PdfDocument();
                 string html = this.GetHtmlCertificate(pathToTemplate, model);
                 pdfDocument = htmlToPdf.ConvertHtmlString(html);
+
+                PdfDigitalCertificatesCollection certificates = PdfDigitalCertificatesStore.GetCertificates();
+                PdfDigitalCertificate certificate = certificates[0];
+                PdfDigitalSignatureElement signature = new PdfDigitalSignatureElement(new System.Drawing.RectangleF(350, 300, 490, 240), certificate);
+
+                pdfDocument.Pages[0].Add(signature);
+
+
                 pdfDocument.Save(pathToFile);
                 pdfDocument.Close();
 
-                //this.DigitalSigner.Sign(pathToFile, new SignaturePosition(350, 300, 490, 240));
+
+
+
+
+
+                //// the certificate
+                //string certFile = Server.MapPath("~/files/selectpdf.pfx");
+
+                //// load the pdf document using the advanced security manager
+                //PdfSecurityManager security = new PdfSecurityManager();
+                //security.Load(pathToFile);
+
+                //// add the digital signature
+                //security.Sign(certFile, "selectpdf");
+
+                //// save pdf document
+                //security.Save(Response, false, "Sample.pdf");
+
+                //// close pdf document
+                //security.Close();
+
+
+                //try
+                //{
+                //    _signPdfService.SignPdfFileWithKeyFromStore(
+                //        pathToFile, pathToFile,
+                //        GeneralConstants.DIGITAL_SIGN_SUBJECT_NAME,
+                //        true, 350, 300, 490, 240, 1
+                //    );
+                //}
+                //catch
+                //{
+
+                //}
             }
         }
 

@@ -134,5 +134,16 @@ namespace LianAgentPortal.Commons
             string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
             return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "-");
         }
+
+        public static string GenNumberZero(int number)
+        {
+            if (number <= 0) return "";
+            string result = "";
+            for (int i=1; i<=number; i++)
+            {
+                result += "0";
+            }
+            return result;
+        }
     }
 }
