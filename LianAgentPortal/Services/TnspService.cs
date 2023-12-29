@@ -60,25 +60,6 @@ namespace LianAgentPortal.Services
 
 
 
-
-
-                //// the certificate
-                //string certFile = Server.MapPath("~/files/selectpdf.pfx");
-
-                //// load the pdf document using the advanced security manager
-                //PdfSecurityManager security = new PdfSecurityManager();
-                //security.Load(pathToFile);
-
-                //// add the digital signature
-                //security.Sign(certFile, "selectpdf");
-
-                //// save pdf document
-                //security.Save(Response, false, "Sample.pdf");
-
-                //// close pdf document
-                //security.Close();
-
-
                 try
                 {
 
@@ -86,7 +67,7 @@ namespace LianAgentPortal.Services
                         pathToFileTemp,
                         pathToFile,
                         GeneralConstants.DIGITAL_SIGN_SUBJECT_NAME,
-                        true, 350, 300, 490, 240, 1
+                        330, 200, 480, 320, 1
                     );
                 }
                 catch (Exception ex)
@@ -106,6 +87,7 @@ namespace LianAgentPortal.Services
             html = (string)html.Replace("{OrderId}", model.OrderId);
             html = (string)html.Replace("{IdentityNumber}", model.IdentityNumber);
             html = (string)html.Replace("{IssueDate}", DateTime.Now.ToString("dd/MM/yyyy"));
+            html = (string)html.Replace("{SignDate}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss tt K"));
             html = (string)html.Replace("{FromDate}", model.FromDate.ToString("dd/MM/yyyy"));
             html = (string)html.Replace("{ToDate}", model.ToDate.ToString("dd/MM/yyyy"));
 

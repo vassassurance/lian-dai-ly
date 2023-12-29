@@ -46,6 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v22.2">
+      <HintPath>dll\DevExpress.Data.v22.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Docs.v22.2">
       <HintPath>dll\DevExpress.Docs.v22.2.dll</HintPath>
     </Reference>
