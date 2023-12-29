@@ -1,5 +1,7 @@
-﻿using LianAgentPortal.Models.DbModels;
+﻿using LianAgentPortal.Commons.Constants;
+using LianAgentPortal.Models.DbModels;
 using SelectPdf;
+
 
 namespace LianAgentPortal.Services
 {
@@ -27,13 +29,13 @@ namespace LianAgentPortal.Services
             string webRootPath = _webHostEnvironment.WebRootPath;
 
             string pathToFile = Path.Combine(webRootPath, model.CertificateDigitalLink);
-            string pathToFilTemp = Path.Combine(webRootPath, model.CertificateDigitalLink);
+            string pathToFileTemp = Path.Combine(webRootPath, model.CertificateDigitalLink) + ".pdf";
 
-            if (!Directory.Exists(Path.GetDirectoryName(pathToFile))
-                || !File.Exists(pathToFile))
+            if (!Directory.Exists(Path.GetDirectoryName(pathToFileTemp))
+                || !File.Exists(pathToFileTemp))
             {
                 string pathToTemplate = Path.Combine(webRootPath, CertificateTemplate);
-                Directory.CreateDirectory(Path.GetDirectoryName(pathToFile));
+                Directory.CreateDirectory(Path.GetDirectoryName(pathToFileTemp));
 
                 HtmlToPdf htmlToPdf = new HtmlToPdf();
                 htmlToPdf.Options.PdfPageSize = PdfPageSize.A4;
@@ -49,14 +51,10 @@ namespace LianAgentPortal.Services
                 string html = this.GetHtmlCertificate(pathToTemplate, model);
                 pdfDocument = htmlToPdf.ConvertHtmlString(html);
 
-                PdfDigitalCertificatesCollection certificates = PdfDigitalCertificatesStore.GetCertificates();
-                PdfDigitalCertificate certificate = certificates[0];
-                PdfDigitalSignatureElement signature = new PdfDigitalSignatureElement(new System.Drawing.RectangleF(350, 300, 490, 240), certificate);
-
-                pdfDocument.Pages[0].Add(signature);
 
 
-                pdfDocument.Save(pathToFile);
+
+                pdfDocument.Save(pathToFileTemp);
                 pdfDocument.Close();
 
 
@@ -81,18 +79,20 @@ namespace LianAgentPortal.Services
                 //security.Close();
 
 
-                //try
-                //{
-                //    _signPdfService.SignPdfFileWithKeyFromStore(
-                //        pathToFile, pathToFile,
-                //        GeneralConstants.DIGITAL_SIGN_SUBJECT_NAME,
-                //        true, 350, 300, 490, 240, 1
-                //    );
-                //}
-                //catch
-                //{
+                try
+                {
 
-                //}
+                    _signPdfService.SignPdfFileWithKeyFromStore(
+                        pathToFileTemp,
+                        pathToFile,
+                        GeneralConstants.DIGITAL_SIGN_SUBJECT_NAME,
+                        true, 350, 300, 490, 240, 1
+                    );
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
 

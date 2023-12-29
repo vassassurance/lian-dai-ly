@@ -8,7 +8,7 @@ namespace LianAgentPortal.Commons.Constants
     {
         public static string APP_NAME_AUTHENTICATOR { get { return "AppNameAuthenticator"; } }
 
-        public static string DIGITAL_SIGN_SUBJECT_NAME { get { return "CN=*.lian.vn"; } }
+        public static string DIGITAL_SIGN_SUBJECT_NAME { get { return "CN=*.vass.com.vn"; } }
 
         public static JsonSerializerOptions CamelCaseJsonSerializerOptions
         {
