@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LianAgentPortal.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = AuthenticatorConstants.ADMIN_ROLE)]
     public class InsuranceTnspMasterController : BaseController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;

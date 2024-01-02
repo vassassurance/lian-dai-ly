@@ -13,7 +13,7 @@ using System.IO.Compression;
 
 namespace LianAgentPortal.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = AuthenticatorConstants.ADMIN_ROLE)]
     public class InsuranceTnspDetailController : BaseController
     {
         private readonly IMapper _mapper;
