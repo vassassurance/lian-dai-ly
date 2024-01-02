@@ -46,8 +46,10 @@ namespace LianAgentPortal
                 .AddDefaultTokenProviders();
 
             builder.Services.AddScoped<ILianApiService, LianApiService>();
-
             builder.Services.AddScoped<IHangeFireJobService, HangeFireJobService>();
+            builder.Services.AddScoped<ITnspService, TnspService>();
+            builder.Services.AddScoped<ISignPdfService, SignPdfService>();
+            
 
             builder.Services.AddAutoMapper(typeof(Program));
 

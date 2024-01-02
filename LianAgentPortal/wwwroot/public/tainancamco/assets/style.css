@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+}
+table h3 {
+    font-size: 16px;
+}
+tr {
+    vertical-align: top !important;
+}
+.wrapper {
+    width: 900px;
+    height: 1298px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px;
+    position: relative;
+}
+.content {
+    background: url('bg-element.png') center no-repeat;
+    background-size: 100%;
+    border: 1px solid #f05523;
+    height: 1296px;
+    position: relative;
+}
+.content::after {
+    content: "";
+    background: url('lb.png') center no-repeat;
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+}
+.content::before {
+    content: "";
+    background: url('rb.png') center no-repeat;
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+}
+.header-line {
+    display: block;
+    position: relative;
+    margin: 30px auto 60px;
+    height: 1px;
+    background: #4a4a4a;
+    width: 300px;
+}
+.header-line::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #4a4a4a;
+    top: -5px;
+    left: 145px;
+}
+.col-left, .col-right {
+    font-size: 16px !important;
+    padding: 10px 0;
+}
+.col-left span, .col-right span {
+    font-size: 16px !important;
+}
+.col-left {
+    width: 250px;
+}
+.col-right, .col-left span a, .col-right span a {
+    font-weight: 700;
+    color: #f05523;
+    text-decoration: none;
+}
+.hotline {
+    font-size:12px;
+    color:#f05523;
+    opacity:.75;
+    position: absolute;
+    bottom: 70px;
+    left: 30px;
+    padding: 10px 10px 7px;
+    border: 2px solid #f05523;
+}
+.hotline p {
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+.note {
+    font-size:11px;
+    color:#f05523;
+    opacity:.75;
+    width: 500px;
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+}
+.small-caps {
+    font-size: 11px;
+    display: block;
+    width: 85%;
+    margin-top: 5px;
+    text-align: justify;
+}
