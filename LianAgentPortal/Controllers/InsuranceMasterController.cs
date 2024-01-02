@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using LianAgentPortal.Commons;
 using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Data;
@@ -227,15 +228,6 @@ namespace LianAgentPortal.Controllers
             return null;
         }
 
-        private string GetNumberCellValue(string cachedValue)
-        {
-            if (cachedValue == null || cachedValue.Length == 0)
-            {
-                return "0";
-            }
-            return cachedValue;
-        }
-
         private MotorTypeEnum GetMotorTypeFromString(string type)
         {
             if (type.ToLower().Trim() == "dưới 50cc") return MotorTypeEnum.UNDER;
@@ -288,12 +280,12 @@ namespace LianAgentPortal.Controllers
             {
                 try
                 {
-                    string fullTypeName = GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString());
+                    string fullTypeName = Functions.GetCellValue(mainSheet.Row(i).Cell(2).Value.ToString());
                     
                     AutomobilesFullTypeObject automobilesFullType = AutomobilesFullTypeConstants.Data.FirstOrDefault(item => item.DisplayName.ToLower().Trim() == fullTypeName.ToLower().Trim());
                     if (automobilesFullType == null) continue;
 
-                    string vehicleSeat = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString());
+                    string vehicleSeat = Functions.GetCellValue(mainSheet.Row(i).Cell(3).Value.ToString());
                     if (automobilesFullType.AutomobileType == AutomobileTypeEnum.TAXI
                         && int.Parse(vehicleSeat) < 6)
                     {
@@ -303,8 +295,8 @@ namespace LianAgentPortal.Controllers
                     int passengerCount = 0;
                     long passengerFee = 0;
 
-                    long.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()), out passengerFee);
-                    int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()), out passengerCount);
+                    long.TryParse(Functions.GetCellValue(mainSheet.Row(i).Cell(8).Value.ToString()), out passengerFee);
+                    int.TryParse(Functions.GetCellValue(mainSheet.Row(i).Cell(7).Value.ToString()), out passengerCount);
                     if (passengerCount == 0 || passengerFee == 0)
                     {
                         passengerCount = 0;
@@ -312,7 +304,7 @@ namespace LianAgentPortal.Controllers
                     }
                     int numberInsuredYear;
 
-                    if(!int.TryParse(GetNumberCellValue(mainSheet.Row(i).Cell(14).Value.ToString()), out numberInsuredYear)
+                    if(!int.TryParse(Functions.GetCellValue(mainSheet.Row(i).Cell(14).Value.ToString()), out numberInsuredYear)
                         || numberInsuredYear < 1
                         || numberInsuredYear > 3)
                     {
@@ -324,23 +316,23 @@ namespace LianAgentPortal.Controllers
                         InsuranceMasterId = masterId,
                         Type = model.Type,
                         Amount = null,
-                        LicensePlates = GetNumberCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
+                        LicensePlates = Functions.GetCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
                         AutomobilesType = automobilesFullType.AutomobileType,
                         Attributes_Seat = vehicleSeat.ToString(),
                         Attributes_Category = automobilesFullType.Attributes_Category,
-                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
-                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
-                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString()),
+                        Fullname = Functions.GetCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
+                        ChassisNumber = Functions.GetCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
+                        MachineNumber = Functions.GetCellValue(mainSheet.Row(i).Cell(6).Value.ToString()),
                         PassengerFee = passengerFee,
                         PassengerCount = passengerCount,
                         LiabilityInsuranceFee = 0,
-                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
-                        Email = GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
-                        Address = GetNumberCellValue(mainSheet.Row(i).Cell(11).Value.ToString()),
-                        Gender = GetGenderFromString(GetNumberCellValue(mainSheet.Row(i).Cell(12).Value.ToString())),
+                        Phone = Functions.GetCellValue(mainSheet.Row(i).Cell(9).Value.ToString()),
+                        Email = Functions.GetCellValue(mainSheet.Row(i).Cell(10).Value.ToString()),
+                        Address = Functions.GetCellValue(mainSheet.Row(i).Cell(11).Value.ToString()),
+                        Gender = GetGenderFromString(Functions.GetCellValue(mainSheet.Row(i).Cell(12).Value.ToString())),
                         Description = null,
                         EffectiveDate = mainSheet.Row(i).Cell(13).GetDateTime(),
-                        PaperCertificateNo = GetNumberCellValue(mainSheet.Row(i).Cell(15).Value.ToString()),
+                        PaperCertificateNo = Functions.GetCellValue(mainSheet.Row(i).Cell(15).Value.ToString()),
                         Status = InsuranceDetailStatusEnum.NEW,
                         Language = "vi",
                         TimeCoverage = Newtonsoft.Json.JsonConvert.SerializeObject(new TimeCoverageObject()
@@ -394,16 +386,16 @@ namespace LianAgentPortal.Controllers
                         InsuranceMasterId = masterId,
                         Type = model.Type,
                         Amount = null,
-                        LicensePlates = GetNumberCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
-                        MotorType = GetMotorTypeFromString(GetNumberCellValue(mainSheet.Row(i).Cell(2).Value.ToString())),
-                        ChassisNumber = GetNumberCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
-                        MachineNumber = GetNumberCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
-                        Fullname = GetNumberCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
-                        Birhtday = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(6).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        Phone = GetNumberCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
-                        IdentityNumber = GetNumberCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
-                        PassengerInsurance = GetNumberCellValue(mainSheet.Row(i).Cell(9).Value.ToString()) == "1",
-                        EffectiveDate = DateTime.ParseExact(GetNumberCellValue(mainSheet.Row(i).Cell(10).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        LicensePlates = Functions.GetCellValue(mainSheet.Row(i).Cell(1).Value.ToString()),
+                        MotorType = GetMotorTypeFromString(Functions.GetCellValue(mainSheet.Row(i).Cell(2).Value.ToString())),
+                        ChassisNumber = Functions.GetCellValue(mainSheet.Row(i).Cell(3).Value.ToString()),
+                        MachineNumber = Functions.GetCellValue(mainSheet.Row(i).Cell(4).Value.ToString()),
+                        Fullname = Functions.GetCellValue(mainSheet.Row(i).Cell(5).Value.ToString()),
+                        Birhtday = DateTime.ParseExact(Functions.GetCellValue(mainSheet.Row(i).Cell(6).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        Phone = Functions.GetCellValue(mainSheet.Row(i).Cell(7).Value.ToString()),
+                        IdentityNumber = Functions.GetCellValue(mainSheet.Row(i).Cell(8).Value.ToString()),
+                        PassengerInsurance = Functions.GetCellValue(mainSheet.Row(i).Cell(9).Value.ToString()) == "1",
+                        EffectiveDate = DateTime.ParseExact(Functions.GetCellValue(mainSheet.Row(i).Cell(10).Value.ToString().Split(' ')[0]), "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         Status = InsuranceDetailStatusEnum.NEW,
                         AgentPhone = userRequest.UserName,
                         Language = "vi",

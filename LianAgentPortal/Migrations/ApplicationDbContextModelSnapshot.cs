@@ -436,6 +436,103 @@ namespace LianAgentPortal.Migrations
                     b.ToTable("InsurancePersonalAccidentDetails");
                 });
 
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceTnspDetail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CertificateDigitalLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdentityNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("InsuranceAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("InsuranceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("InsuranceTnspMasterId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Premium")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsuranceTnspMasterId");
+
+                    b.ToTable("InsuranceTnspDetails");
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceTnspMaster", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("TotalInsuranceAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalIssuedRows")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPremium")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalRows")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DateCreate");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserCreate");
+
+                    b.ToTable("InsuranceTnspMasters");
+                });
+
             modelBuilder.Entity("LianAgentPortal.Models.DbModels.LianAgent", b =>
                 {
                     b.Property<long>("Id")
@@ -570,7 +667,7 @@ namespace LianAgentPortal.Migrations
                         {
                             Id = "00000000-0000-0000-0000-000000000001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b6d22123-222a-4399-8545-7d19bf7a7526",
+                            ConcurrencyStamp = "1ff15a05-0444-43ab-9c8f-c384ef904f86",
                             CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0962473427",
                             EmailConfirmed = true,
@@ -580,7 +677,7 @@ namespace LianAgentPortal.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "0962473427",
                             NormalizedUserName = "0962473427",
-                            PasswordHash = "AQAAAAIAAYagAAAAELKuQ1HXYwQXul+nxsw7j2LUsC3F+8Vnf0DIcxpeEYuZbSRZrF+iWHfBSx2sR9O7RQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOaZzAmHC4RCD8SVWo3+QJ/pYzHwi4bDdUKRIBoKShGeF2XE5nfNqFqq+DIPQdbzpA==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
@@ -779,6 +876,17 @@ namespace LianAgentPortal.Migrations
                         .IsRequired();
 
                     b.Navigation("InsuranceMaster");
+                });
+
+            modelBuilder.Entity("LianAgentPortal.Models.DbModels.InsuranceTnspDetail", b =>
+                {
+                    b.HasOne("LianAgentPortal.Models.DbModels.InsuranceTnspMaster", "InsuranceTnspMaster")
+                        .WithMany()
+                        .HasForeignKey("InsuranceTnspMasterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InsuranceTnspMaster");
                 });
 
             modelBuilder.Entity("LianAgentPortal.Models.DbModels.LianUser", b =>

@@ -36,10 +36,34 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
+    <PackageReference Include="Select.HtmlToPdf" Version="23.2.0" />
+    <PackageReference Include="Select.HtmlToPdf.NetCore" Version="23.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\certificates\020502-tnsp\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v22.2">
+      <HintPath>dll\DevExpress.Data.v22.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Docs.v22.2">
+      <HintPath>dll\DevExpress.Docs.v22.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v22.2.Core">
+      <HintPath>dll\DevExpress.Office.v22.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v22.2.Core">
+      <HintPath>dll\DevExpress.Pdf.v22.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v22.2.Drawing">
+      <HintPath>dll\DevExpress.Pdf.v22.2.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v22.2.SkiaRenderer">
+      <HintPath>dll\DevExpress.Pdf.v22.2.SkiaRenderer.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

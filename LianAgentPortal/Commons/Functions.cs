@@ -2,9 +2,11 @@
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LianAgentPortal.Commons
 {
@@ -88,6 +90,17 @@ namespace LianAgentPortal.Commons
             return "";
         }
 
+        public static string MapInsuranceOtherDetailStatus(InsuranceOtherStatusEnum status)
+        {
+            if (status == InsuranceOtherStatusEnum.NEW) return "<i class=\"fa fa-file-o\" aria-hidden=\"true\" title=\"TẠO MỚI\"></i>";
+
+            if (status == InsuranceOtherStatusEnum.GENCER_SUCCESS) return "<i class=\"fa fa-paper-plane text-success\" aria-hidden=\"true\" title=\"PHÁT HÀNH - THÀNH CÔNG\" ></i>";
+            if (status == InsuranceOtherStatusEnum.GENCER_INPROGRESS) return "<i class=\"fa fa-spinner text-primary\" aria-hidden=\"true\" title=\"ĐANG PHÁT HÀNH\"></i>";
+            if (status == InsuranceOtherStatusEnum.GENCER_ERROR) return "<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\" title=\"PHÁT HÀNH - LỖI\"></i>";
+
+            return "";
+        }
+
         public static string ConvertInsuranceTypeEnumToString(InsuranceTypeEnum type)
         {
             if (type == InsuranceTypeEnum.FAMILY_BREADWINNER) return "<i class=\"fa fa-home\" aria-hidden=\"true\"></i> TRỤ CỘT GIA ĐÌNH";
@@ -101,5 +114,36 @@ namespace LianAgentPortal.Commons
             return "";
         }
 
+        public static string GetCellValue(string cachedValue)
+        {
+            if (cachedValue == null || cachedValue.Length == 0)
+            {
+                return "0";
+            }
+            return cachedValue;
+        }
+
+        public static string GetCertificatePath(string folder, long masterId, string filename, string insuranceNo)
+        {
+            return folder + masterId.ToString() + "/" + MakeValidFileName(filename) + "_" + insuranceNo + ".pdf";
+        }
+
+        private static string MakeValidFileName(string name)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "-");
+        }
+
+        public static string GenNumberZero(int number)
+        {
+            if (number <= 0) return "";
+            string result = "";
+            for (int i=1; i<=number; i++)
+            {
+                result += "0";
+            }
+            return result;
+        }
     }
 }

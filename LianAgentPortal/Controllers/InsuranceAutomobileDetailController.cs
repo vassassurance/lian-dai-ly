@@ -88,7 +88,9 @@ namespace LianAgentPortal.Controllers
             if (insuranceMaster == null) return RedirectToAction("Index", "InsuranceMaster");
 
             List<InsuranceAutomobileDetail> details = _db.InsuranceAutomobileDetails.Where(item =>
-                (item.Status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_SUCCESS)
+                (item.Status == InsuranceDetailStatusEnum.CALCULATE_PREMIUM_SUCCESS 
+                    || item.Status == InsuranceDetailStatusEnum.SYNC_ERROR
+                )
                 && item.InsuranceMasterId == id
             ).ToList();
 

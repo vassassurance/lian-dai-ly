@@ -1,11 +1,13 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Hangfire;
+using LianAgentPortal.Commons;
 using LianAgentPortal.Commons.Constants;
 using LianAgentPortal.Data;
 using LianAgentPortal.Models.DbModels;
 using LianAgentPortal.Models.ViewModels.BaseInsurance;
 using LianAgentPortal.Models.ViewModels.LianAgent;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -13,6 +15,8 @@ namespace LianAgentPortal.Services
 {
     public interface IHangeFireJobService
     {
+        void MakeJobGenCerTnsp(long masterId, List<long> ids);
+
         //
         void MakeJobCalculatePremiumAutomobileInsurances(long masterId, List<long> ids, string username);
         void MakeJobBuyAutomobileInsurances(long masterId, List<long> ids, string username);
@@ -25,12 +29,86 @@ namespace LianAgentPortal.Services
     {
         private readonly IBackgroundJobClient _backgroundJobs;
         private readonly ILianApiService _lianApiService;
+        private readonly ITnspService _tnspService;
         private readonly ApplicationDbContext _db;
-        public HangeFireJobService(IBackgroundJobClient backgroundJobs, ILianApiService lianApiService, ApplicationDbContext db) 
+        public HangeFireJobService(
+            IBackgroundJobClient backgroundJobs, 
+            ILianApiService lianApiService,
+            ITnspService tnspService,
+            ApplicationDbContext db) 
         {
             _backgroundJobs = backgroundJobs;
             _lianApiService = lianApiService;
+            _tnspService = tnspService;
             _db = db;
+        }
+
+        public void GenCerTnsp(long masterId, List<long> ids)
+        {
+            var itemMaster = _db.InsuranceTnspMasters.FirstOrDefault(item => item.Id == masterId);
+            for (int i = 0; i < ids.Count; i++)
+            {
+                try
+                {
+                    var itemToUpdate = _db.InsuranceTnspDetails.Include(item => item.InsuranceTnspMaster).FirstOrDefault(item =>
+                        item.Id == ids[i]
+                        && item.InsuranceTnspMasterId == masterId
+                        && item.Status == InsuranceOtherStatusEnum.GENCER_INPROGRESS
+                    );
+
+                    if (itemToUpdate != null)
+                    {
+                        if (itemToUpdate.InsuranceTnspMaster.IsDeleted)
+                        {
+                            itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_ERROR;
+                            itemToUpdate.StatusMessage = "Bảng kê bị xóa";
+                            _db.SaveChanges();
+                            continue;
+                        }
+
+                        itemToUpdate.InsuranceNo = (DateTime.Now.Year % 100)
+                            + "-25-31-020502-" + Commons.Functions.GenNumberZero(7 - itemToUpdate.Id.ToString().Length) + itemToUpdate.Id.ToString();
+
+                        itemToUpdate.CertificateDigitalLink = Functions.GetCertificatePath(
+                            CertificateFolders.Folder020502Tnsp,
+                            itemToUpdate.InsuranceTnspMasterId,
+                            itemToUpdate.OrderId,
+                            itemToUpdate.InsuranceNo
+                        );
+
+                        _tnspService.GenCertificate(itemToUpdate);
+
+                        itemToUpdate.Status = InsuranceOtherStatusEnum.GENCER_SUCCESS;
+                        itemToUpdate.StatusMessage = "Phát hành thành công";
+                        itemMaster.TotalIssuedRows++;
+
+                        _db.SaveChanges();
+                    }
+                }
+                catch
+                {
+
+                }
+
+
+
+            }
+
+            itemMaster.TotalIssuedRows = _db.InsuranceTnspDetails.AsNoTracking()
+                .Count(item =>
+                    item.InsuranceTnspMasterId == masterId
+                    && item.Status == InsuranceOtherStatusEnum.GENCER_SUCCESS
+                );
+
+            _db.SaveChanges();
+
+        }
+
+        public void MakeJobGenCerTnsp(long masterId, List<long> ids)
+        {
+            _backgroundJobs.Enqueue(() =>
+                GenCerTnsp(masterId, ids)
+            );
         }
 
         public void MakeJobCalculatePremiumAutomobileInsurances(long masterId, List<long> ids, string username)
